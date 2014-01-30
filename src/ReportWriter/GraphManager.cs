@@ -38,12 +38,12 @@ namespace LaserPrinter
             series.HasDataLabel = true;
 
             series = chart.SeriesCollection.AddSeries();
-            series.ChartType = ChartType.Line;
+            series.ChartType = ChartType.Column2D;
             series.Add(new double[] { 4, 17, 5, 25, 13, 6, 42, 31, 11, 28 });
 
-            series = chart.SeriesCollection.AddSeries();
-            series.ChartType = ChartType.Line;
-            series.Add(new double[] { 41, 7, 5, 45, 13, 10, 21, 13, 18, 9 });
+            //series = chart.SeriesCollection.AddSeries();
+            //series.ChartType = ChartType.Line;
+            //series.Add(new double[] { 41, 7, 5, 45, 13, 10, 21, 13, 18, 9 });
 
             var xseries = chart.XValues.AddXSeries();
             xseries.Add("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N");
