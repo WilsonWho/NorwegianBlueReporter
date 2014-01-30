@@ -1,6 +1,6 @@
 ﻿using MigraDoc.DocumentObjectModel;
 
-namespace ReportWriter
+namespace LaserPrinter
 {
     public interface IDocumentManager
     {

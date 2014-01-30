@@ -1,7 +1,7 @@
 ﻿using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 
-namespace ReportWriter
+namespace LaserPrinter
 {
     public class GraphManager : IGraphManager
     {

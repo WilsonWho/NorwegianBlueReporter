@@ -2,7 +2,7 @@
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 
-namespace ReportWriter
+namespace LaserPrinter
 {
     class Program
     {
