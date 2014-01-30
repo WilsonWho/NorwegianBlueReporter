@@ -1,4 +1,5 @@
 ﻿using MigraDoc.DocumentObjectModel;
+using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 
 namespace LaserPrinter
@@ -15,7 +16,8 @@ namespace LaserPrinter
 
             document.LastSection.AddParagraph("Sample Chart", "Heading2");
 
-            ComboGraphExample(document);
+            //ComboGraphExample(document);
+            ColumnStackedChartExample(document);
             //BarChartExample(document);
             //BarStackedChartExample(document);
             //AreaChartExample(document);
@@ -32,18 +34,19 @@ namespace LaserPrinter
                     Height = Unit.FromCentimeter(12)
                 };
 
-            var series = chart.SeriesCollection.AddSeries();
-            series.ChartType = ChartType.Column2D;
-            series.Add(new double[] { 1, 17, 45, 5, 3, 20, 11, 23, 8, 19 });
-            series.HasDataLabel = true;
+            var seriesL1 = chart.SeriesCollection.AddSeries();
+            seriesL1.Add(new double[] { 4, 17, 5, 25, 13, 6, 42, 31, 11, 28 });
+            seriesL1.LineFormat.Color = Colors.IndianRed;
+            seriesL1.LineFormat.Width = 2;
+            seriesL1.HasDataLabel = true;
+            seriesL1.Name = "The Other Best Line";
 
-            series = chart.SeriesCollection.AddSeries();
-            series.ChartType = ChartType.Column2D;
-            series.Add(new double[] { 4, 17, 5, 25, 13, 6, 42, 31, 11, 28 });
-
-            //series = chart.SeriesCollection.AddSeries();
-            //series.ChartType = ChartType.Line;
-            //series.Add(new double[] { 41, 7, 5, 45, 13, 10, 21, 13, 18, 9 });
+            var seriesL2 = chart.SeriesCollection.AddSeries();
+            seriesL2.Add(new double[] { 41, 7, 5, 45, 13, 10, 21, 13, 18, 9 });
+            seriesL2.LineFormat.Color = Colors.Moccasin;
+            seriesL2.LineFormat.Width = 2;
+            seriesL2.HasDataLabel = true;
+            seriesL2.Name = "The Best Line";
 
             var xseries = chart.XValues.AddXSeries();
             xseries.Add("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N");
@@ -57,6 +60,53 @@ namespace LaserPrinter
             chart.PlotArea.LineFormat.Color = Colors.DarkGoldenrod;
             chart.PlotArea.LineFormat.Width = 1;
 
+            chart.FooterArea.AddLegend();
+
+            document.LastSection.Add(chart);
+        }
+
+        private void ColumnStackedChartExample(Document document)
+        {
+            var chart = new Chart
+                {
+                    Left = ShapePosition.Center,
+                    Width = Unit.FromCentimeter(16),
+                    Height = Unit.FromCentimeter(12),
+                    Type = ChartType.ColumnStacked2D
+                };
+
+            Series series = chart.SeriesCollection.AddSeries();
+            series.Name = "Series 1";
+            series.Add(new double[] {1, 5, -3, 20, 11});
+
+            series = chart.SeriesCollection.AddSeries();
+            series.Name = "Series 2";
+            series.Add(new double[] {22, 4, 12, 8, 12});
+
+            series = chart.SeriesCollection.AddSeries();
+            series.Name = "Series 3";
+            series.Add(new double[] {12, 14, 2, 18, 1});
+
+            series = chart.SeriesCollection.AddSeries();
+            series.Name = "Series 4";
+            series.Add(new double[] {17, 13, 10, 9, 15});
+
+            chart.XAxis.TickLabels.Format = "00";
+            chart.XAxis.MajorTickMark = TickMarkType.Outside;
+            chart.XAxis.Title.Caption = "X-Axis";
+
+            chart.YAxis.MajorTickMark = TickMarkType.Outside;
+            chart.YAxis.HasMajorGridlines = true;
+
+            chart.PlotArea.LineFormat.Color = Colors.DarkGray;
+            chart.PlotArea.LineFormat.Width = 1;
+            chart.PlotArea.LineFormat.Visible = true;
+
+            chart.RightArea.AddLegend();
+
+            chart.DataLabel.Type = DataLabelType.Value;
+            chart.DataLabel.Position = DataLabelPosition.Center;
+
             document.LastSection.Add(chart);
         }
 
@@ -64,10 +114,10 @@ namespace LaserPrinter
         {
             var chart = new Chart
                 {
-                    Left = 0,
+                    Left = ShapePosition.Center,
                     Width = Unit.FromCentimeter(16),
                     Height = Unit.FromCentimeter(12),
-                    Type = ChartType.Bar2D
+                    Type = ChartType.ColumnStacked2D
                 };
 
             Series series = chart.SeriesCollection.AddSeries();
@@ -106,7 +156,7 @@ namespace LaserPrinter
         {
             var chart = new Chart
                 {
-                    Left = 0,
+                    Left = ShapePosition.Center,
                     Width = Unit.FromCentimeter(16),
                     Height = Unit.FromCentimeter(12),
                     Type = ChartType.BarStacked2D
@@ -128,18 +178,20 @@ namespace LaserPrinter
             series.Name = "Series 4";
             series.Add(new double[] { 17, 13, 10, 9, 15 });
 
-            chart.XAxis.MajorTickMark = TickMarkType.Outside;
+            XSeries xseries = chart.XValues.AddXSeries();
+            xseries.Add("2", "3", "4", "5", "6");
+
             chart.XAxis.Title.Caption = "X-Axis";
 
             chart.YAxis.MajorTickMark = TickMarkType.Outside;
             chart.YAxis.HasMajorGridlines = true;
 
             chart.PlotArea.LineFormat.Color = Colors.DarkGray;
-            chart.PlotArea.LineFormat.Width = 1;
+            chart.PlotArea.LineFormat.Width = 2;
             chart.PlotArea.LineFormat.Visible = true;
 
             chart.DataLabel.Type = DataLabelType.Value;
-            chart.DataLabel.Position = DataLabelPosition.Center;
+            chart.DataLabel.Position = DataLabelPosition.InsideBase;
 
             document.LastSection.Add(chart);
         }
@@ -163,7 +215,7 @@ namespace LaserPrinter
             series = chart.SeriesCollection.AddSeries();
             series.Add(new double[] { 16, 5, 3, 20, 11 });
 
-            chart.XAxis.TickLabels.Format = "00";
+            //chart.XAxis.TickLabels.Format = "00";
             chart.XAxis.MajorTickMark = TickMarkType.Outside;
             chart.XAxis.Title.Caption = "X-Axis";
 
