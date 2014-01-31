@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,14 @@ namespace StatsReader
     {
         static void Main(string[] args)
         {
+            var filename = @"C:\dev\NorwegianBlueReporter\src\StatsReader\parrot-server-stats.log";
+            StreamReader reader = File.OpenText(filename);
+            var statsReader = new IagoStatsReader();
+            statsReader.ParseInput(reader);
+
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("Press enter to close...");
+            Console.ReadLine();
         }
     }
 }
