@@ -7,24 +7,25 @@ using System.Threading.Tasks;
 
 namespace StatsReader
 {
-    interface IStatisticsValues
+    public interface IStatisticsValues
     {
         DateTime TimeStamp { get; }
         ReadOnlyDictionary<String,String> Stats {get;}
-        ReadOnlyDictionary<String, String> AnalysisNotes { get; } 
+        ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; } 
     }
 
-    interface IStatistics
+    public interface IStatistics
     {
         void Parse(String input);
     }
 
-    interface IStatisticsAddNote
+    public interface IStatisticsAddAnalysis
     {
-        void AddAnalysisNote(String analysisName, String note);
+        dynamic AnalysisScratchPad { get; }
+        void AddAnalysisNote(AnalysisNote note);
     }
 
-    interface IStatisticsSelfAnalysis
+    public interface IStatisticsSelfAnalysis
     {
         void Analyze();
     }

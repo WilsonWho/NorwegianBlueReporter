@@ -13,12 +13,13 @@ namespace StatsReader
         {
             var filename = @"C:\dev\NorwegianBlueReporter\src\StatsReader\parrot-server-stats.log";
             StreamReader reader = File.OpenText(filename);
-            var statsReader = new IagoStatsReader();
-            statsReader.ParseInput(reader);
+            var stats = new IagoStatisticsSet();
+            stats.Parse(reader);
 
             Console.WriteLine("-----------------------");
             Console.WriteLine("Press enter to close...");
             Console.ReadLine();
+
         }
     }
 }

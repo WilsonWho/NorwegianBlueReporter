@@ -8,11 +8,27 @@ using System.Threading.Tasks;
 
 namespace StatsReader
 {
-    interface IStatisticsSet
+
+    public interface IStatisticsSet
+    {
+        void Parse(TextReader input);
+    }
+
+    public interface IStatisticsSetValues
     {
         ReadOnlyCollection<IStatisticsValues> Statistics { get; }
+        ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
+    }
 
-        void Parse(TextReader input);
+    public interface IStatisticsSetAddAnalysis
+    {
+        dynamic AnalysisScratchPad { get; }
+        void AddAnalysisNote(AnalysisNote note);
+        void AddAnalysisNoteToStats(IStatisticsValues statistic, AnalysisNote note);
+    }
+
+    public interface IStatisticsSetSelfAnalysis
+    {
         void Analyze();
 
     }
