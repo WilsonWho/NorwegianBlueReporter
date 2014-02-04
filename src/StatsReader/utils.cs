@@ -5,8 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StatsReader
 {
@@ -27,7 +25,7 @@ namespace StatsReader
             }
 
             // Don't serialize a null object, simply return the default for that object
-            if (Object.ReferenceEquals(source, null))
+            if (ReferenceEquals(source, null))
             {
                 return default(T);
             }

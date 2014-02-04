@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenCvSharp;
 
 namespace StatsReader
 {
@@ -28,6 +27,8 @@ namespace StatsReader
 
         public void Parse(TextReader input)
         {
+            //Cv.KMeans2(points, maxClusters, clusters, new CvTermCriteria(10, 1.0));
+
             string line;
             while ((line = input.ReadLine()) != null)
             {
@@ -39,7 +40,14 @@ namespace StatsReader
         
         public void Analyze()
         {
-            throw new NotImplementedException();
+            foreach (var stat in _iagoStatistics)
+            {
+                stat.Analyze();
+            }
+
+            var analyzers = new CommonAnalysis();
+            _analysisScratchPad.AllHeaders = analyzers.FindAllHeaders(_iagoStatistics);
+
         }
     }
 
