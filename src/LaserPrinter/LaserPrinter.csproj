@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decode.cs" />
     <Compile Include="GraphManager.cs" />
     <Compile Include="DocumentManager.cs" />
     <Compile Include="IDocumentManager.cs" />
@@ -82,6 +83,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MigraDoc.Extensions\MigraDoc.Extensions.Html\MigraDoc.Extensions.Html.csproj">
+      <Project>{CA3F8535-EA5E-4362-8922-FFBD86DF498F}</Project>
+      <Name>MigraDoc.Extensions.Html</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MigraDoc.Extensions\MigraDoc.Extensions.Markdown\MigraDoc.Extensions.Markdown.csproj">
       <Project>{ea990c7e-f7ec-4857-9a12-372ffe74b004}</Project>
       <Name>MigraDoc.Extensions.Markdown</Name>

@@ -31,12 +31,27 @@ namespace LaserPrinter
                                         Pretty cool huh?
                                     ";
 
+            const string html = @"
+                                    <h1>This is a heading</h1>
+
+                                    <p>This is some **bold** ass text with a <a href='http://www.google.com'>link</a>.<p>
+
+                                    <ul>
+                                        <li>List Item 1</li>
+                                        <li>List Item 2</li>
+                                        <li>List Item 3</li>
+                                    </ul>
+
+                                    <p>Pretty cool huh?</p>
+                                ";
+
             //var entry = new Entry();
             //entry.Start();
 
             var documentManager = new DocumentManager(document);
             documentManager.CreateGraphSection();
             documentManager.AddMarkDown(markdown);
+            documentManager.AddHtml(html);
 
             var renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always)
                 {
@@ -49,9 +64,12 @@ namespace LaserPrinter
             renderer.PdfDocument.Save(fileName);
 
             const string updatedFileName = "ExperimentBeta";
-            documentManager.AttachFileToDocument(fileName, updatedFileName, "TestCSV.csv");
+            //documentManager.AttachFileToDocument(fileName, updatedFileName, "TestCSV.csv");
 
-            Process.Start(updatedFileName);
+            const string embed = "TestCSV.csv";
+            documentManager.EmbedFile(fileName, embed);
+
+            //Process.Start(updatedFileName);
         }
     }
 }
