@@ -6,23 +6,23 @@ namespace LaserPrinter
 {
     public class GraphManager : IGraphManager
     {
-        // TODO: make this customizable
-        public void DefineChart(Document document)
+        // TODO: Needs to take in set of data to graph
+        public void DefineComboGraph(Document document)
         {
-            document.AddSection();
-
+            // Example header details
             Paragraph paragraph = document.LastSection.AddParagraph("Chart Overview", "Heading1");
             paragraph.AddBookmark("Charts");
 
             document.LastSection.AddParagraph("Sample Chart", "Heading2");
 
-            //ComboGraphExample(document);
+            ComboGraphExample(document);
+        }
+
+        public void DefineColumnStackedGraph(Document document)
+        {
+            // TODO: Add header details
+
             ColumnStackedChartExample(document);
-            //BarChartExample(document);
-            //BarStackedChartExample(document);
-            //AreaChartExample(document);
-            //PieChartExample(document);
-            //ExplodedPieChartExample(document);
         }
 
         private void ComboGraphExample(Document document)

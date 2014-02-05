@@ -4,6 +4,7 @@ namespace LaserPrinter
 {
     public interface IGraphManager
     {
-        void DefineChart(Document document);
+        void DefineComboGraph(Document document);
+        void DefineColumnStackedGraph(Document document);
     }
 }

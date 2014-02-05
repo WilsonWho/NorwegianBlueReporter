@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using LaserPrinter.Test;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 
@@ -18,6 +17,9 @@ namespace LaserPrinter
                     Author = "Dr. Wilson"
                 }
             };
+
+            // IGNORE
+            // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
             const string markdown = @"
                                         # This is a heading
@@ -45,31 +47,23 @@ namespace LaserPrinter
                                     <p>Pretty cool huh?</p>
                                 ";
 
-            //var entry = new Entry();
-            //entry.Start();
+            // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
             var documentManager = new DocumentManager(document);
-            documentManager.CreateGraphSection();
-            documentManager.AddMarkDown(markdown);
-            documentManager.AddHtml(html);
+            documentManager.CreateGraphSection(GraphType.Combo);
+            //documentManager.AddMarkDown(markdown);
+            //documentManager.AddHtml(html);
 
-            var renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always)
-                {
-                    Document = document
-                };
+            const string fileName = "Experiment Alpha";
+            documentManager.SaveAsPdf(fileName);
 
-            renderer.RenderDocument();
+            const string newFileName = "ExperimentBeta";
+            documentManager.AttachFileToDocument(fileName, newFileName, "TestCSV.csv");
 
-            const string fileName = "ExperimentAlpha";
-            renderer.PdfDocument.Save(fileName);
+            //const string embed = "TestCSV.csv";
+            //documentManager.EmbedFile(fileName, embed);
 
-            const string updatedFileName = "ExperimentBeta";
-            //documentManager.AttachFileToDocument(fileName, updatedFileName, "TestCSV.csv");
-
-            const string embed = "TestCSV.csv";
-            documentManager.EmbedFile(fileName, embed);
-
-            //Process.Start(updatedFileName);
+            Process.Start(newFileName);
         }
     }
 }

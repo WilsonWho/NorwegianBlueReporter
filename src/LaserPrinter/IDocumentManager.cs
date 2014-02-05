@@ -2,8 +2,8 @@
 {
     public interface IDocumentManager
     {
-        void CreateGraphSection();
-        void EmbedFile(string pdf, string embed);
+        void CreateGraphSection(GraphType graphType);
         void AttachFileToDocument(string existingPdfFile, string updatedPdfFile, string attachmentFile);
+        void EmbedFile(string pdf, string embeddedFile);
     }
 }
