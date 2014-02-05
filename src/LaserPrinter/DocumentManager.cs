@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -40,7 +41,7 @@ namespace LaserPrinter
                     _graphManager.DefineColumnStackedGraph(_document);
                     break;
                 default:
-                    break;
+                    throw new InvalidEnumArgumentException("Specified graph type is not supported ...");
             }
         }
 
