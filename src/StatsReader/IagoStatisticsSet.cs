@@ -4,26 +4,31 @@ using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 using OpenCvSharp;
 
 namespace StatsReader
 {
-    internal class IagoStatisticsSet : IStatisticsSet, IStatisticsSetSelfAnalysis, IStatisticsSetValues
+    class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
     {
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         private readonly List<IagoStatistics> _iagoStatistics = new List<IagoStatistics>();
-        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>(); 
+        private ReadOnlyCollection<IStatisticsValues> _roIagoStatistics ;
+        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
+        private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
 
-
-        ReadOnlyCollection<IStatisticsValues> IStatisticsSetValues.Statistics
+        public ReadOnlyCollection<IStatisticsValues> Statistics 
         {
-            get { return Utils.ReadOnlyCollectionWithCopiedValues(_iagoStatistics.Cast<IStatisticsValues>()); }
+            get { return _roIagoStatistics ?? ( _roIagoStatistics = new ReadOnlyCollection<IStatisticsValues>(_iagoStatistics.Cast<IStatisticsValues>().ToList())); }
         }
 
-        ReadOnlyCollection<AnalysisNote> IStatisticsSetValues.AnalysisNotes
+        public ReadOnlyCollection<AnalysisNote> AnalysisNotes
         {
-            get { return Utils.ReadOnlyCollectionWithCopiedValues(_analysisNotes); }
+            get { return _roAnalysisNote ?? ( _roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
         }
+
+        public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
 
         public void Parse(TextReader input)
         {
@@ -37,18 +42,28 @@ namespace StatsReader
                 _iagoStatistics.Add(newStat);
             }
         }
-        
-        public void Analyze()
+
+        public void Analyze(IEnumerable<SetAnalyzer> setAnalyzers , IEnumerable<StatAnalyzer> statAnalyzers)
         {
-            foreach (var stat in _iagoStatistics)
+            foreach (var analyzer in setAnalyzers)
             {
-                stat.Analyze();
+                analyzer.Invoke(this);
             }
 
-            var analyzers = new CommonAnalysis();
-            _analysisScratchPad.AllHeaders = analyzers.FindAllHeaders(_iagoStatistics);
-
+            foreach (var stat in _iagoStatistics)
+            {
+                foreach (var analyzer in statAnalyzers)
+                {
+                    analyzer.Invoke(this, stat);
+                }
+            }
         }
+
+        public void AddAnalysisNote(AnalysisNote note)
+        {
+            _analysisNotes.Add(note);
+        }
+
     }
 
 }

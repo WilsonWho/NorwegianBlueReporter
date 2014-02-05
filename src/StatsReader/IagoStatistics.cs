@@ -5,11 +5,13 @@ using System.Configuration;
 using System.Dynamic;
 using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 using System.Text.RegularExpressions;
 
 namespace StatsReader
 {
-    class IagoStatistics : IStatistics, IStatisticsValues, IStatisticsAddAnalysis, IStatisticsSelfAnalysis
+    class IagoStatistics : IStatistics, IStatisticsAnalysis
     {
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}
@@ -17,23 +19,32 @@ namespace StatsReader
         private static readonly Regex DataMatcher = new Regex(@"(?<key>.+?):(?<value>.+?)[,$]", RegexOptions.Compiled);
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
 
-        private readonly float _iagoStatAllowedRequestResponseDifference = float.Parse(ConfigurationManager.AppSettings["IagoStatAllowedRequestResponseDifference"], CultureInfo.InvariantCulture.NumberFormat);
+        private readonly Dictionary<String, double> _stats = new Dictionary<string, double>();
+        private ReadOnlyDictionary<String, double> _roStats;
 
-        private readonly Dictionary<String, String> _stats = new Dictionary<string, string>();
-        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>(); 
+        private readonly Dictionary<String, string> _nonStats = new Dictionary<string, string>();
+        private ReadOnlyDictionary<String, string> _roNonStats;
+
+        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
+        private ReadOnlyCollection<AnalysisNote> _roAnalysisNotes;
         public DateTime TimeStamp { get ; private set; }
-
-        ReadOnlyDictionary<String, String> IStatisticsValues.Stats
+        
+        public ReadOnlyDictionary<string, double> Stats
         {
-            get { return Utils.ReadOnlyDictionaryWithCopiedValues(_stats);}  
+            get { return _roStats ?? (_roStats = new ReadOnlyDictionary<String, double>(_stats)); }
         }
 
-        ReadOnlyCollection<AnalysisNote> IStatisticsValues.AnalysisNotes
+        public ReadOnlyDictionary<string, string> NonStats
         {
-            get { return Utils.ReadOnlyCollectionWithCopiedValues(_analysisNotes); }
+            get { return _roNonStats ?? (_roNonStats = new ReadOnlyDictionary<String, String>(_nonStats)); }
         }
 
-        dynamic IStatisticsAddAnalysis.AnalysisScratchPad { get { return _analysisScratchPad; } }
+        public ReadOnlyCollection<AnalysisNote> AnalysisNotes
+        {
+            get { return _roAnalysisNotes ?? (_roAnalysisNotes = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
+        }
+
+        public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
 
         public void Parse(String input)
         {
@@ -55,6 +66,7 @@ namespace StatsReader
                                     );
             string data = matches.Groups["stats"].Value;
 
+            double d;
             foreach (Match kvpmatch in DataMatcher.Matches(data))
             {
                 String key = kvpmatch.Groups["key"].Value;
@@ -62,7 +74,14 @@ namespace StatsReader
 
                 if (!_stats.ContainsKey(key))
                 {
-                    _stats[key] = value;
+                    if(double.TryParse(value, out d))
+                    {
+                        _stats[key] = d;
+                    }
+                    else
+                    {
+                        _nonStats[key] = value;
+                    }
                 }
                 else
                 {
@@ -73,7 +92,7 @@ namespace StatsReader
             }
         }
 
-        public void Analyze()
+        public void Analyze(IEnumerable<StatAnalyzer> analyzers)
         {
             // TODO
         }
@@ -82,6 +101,5 @@ namespace StatsReader
         {
             _analysisNotes.Add(note);
         }
-
     }
 }

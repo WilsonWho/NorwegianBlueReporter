@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Runtime.Serialization;
 
 namespace StatsReader
 {
@@ -15,17 +17,10 @@ namespace StatsReader
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
     }
 
-    public interface IStatisticsSetAddAnalysis
+    public interface IStatisticsSetAnalysis : IStatisticsSetValues
     {
         dynamic AnalysisScratchPad { get; }
         void AddAnalysisNote(AnalysisNote note);
-        void AddAnalysisNoteToStats(IStatisticsValues statistic, AnalysisNote note);
+        void Analyze(IEnumerable<SetAnalyzer> setAnalyzers, IEnumerable<StatAnalyzer> statAnalyzers);
     }
-
-    public interface IStatisticsSetSelfAnalysis
-    {
-        void Analyze();
-
-    }
-
 }

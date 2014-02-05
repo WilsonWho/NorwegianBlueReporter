@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace StatsReader
@@ -12,7 +13,14 @@ namespace StatsReader
             var stats = new IagoStatisticsSet();
             stats.Parse(reader);
 
-            stats.Analyze();
+            var setAnalyzers = new CommonStatSetAnalysis();
+            var setAnalysisMethods = new List<SetAnalyzer>();
+            var statAnalysisMethods = new List<StatAnalyzer>();
+ 
+            setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
+            setAnalysisMethods.Add(setAnalyzers.SummaryStats);
+
+            stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 
             Console.WriteLine("-----------------------");
             Console.WriteLine("Press enter to close...");
