@@ -72,6 +72,16 @@ namespace StatsReader
             Normalize(averages, (value) => value / statCount);
             statSet.AnalysisScratchPad.Averages = averages;
 
+            var avgData = averages.Select(kvp => new Tuple<dynamic, dynamic>(kvp.Key, kvp.Value)).ToList();
+            var avgSeries = new List<SeriesData>() {new SeriesData("Variable", avgData)};
+            var avgGraph = new Graph("Averages", GraphType.Bar, avgSeries);
+
+            var analysisNote = new AnalysisNote("Interval Averages",
+                                                @"# Title- Interval Averages\\n\\nThis is some paragraph text with *bold*",
+                                                avgGraph);
+
+            statSet.AddAnalysisNote(analysisNote);
+
             var stdDeviations = new Dictionary<string, double>();
             // if there is a missing value use the average value for the field as the 'default' value, rather than zero (ie try not to inflate the std deviation.)
             LoopOverStatsAndHeaders(statSet, stdDeviations, (key, accumulatedValue, statValue) => Math.Pow(statValue - averages[key], 2d) + accumulatedValue, (key) => averages[key]);

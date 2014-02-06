@@ -7,7 +7,7 @@ namespace StatsReader
         public string Summary { get; private set; }
         public Graph Graph { get; private set; }
 
-        AnalysisNote(string name, string summary, Graph graph)
+        public AnalysisNote(string name, string summary, Graph graph)
         {
             Name = name;
             Summary = summary;
