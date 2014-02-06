@@ -18,7 +18,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Extensions.Html", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Extensions", "src\MigraDoc.Extensions\MigraDoc.Extensions\MigraDoc.Extensions.csproj", "{1863068F-975C-4F5B-ABA7-FBA344709A48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlueReporter", "NorwegianBlueReporter\NorwegianBlueReporter.csproj", "{BB6F8DAE-1684-410A-B0CA-45D745B4B539}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlueReporter", "src\NorwegianBlueReporter\NorwegianBlueReporter.csproj", "{BB6F8DAE-1684-410A-B0CA-45D745B4B539}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MigraDocExtensions", "MigraDocExtensions", "{3B2193C9-5922-403D-919D-6D9D340EA5B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,5 +71,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EA990C7E-F7EC-4857-9A12-372FFE74B004} = {3B2193C9-5922-403D-919D-6D9D340EA5B5}
+		{1863068F-975C-4F5B-ABA7-FBA344709A48} = {3B2193C9-5922-403D-919D-6D9D340EA5B5}
+		{CA3F8535-EA5E-4362-8922-FFBD86DF498F} = {3B2193C9-5922-403D-919D-6D9D340EA5B5}
 	EndGlobalSection
 EndGlobal

@@ -69,11 +69,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\LaserPrinter\LaserPrinter.csproj">
+    <ProjectReference Include="..\LaserPrinter\LaserPrinter.csproj">
       <Project>{1b6edf1c-1fa0-46af-bcf8-fc225da4e4be}</Project>
       <Name>LaserPrinter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\StatsReader\StatsReader.csproj">
+    <ProjectReference Include="..\StatsReader\StatsReader.csproj">
       <Project>{6b0bb122-19c3-47a2-90f7-fb5d1299e82e}</Project>
       <Name>StatsReader</Name>
     </ProjectReference>
