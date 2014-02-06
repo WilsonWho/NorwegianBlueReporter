@@ -19,7 +19,7 @@ namespace StatsReader
 //            private readonly float _iagoStatAllowedRequestResponseDifference = float.Parse(ConfigurationManager.AppSettings["IagoStatAllowedRequestResponseDifference"], CultureInfo.InvariantCulture.NumberFormat);
 
 
-    class CommonStatSetAnalysis
+    public class CommonStatSetAnalysis
     {
         public void FindAllHeaders(IStatisticsSetAnalysis statSet)
         {
@@ -77,7 +77,11 @@ namespace StatsReader
             var avgGraph = new Graph("Averages", GraphType.Bar, avgSeries);
 
             var analysisNote = new AnalysisNote("Interval Averages",
-                                                @"# Title- Interval Averages\\n\\nThis is some paragraph text with *bold*",
+@"#Title- Interval Averages
+
+This is some paragraph text with **bold**
+
+",
                                                 avgGraph);
 
             statSet.AddAnalysisNote(analysisNote);

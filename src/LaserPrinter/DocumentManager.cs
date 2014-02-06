@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
@@ -7,6 +8,7 @@ using System.Text.RegularExpressions;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Extensions.Html;
 using MigraDoc.Rendering;
+using StatsReader;
 using iTextSharp.text.pdf;
 using MigraDoc.Extensions.Markdown;
 
@@ -24,7 +26,7 @@ namespace LaserPrinter
         }
 
         // TODO: Add set of statistics as another parameter and (?)header info(?)
-        public void CreateGraphSection(GraphType graphType)
+        public void CreateGraphSection(GraphType graphType, List<SeriesData> seriesDataList)
         {
             _document.AddSection();
 
@@ -38,7 +40,7 @@ namespace LaserPrinter
                 case GraphType.ColumnStacked:
                     // Extract required fields from the set of statistics for the column stacked graph and pass it in as a parameter
                     // Pass in required header info as well(?)
-                    _graphManager.DefineColumnStackedGraph(_document);
+                    _graphManager.DefineColumnStackedGraph(_document, seriesDataList);
                     break;
                 default:
                     throw new InvalidEnumArgumentException("Specified graph type is not supported ...");
@@ -97,52 +99,63 @@ namespace LaserPrinter
             const string pattern = @"\d+ \d+ obj";
             var regex = new Regex(pattern);
 
-            var encoding = new UTF8Encoding();
-            string[] result = File.ReadAllLines(pdfFile, Encoding.Default);
+            //var encoding = new UTF8Encoding();
+            //string[] result = File.ReadAllLines(pdfFile, Encoding.Default);
 
-            var fs = new FileStream("SomethingNew", FileMode.Create);
-            var bw = new BinaryWriter(fs, Encoding.UTF8);
+            //File.WriteAllLines("Something New", result, Encoding.Default);
 
-            foreach (string t in result)
-            {
-                var matchFound = regex.IsMatch(t);
+            var fsIn = new FileStream("Experiment Alpha", FileMode.Open);
+            var br = new BinaryReader(fsIn, Encoding.Default);
 
-                //if (matchFound && !dataAdded)
-                //{
-                //    dataAdded = true;
-                //    var builder = new StringBuilder();
-                //    builder.Append("\n");
-                //    builder.Append(embeddedFile.Length);
-                //    builder.Append(string.Format("{0} {1} obj\n<<\n /Length {2}\n", index, version, embeddedFile.Length));
-                //    builder.Append(string.Format(" /Filter {0}\n", decodeType));
+            var bytes = br.ReadBytes((int) fsIn.Length);
 
-                //    if (!string.IsNullOrEmpty(entryType))
-                //    {
-                //        builder.Append(string.Format(" {0}\n", entryType));
-                //    }
+            var fsOut = new FileStream("Something New", FileMode.Create);
+            var bw = new BinaryWriter(fsOut, Encoding.Default);
+            bw.Write(bytes);
 
-                //    builder.Append(">>\nstream\n");
+            //var fs = new FileStream("SomethingNew", FileMode.Create);
+            //var bw = new BinaryWriter(fs, Encoding.Default);
 
-                //    byte[] startBuffer = encoding.GetBytes(builder.ToString());
-                //    bw.Write(startBuffer);
+            //foreach (string t in result)
+            //{
+            //    var matchFound = regex.IsMatch(t);
 
-                //    var gZipCompressed = ConstructRawBinaryData(embeddedFile, decodeType);
-                //    int length = (int) gZipCompressed.BaseStream.Length;
-                //    var attachmentBytes = new byte[length];
-                //    //gZipCompressed.Seek(0, SeekOrigin.Begin);
-                //    //gZipCompressed.CopyTo(fs);
-                //    //gZipCompressed.Write(attachmentBytes, 0, attachmentBytes.Length);
-                    
-                //    const string endObj = "\nendstream\nendobj\n";
-                //    byte[] endBuffer = encoding.GetBytes(endObj);
-                //    bw.Write(endBuffer);
-                //}
+            //if (matchFound && !dataAdded)
+            //{
+            //    dataAdded = true;
+            //    var builder = new StringBuilder();
+            //    builder.Append("\n");
+            //    builder.Append(embeddedFile.Length);
+            //    builder.Append(string.Format("{0} {1} obj\n<<\n /Length {2}\n", index, version, embeddedFile.Length));
+            //    builder.Append(string.Format(" /Filter {0}\n", decodeType));
 
-                byte[] buffer = encoding.GetBytes(t);
-                bw.Write(buffer + "\n");
-            }
+            //    if (!string.IsNullOrEmpty(entryType))
+            //    {
+            //        builder.Append(string.Format(" {0}\n", entryType));
+            //    }
 
-            bw.Close();
+            //    builder.Append(">>\nstream\n");
+
+            //    byte[] startBuffer = encoding.GetBytes(builder.ToString());
+            //    bw.Write(startBuffer);
+
+            //    var gZipCompressed = ConstructRawBinaryData(embeddedFile, decodeType);
+            //    int length = (int) gZipCompressed.BaseStream.Length;
+            //    var attachmentBytes = new byte[length];
+            //    //gZipCompressed.Seek(0, SeekOrigin.Begin);
+            //    //gZipCompressed.CopyTo(fs);
+            //    //gZipCompressed.Write(attachmentBytes, 0, attachmentBytes.Length);
+
+            //    const string endObj = "\nendstream\nendobj\n";
+            //    byte[] endBuffer = encoding.GetBytes(endObj);
+            //    bw.Write(endBuffer);
+            //}
+
+            //    byte[] buffer = encoding.GetBytes(t);
+            //    bw.Write(buffer);
+            //}
+
+            //bw.Close();
         }
 
         private GZipStream ConstructRawBinaryData(FileStream embeddedFile, Decode decodeType)

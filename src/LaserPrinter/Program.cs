@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 
@@ -49,21 +51,21 @@ namespace LaserPrinter
 
             // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-            var documentManager = new DocumentManager(document);
-            documentManager.CreateGraphSection(GraphType.Combo);
-            //documentManager.AddMarkDown(markdown);
-            //documentManager.AddHtml(html);
+            //var documentManager = new DocumentManager(document);
+            //documentManager.CreateGraphSection(GraphType.Combo);
+            ////documentManager.AddMarkDown(markdown);
+            ////documentManager.AddHtml(html);
 
-            const string fileName = "Experiment Alpha";
-            documentManager.SaveAsPdf(fileName);
+            //const string fileName = "Experiment Alpha";
+            //documentManager.SaveAsPdf(fileName);
 
-            const string newFileName = "ExperimentBeta";
-            documentManager.AttachFileToDocument(fileName, newFileName, "TestCSV.csv");
+            //const string newFileName = "ExperimentBeta";
+            //documentManager.AttachFileToDocument(fileName, newFileName, "TestCSV.csv");
 
             //const string embed = "TestCSV.csv";
             //documentManager.EmbedFile(fileName, embed);
 
-            Process.Start(newFileName);
+            //Process.Start(newFileName);
         }
     }
 }

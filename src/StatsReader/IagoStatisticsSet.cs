@@ -10,7 +10,7 @@ using OpenCvSharp;
 
 namespace StatsReader
 {
-    class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
+    public class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
     {
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         private readonly List<IagoStatistics> _iagoStatistics = new List<IagoStatistics>();

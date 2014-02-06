@@ -88,6 +88,10 @@
       <Project>{ea990c7e-f7ec-4857-9a12-372ffe74b004}</Project>
       <Name>MigraDoc.Extensions.Markdown</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StatsReader\StatsReader.csproj">
+      <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
+      <Name>StatsReader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
