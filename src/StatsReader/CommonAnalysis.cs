@@ -36,34 +36,50 @@ namespace StatsReader
             statSet.AnalysisScratchPad.AllNonStatsHeaders = nonStatsHeaders;
         }
 
-        public void SummaryStats(IStatisticsSetAnalysis statSet)
+        private static void LoopOverStatsAndHeaders(IStatisticsSetAnalysis statSet, Dictionary<string, double> values, Func<string, double, double, double> action, Func<string, double> defaultValue)
         {
-            var averages = new Dictionary<string, double>();
-
             foreach (var stat in statSet.Statistics)
             {
                 foreach (string key in statSet.AnalysisScratchPad.AllStatsHeaders)
                 {
-                    if (!averages.ContainsKey(key))
+                    if (!values.ContainsKey(key))
                     {
-                        averages[key] = 0d;
-                    } 
-
+                        values[key] = defaultValue(key);
+                    }
                     if (stat.Stats.ContainsKey(key))
                     {
-                        averages[key] += stat.Stats[key];
+                        values[key] = action(key, values[key], stat.Stats[key]);
                     }
                 }
             }
+            
+        }
 
+        private static void Normalize(Dictionary<string, double> values, Func<double, double> normalizer )
+        {
+            foreach (var key in values.Keys.ToList())
+            {
+                values[key] = normalizer(values[key]);
+            }
+        }
+
+        public void SummaryStats(IStatisticsSetAnalysis statSet)
+        {
             int statCount = statSet.Statistics.Count;
 
-            foreach (var key in averages.Keys.ToList())
-            {
-                averages[key] = averages[key]/statCount;
-            }
-
+            var averages = new Dictionary<string, double>();
+            LoopOverStatsAndHeaders(statSet, averages, (key, accumulatedValue, statValue) => accumulatedValue + statValue, (key) => 0d);
+            Normalize(averages, (value) => value / statCount);
             statSet.AnalysisScratchPad.Averages = averages;
+
+            var stdDeviations = new Dictionary<string, double>();
+            // if there is a missing value use the average value for the field as the 'default' value, rather than zero (ie try not to inflate the std deviation.)
+            LoopOverStatsAndHeaders(statSet, stdDeviations, (key, accumulatedValue, statValue) => Math.Pow(statValue - averages[key], 2d) + accumulatedValue, (key) => averages[key]);
+            Normalize(stdDeviations, (value) => Math.Sqrt(value/statCount));
+            statSet.AnalysisScratchPad.StdDeviations = stdDeviations;
+
+
         }
+
     }
 }
