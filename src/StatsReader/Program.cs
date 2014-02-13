@@ -19,6 +19,7 @@ namespace StatsReader
  
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
             setAnalysisMethods.Add(setAnalyzers.SummaryStats);
+            setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
 
             stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 

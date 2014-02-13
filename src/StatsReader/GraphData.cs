@@ -12,6 +12,8 @@ namespace StatsReader
     public class SeriesData
     {
         public string Name { get; private set; }
+
+        //assumed to be x (time stamp), y (value) data
         public List<Tuple<dynamic, dynamic>> Data { get; private set; } 
         
         public SeriesData(string name, List<Tuple<dynamic,dynamic>> data )

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenCvSharp;
 
 namespace StatsReader
 {
@@ -55,11 +54,11 @@ namespace StatsReader
             
         }
 
-        private static void Normalize(Dictionary<string, double> values, Func<double, double> normalizer )
+        private static void Apply(Dictionary<string, double> values, Func<double, double> applicant )
         {
             foreach (var key in values.Keys.ToList())
             {
-                values[key] = normalizer(values[key]);
+                values[key] = applicant(values[key]);
             }
         }
 
@@ -68,32 +67,98 @@ namespace StatsReader
             int statCount = statSet.Statistics.Count;
 
             var averages = new Dictionary<string, double>();
-            LoopOverStatsAndHeaders(statSet, averages, (key, accumulatedValue, statValue) => accumulatedValue + statValue, (key) => 0d);
-            Normalize(averages, (value) => value / statCount);
+            LoopOverStatsAndHeaders(statSet, averages,
+                                    (key, accumulatedValue, statValue) => accumulatedValue + statValue, (key) => 0d);
+
+            Apply(averages, (value) => value/statCount);
             statSet.AnalysisScratchPad.Averages = averages;
-
-            var avgData = averages.Select(kvp => new Tuple<dynamic, dynamic>(kvp.Key, kvp.Value)).ToList();
-            var avgSeries = new List<SeriesData>() {new SeriesData("Variable", avgData)};
-            var avgGraph = new Graph("Averages", GraphType.Bar, avgSeries);
-
-            var analysisNote = new AnalysisNote("Interval Averages",
-@"#Title- Interval Averages
-
-This is some paragraph text with **bold**
-
-",
-                                                avgGraph);
-
-            statSet.AddAnalysisNote(analysisNote);
 
             var stdDeviations = new Dictionary<string, double>();
             // if there is a missing value use the average value for the field as the 'default' value, rather than zero (ie try not to inflate the std deviation.)
-            LoopOverStatsAndHeaders(statSet, stdDeviations, (key, accumulatedValue, statValue) => Math.Pow(statValue - averages[key], 2d) + accumulatedValue, (key) => averages[key]);
-            Normalize(stdDeviations, (value) => Math.Sqrt(value/statCount));
+            LoopOverStatsAndHeaders(statSet, stdDeviations,
+                                    (key, accumulatedValue, statValue) =>
+                                    Math.Pow(statValue - averages[key], 2d) + accumulatedValue, (key) => averages[key]);
+            Apply(stdDeviations, (value) => Math.Sqrt(value/statCount));
             statSet.AnalysisScratchPad.StdDeviations = stdDeviations;
+
+            var keyStats = new List<string> { @"client\/request_latency_ms", "" };
+
+
+
+
+            //            var avgData = averages.Select(kvp => new Tuple<dynamic, dynamic>(kvp.Key, kvp.Value)).ToList();
+            //            var avgSeries = new List<SeriesData>() { new SeriesData("Variable", avgData) };
+            //            var avgGraph = new Graph("Averages", GraphType.Bar, avgSeries);
+            //
+            //            var analysisNote = new AnalysisNote("Interval Averages",
+            //@"#Title- Interval Averages
+            //
+            //This is some paragraph text with **bold**
+            //
+            //",
+            //                                                avgGraph);
+            //
+            //            statSet.AddAnalysisNote(analysisNote);
+
 
 
         }
 
+        public void ClusterAnalysis(IStatisticsSetAnalysis statSet)
+        {
+            int statCount = statSet.Statistics.Count;
+
+            var keys = new List<string>();
+            foreach (var val in statSet.AnalysisScratchPad.AllStatsHeaders)
+            {
+                keys.Add(val);
+            }
+            keys.Sort();
+
+            int rowIdx = 0;
+            var data = new CvMat(statCount, keys.Count, MatrixType.F32C1);
+            var clusters = Cv.CreateMat(statCount, 1, MatrixType.S32C1);
+
+            foreach (var row in statSet.Statistics)
+            {
+                // putting data initialization for next step here to avoid another loop over all the statistics collected
+                var row2 = row as IStatisticsAnalysis;
+                row2.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
+
+                int colIdx = 0;
+                foreach (var k in keys)
+                {
+                    float temp;
+                    if (row.Stats.ContainsKey(k))
+                    {
+                        temp = (float) row.Stats[k];
+                    }
+                    else
+                    {
+                        temp = 0f;
+                    }
+                    data[rowIdx, colIdx] = temp;
+                    colIdx ++;
+                }
+                rowIdx++;
+            }
+
+            for (int power = 1; power < 3; power++)
+            {
+                int clusterCount = (int) Math.Pow(2d, (float) power);
+                var x = OpenCvSharp.Cv.KMeans2(data, clusterCount, clusters, new CvTermCriteria(10, 1.0));
+
+                rowIdx = 0;
+                foreach (IStatisticsAnalysis stat in statSet.Statistics)
+                {
+                    stat.AnalysisScratchPad.Clusters[clusterCount] = (int) clusters[rowIdx];
+                    rowIdx++;
+                }
+            }
+        }
+
+
     }
+
 }
+
