@@ -3,6 +3,6 @@
     public class AnalysisNote
     {
         public string Description { get; set; }
-
+        public Graph Graph { get; set; }
     }
 }

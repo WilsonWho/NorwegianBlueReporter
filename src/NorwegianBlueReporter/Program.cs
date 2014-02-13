@@ -32,10 +32,7 @@ namespace NorwegianBlueReporter
             var document = new Document();
             var documentManager = new DocumentManager(document);
             documentManager.AddMarkDown(analysisNote.Summary);
-
-            
             documentManager.CreateGraphSection(GraphType.ColumnStacked, analysisNote.Graph.SeriesData);
-
 
             const string fileName = "Experiment Alpha";
             documentManager.SaveAsPdf(fileName);

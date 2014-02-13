@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using MigraDoc.DocumentObjectModel;
@@ -52,13 +53,26 @@ namespace LaserPrinter
             // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
             var documentManager = new DocumentManager(document);
-            documentManager.CreateGraphSection(GraphType.Column, null);
+            //documentManager.CreateGraphSection(GraphType.Column, null);
             //documentManager.CreateGraphSection(GraphType.Bar, null);
             //documentManager.CreateGraphSection(GraphType.ExplodedPie, null);
             //documentManager.AddMarkDown(markdown);
             //documentManager.AddHtml(html);
 
             //documentManager.CreateTableSection();
+            document.AddSection();
+
+            var tuples = new List<Tuple<string, double>>
+                {
+                    new Tuple<string, double>("Julian", 1),
+                    new Tuple<string, double>("Angel", 3),
+                    new Tuple<string, double>("Wilson", 2)
+                };
+
+            var columnGraph = new ColumnGraph("WICKED GRAPH", false, Graph.LegendPositionEnum.Left, false, tuples);
+            document.LastSection.AddParagraph("HELLO PASERUASDF");
+            columnGraph.Draw(document);
+
 
             const string fileName = "Experiment Alpha.pdf";
             documentManager.SaveAsPdf(fileName);

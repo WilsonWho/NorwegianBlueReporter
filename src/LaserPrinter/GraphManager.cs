@@ -85,38 +85,7 @@ namespace LaserPrinter
 
         private void ColumnChartExample(Document document, List<SeriesData> seriesDataList)
         {
-            var chart = new Chart
-            {
-                Left = ShapePosition.Center,
-                Width = Unit.FromCentimeter(16),
-                Height = Unit.FromCentimeter(12),
-                Type = ChartType.Column2D
-            };
-
-            Series series = chart.SeriesCollection.AddSeries();
-            var values = new double[] {10, 12, 13, 14, 15, 16};
-            series.Add(values.ToArray());
-
-            chart.XAxis.TickLabels.Format = "00";
-            chart.XAxis.MajorTickMark = TickMarkType.Outside;
-
-            XSeries xseries = chart.XValues.AddXSeries();
-            xseries.Add("Alpha", "Beta", "Gamma", "Epsilon", "Ro", "Omega");
-
-            chart.YAxis.MajorTickMark = TickMarkType.Outside;
-            chart.YAxis.HasMajorGridlines = true;
-
-            chart.PlotArea.LineFormat.Color = Colors.DarkGray;
-            chart.PlotArea.LineFormat.Width = 1;
-            chart.PlotArea.LineFormat.Visible = true;
-
-            //chart.RightArea.AddLegend();
-
-            chart.DataLabel.Type = DataLabelType.Value;
-            chart.DataLabel.Position = DataLabelPosition.Center;
-            chart.HeaderArea.AddParagraph("AAKSDFKASDJFAKSDFJ");
-
-            document.LastSection.Add(chart);
+            
         }
 
         private void ColumnStackedChartExample(Document document, List<SeriesData> seriesDataList)
