@@ -13,8 +13,12 @@ namespace StatsReader
 
     public interface IStatisticsSetValues
     {
+        //TODO: refactor to return iterators
+
         ReadOnlyCollection<IStatisticsValues> Statistics { get; }
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
+        // return set of values, with any missing values geting the specified default value.
+        ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders=true, string defValue = "missing");
     }
 
     public interface IStatisticsSetAnalysis : IStatisticsSetValues

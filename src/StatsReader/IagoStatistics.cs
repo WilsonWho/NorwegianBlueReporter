@@ -17,6 +17,8 @@ namespace StatsReader
         // INF [20140129-16:09:01.218] stats: {...}
         private static readonly Regex LineMatcher = new Regex(@"^INF \[(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})-(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2})\.(?<millis>\d{3})\] stats: \{(?<stats>.*)\}$", RegexOptions.Compiled);
         private static readonly Regex DataMatcher = new Regex(@"(?<key>.+?):(?<value>.+?)[,$]", RegexOptions.Compiled);
+        private static readonly Regex quotteRemover = new Regex("([\"'])(?<key>.+?)\\1", RegexOptions.Compiled);
+
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
 
         private readonly Dictionary<String, double> _stats = new Dictionary<string, double>();
@@ -70,6 +72,9 @@ namespace StatsReader
             foreach (Match kvpmatch in DataMatcher.Matches(data))
             {
                 String key = kvpmatch.Groups["key"].Value;
+                var temp = quotteRemover.Match(key);
+                key = temp.Groups["key"].Value;
+
                 String value = kvpmatch.Groups["value"].Value;
 
                 if (!_stats.ContainsKey(key))

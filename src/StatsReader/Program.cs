@@ -14,12 +14,16 @@ namespace StatsReader
             stats.Parse(reader);
 
             var setAnalyzers = new CommonStatSetAnalysis();
+            var statAnalyzers = new CommonStatAnalysis();
+
             var setAnalysisMethods = new List<SetAnalyzer>();
             var statAnalysisMethods = new List<StatAnalyzer>();
  
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
             setAnalysisMethods.Add(setAnalyzers.SummaryStats);
             setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
+
+            statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
 
             stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 

@@ -12,8 +12,8 @@ namespace StatsReader
     public interface IStatisticsValues
     {
         DateTime TimeStamp { get; }
-        ReadOnlyDictionary<String,Double> Stats {get;}
-        ReadOnlyDictionary<String, String> NonStats { get; }
+        ReadOnlyDictionary<string,double> Stats {get;}
+        ReadOnlyDictionary<string, string> NonStats { get; }
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; } 
     }
 

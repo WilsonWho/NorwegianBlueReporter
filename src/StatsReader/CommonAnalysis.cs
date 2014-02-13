@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using OpenCvSharp;
 
 namespace StatsReader
@@ -156,9 +157,56 @@ namespace StatsReader
                 }
             }
         }
-
-
     }
 
+    public class CommonStatAnalysis
+    {
+        public void SummaryStatComparison(IStatisticsSetAnalysis statSet, IStatisticsAnalysis stat)
+        {
+            var stdDevs = new StringBuilder();
+            var missingFields = new StringBuilder();
+
+            foreach (string item in statSet.AnalysisScratchPad.AllStatsHeaders)
+            {
+                if (stat.Stats.ContainsKey(item))
+                {
+                    var numberOfSigmaFromMean = Math.Abs(stat.Stats[item] - statSet.AnalysisScratchPad.Averages[item]) / statSet.AnalysisScratchPad.StdDeviations[item];
+                    if (numberOfSigmaFromMean > 1)
+                    {
+                        if (stdDevs.Length > 0)
+                        {
+                            stdDevs.Append(", ");
+                        }
+                        stdDevs.AppendFormat("{0} [{1}]", item, Math.Round(numberOfSigmaFromMean, 2));
+                    }
+                }
+                else
+                {
+                    if (missingFields.Length > 0)
+                    {
+                        missingFields.Append(", ");
+                    }
+                    missingFields.AppendFormat("{0}", item);
+                }
+            }
+            
+            if (stdDevs.Length > 0)
+            {
+                stdDevs.Insert(0, "*Fields more than 1 std dev from mean*: ");
+                stdDevs.Append(".");
+                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString(), null);
+                stat.AddAnalysisNote(analysisNote);
+            }
+
+            if (missingFields.Length > 0)
+            {
+                missingFields.Insert(0, "*Missing fields*: ");
+                stdDevs.Append(".");
+                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString(), null);
+                stat.AddAnalysisNote(analysisNote);
+            }
+
+        }
+    }
 }
 

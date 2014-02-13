@@ -28,6 +28,11 @@ namespace StatsReader
             get { return _roAnalysisNote ?? ( _roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
         }
 
+        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing")
+        {
+            throw new NotImplementedException();
+        }
+
         public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
 
         public void Parse(TextReader input)
