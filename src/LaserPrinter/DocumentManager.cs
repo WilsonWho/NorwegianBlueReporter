@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using MigraDoc.DocumentObjectModel;
@@ -11,6 +12,7 @@ using MigraDoc.Rendering;
 using StatsReader;
 using iTextSharp.text.pdf;
 using MigraDoc.Extensions.Markdown;
+using GraphType = LaserPrinter.GraphType;
 
 namespace LaserPrinter
 {
@@ -18,33 +20,54 @@ namespace LaserPrinter
     {
         private readonly Document _document;
         private readonly GraphManager _graphManager;
+        private readonly TableManager _tableManager;
 
         public DocumentManager(Document document)
         {
             _document = document;
             _graphManager = new GraphManager();
+            _tableManager = new TableManager();
         }
 
         // TODO: Add set of statistics as another parameter and (?)header info(?)
         public void CreateGraphSection(GraphType graphType, List<SeriesData> seriesDataList)
         {
+
             _document.AddSection();
+
+            // Add description text
+            // Check for if graph exists
 
             switch (graphType)
             {
                 case GraphType.Combo:
                     // Extract required fields from the set of statistics for the line combo graph and pass it in as a parameter
                     // Pass in required header info as well(?)
-                    _graphManager.DefineComboGraph(_document);
+                    _graphManager.DefineComboGraph(_document, seriesDataList);
+                    break;
+                case GraphType.Column:
+                    _graphManager.DefineColumnGraph(_document, seriesDataList);
                     break;
                 case GraphType.ColumnStacked:
                     // Extract required fields from the set of statistics for the column stacked graph and pass it in as a parameter
                     // Pass in required header info as well(?)
                     _graphManager.DefineColumnStackedGraph(_document, seriesDataList);
                     break;
+                case GraphType.Bar:
+                    _graphManager.DefineBarGraph(_document, seriesDataList);
+                    break;
+                case GraphType.ExplodedPie:
+                    _graphManager.DefineExplodedPieGraph(_document, seriesDataList);
+                    break;
                 default:
                     throw new InvalidEnumArgumentException("Specified graph type is not supported ...");
             }
+        }
+
+        public void CreateTableSection()
+        {
+            _document.AddSection();
+            _tableManager.DefineTable(_document);
         }
 
         public void SaveAsPdf(string fileName)
@@ -89,29 +112,85 @@ namespace LaserPrinter
 
         public void EmbedFile(string pdfFile, string embeddedFile)
         {
-            var embeddedFileStream = new FileStream(embeddedFile, FileMode.Open, FileAccess.ReadWrite);
-            ImplantData(pdfFile, 52, 0, "/Type /EmbeddedFile", embeddedFileStream, Decode.Flate);
+            ImplantData(pdfFile, embeddedFile, 52, 0, "/Type /EmbeddedFile", Decode.Flate);
         }
 
-        private void ImplantData(string pdfFile, int index, int version, string entryType, FileStream embeddedFile, Decode decodeType)
+        private void ImplantData(string pdfFile, string embeddedFile, int index, int version, string entryType, Decode decodeType)
         {
             bool dataAdded = false;
-            const string pattern = @"\d+ \d+ obj";
-            var regex = new Regex(pattern);
+            const string xrefPattern = @"\d{10} \d{5} [nf]";
 
-            //var encoding = new UTF8Encoding();
-            //string[] result = File.ReadAllLines(pdfFile, Encoding.Default);
+            var pdf = File.ReadAllText(pdfFile, Encoding.Default);
+            var matches = Regex.Matches(pdf, xrefPattern);
 
-            //File.WriteAllLines("Something New", result, Encoding.Default);
+            var offsets = new List<int>();
+            foreach (Match match in matches)
+            {
+                var byteOffset = match.Value.Substring(0, 10);
+                offsets.Add(Convert.ToInt32(byteOffset));
+            }
 
-            var fsIn = new FileStream("Experiment Alpha", FileMode.Open);
+            var maxOffset = offsets.Max(x => x);
+
+            var gibberish = new FileStream("gibberish.pdf", FileMode.Open);
+            var asdf = new BinaryReader(gibberish, Encoding.Default);
+            var size = asdf.ReadBytes((int) gibberish.Length);
+
+            //................................................................................................................
+
+            var fsIn = new FileStream("Experiment Alpha.pdf", FileMode.Open);
             var br = new BinaryReader(fsIn, Encoding.Default);
 
-            var bytes = br.ReadBytes((int) fsIn.Length);
+            var bytes = new byte[fsIn.Length];
+            br.Read(bytes, 0, (int) fsIn.Length - 6);
 
-            var fsOut = new FileStream("Something New", FileMode.Create);
+            var eof = new byte[6];
+            fsIn.Seek(fsIn.Length - 6, SeekOrigin.Begin);
+            br.Read(eof, 0, 6);
+
+            var fsOut = new FileStream("Experiment Nu.pdf", FileMode.Create);
             var bw = new BinaryWriter(fsOut, Encoding.Default);
+
+            //................................................................................................................
+
+            var encoding = new UTF8Encoding();
+            var builder = new StringBuilder();
+            builder.Append("\n");
+            builder.Append(embeddedFile.Length);
+            builder.Append(string.Format("{0} {1} obj\n<<\n /Length {2}\n", index, version, embeddedFile.Length));
+            builder.Append(string.Format(" /Filter {0}\n", decodeType));
+
+            if (!string.IsNullOrEmpty(entryType))
+            {
+                builder.Append(string.Format(" {0}\n", entryType));
+            }
+
+            builder.Append(">>\nstream\n");
+
+            byte[] startBuffer = encoding.GetBytes(builder.ToString());
+            var embedStartBuffer = Encoding.Convert(Encoding.UTF8, Encoding.Default, startBuffer);
+
+            //................................................................................................................
+
+            var csvIn = new FileStream(embeddedFile, FileMode.Open);
+            var csvReader = new BinaryReader(csvIn, Encoding.Default);
+            var csvBytes = csvReader.ReadBytes((int)csvIn.Length);
+
+            //................................................................................................................
+
+            const string endObj = "\nendstream\nendobj\n";
+            byte[] endBuffer = encoding.GetBytes(endObj);
+            var embedEndBuffer = Encoding.Convert(Encoding.UTF8, Encoding.Default, endBuffer);
+
+            //................................................................................................................
+
             bw.Write(bytes);
+            bw.Write(embedStartBuffer);
+            bw.Write(csvBytes);
+            bw.Write(embedEndBuffer);
+            bw.Write(eof);
+
+
 
             //var fs = new FileStream("SomethingNew", FileMode.Create);
             //var bw = new BinaryWriter(fs, Encoding.Default);
@@ -120,36 +199,36 @@ namespace LaserPrinter
             //{
             //    var matchFound = regex.IsMatch(t);
 
-            //if (matchFound && !dataAdded)
-            //{
-            //    dataAdded = true;
-            //    var builder = new StringBuilder();
-            //    builder.Append("\n");
-            //    builder.Append(embeddedFile.Length);
-            //    builder.Append(string.Format("{0} {1} obj\n<<\n /Length {2}\n", index, version, embeddedFile.Length));
-            //    builder.Append(string.Format(" /Filter {0}\n", decodeType));
-
-            //    if (!string.IsNullOrEmpty(entryType))
+            //    if (matchFound && !dataAdded)
             //    {
-            //        builder.Append(string.Format(" {0}\n", entryType));
+            //        dataAdded = true;
+            //        var builder = new StringBuilder();
+            //        builder.Append("\n");
+            //        builder.Append(embeddedFile.Length);
+            //        builder.Append(string.Format("{0} {1} obj\n<<\n /Length {2}\n", index, version, embeddedFile.Length));
+            //        builder.Append(string.Format(" /Filter {0}\n", decodeType));
+
+            //        if (!string.IsNullOrEmpty(entryType))
+            //        {
+            //            builder.Append(string.Format(" {0}\n", entryType));
+            //        }
+
+            //        builder.Append(">>\nstream\n");
+
+            //        byte[] startBuffer = encoding.GetBytes(builder.ToString());
+            //        bw.Write(startBuffer);
+
+            //        var gZipCompressed = ConstructRawBinaryData(embeddedFile, decodeType);
+            //        int length = (int)gZipCompressed.BaseStream.Length;
+            //        var attachmentBytes = new byte[length];
+            //        //gZipCompressed.Seek(0, SeekOrigin.Begin);
+            //        //gZipCompressed.CopyTo(fs);
+            //        //gZipCompressed.Write(attachmentBytes, 0, attachmentBytes.Length);
+
+            //        const string endObj = "\nendstream\nendobj\n";
+            //        byte[] endBuffer = encoding.GetBytes(endObj);
+            //        bw.Write(endBuffer);
             //    }
-
-            //    builder.Append(">>\nstream\n");
-
-            //    byte[] startBuffer = encoding.GetBytes(builder.ToString());
-            //    bw.Write(startBuffer);
-
-            //    var gZipCompressed = ConstructRawBinaryData(embeddedFile, decodeType);
-            //    int length = (int) gZipCompressed.BaseStream.Length;
-            //    var attachmentBytes = new byte[length];
-            //    //gZipCompressed.Seek(0, SeekOrigin.Begin);
-            //    //gZipCompressed.CopyTo(fs);
-            //    //gZipCompressed.Write(attachmentBytes, 0, attachmentBytes.Length);
-
-            //    const string endObj = "\nendstream\nendobj\n";
-            //    byte[] endBuffer = encoding.GetBytes(endObj);
-            //    bw.Write(endBuffer);
-            //}
 
             //    byte[] buffer = encoding.GetBytes(t);
             //    bw.Write(buffer);

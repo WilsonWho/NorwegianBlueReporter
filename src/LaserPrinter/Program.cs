@@ -51,21 +51,25 @@ namespace LaserPrinter
 
             // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-            //var documentManager = new DocumentManager(document);
-            //documentManager.CreateGraphSection(GraphType.Combo);
-            ////documentManager.AddMarkDown(markdown);
-            ////documentManager.AddHtml(html);
+            var documentManager = new DocumentManager(document);
+            documentManager.CreateGraphSection(GraphType.Column, null);
+            //documentManager.CreateGraphSection(GraphType.Bar, null);
+            //documentManager.CreateGraphSection(GraphType.ExplodedPie, null);
+            //documentManager.AddMarkDown(markdown);
+            //documentManager.AddHtml(html);
 
-            //const string fileName = "Experiment Alpha";
-            //documentManager.SaveAsPdf(fileName);
+            //documentManager.CreateTableSection();
 
-            //const string newFileName = "ExperimentBeta";
+            const string fileName = "Experiment Alpha.pdf";
+            documentManager.SaveAsPdf(fileName);
+
+            //const string newFileName = "Experiment Beta.pdf";
             //documentManager.AttachFileToDocument(fileName, newFileName, "TestCSV.csv");
 
             //const string embed = "TestCSV.csv";
             //documentManager.EmbedFile(fileName, embed);
 
-            //Process.Start(newFileName);
+            Process.Start(fileName);
         }
     }
 }

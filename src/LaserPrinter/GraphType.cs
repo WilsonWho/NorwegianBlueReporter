@@ -2,7 +2,11 @@
 {
     public enum GraphType
     {
+        None,
         Combo,
-        ColumnStacked
+        Column,
+        ColumnStacked,
+        Bar,
+        ExplodedPie
     }
 }

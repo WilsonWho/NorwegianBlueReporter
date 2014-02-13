@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
@@ -11,7 +10,7 @@ namespace LaserPrinter
     public class GraphManager : IGraphManager
     {
         // TODO: Needs to take in set of data to graph
-        public void DefineComboGraph(Document document)
+        public void DefineComboGraph(Document document, List<SeriesData> seriesDataList)
         {
             // Example header details
             Paragraph paragraph = document.LastSection.AddParagraph("Chart Overview", "Heading1");
@@ -22,11 +21,26 @@ namespace LaserPrinter
             ComboGraphExample(document);
         }
 
+        public void DefineColumnGraph(Document document, List<SeriesData> seriesDataList)
+        {
+            ColumnChartExample(document, seriesDataList);
+        }
+
         public void DefineColumnStackedGraph(Document document, List<SeriesData> seriesDataList)
         {
             // TODO: Add header details
 
             ColumnStackedChartExample(document, seriesDataList);
+        }
+
+        public void DefineBarGraph(Document document, List<SeriesData> seriesDataList)
+        {
+            BarChartExample(document, seriesDataList);
+        }
+
+        public void DefineExplodedPieGraph(Document document, List<SeriesData> seriesDataList)
+        {
+            ExplodedPieChartExample(document, seriesDataList);
         }
 
         private void ComboGraphExample(Document document)
@@ -69,6 +83,42 @@ namespace LaserPrinter
             document.LastSection.Add(chart);
         }
 
+        private void ColumnChartExample(Document document, List<SeriesData> seriesDataList)
+        {
+            var chart = new Chart
+            {
+                Left = ShapePosition.Center,
+                Width = Unit.FromCentimeter(16),
+                Height = Unit.FromCentimeter(12),
+                Type = ChartType.Column2D
+            };
+
+            Series series = chart.SeriesCollection.AddSeries();
+            var values = new double[] {10, 12, 13, 14, 15, 16};
+            series.Add(values.ToArray());
+
+            chart.XAxis.TickLabels.Format = "00";
+            chart.XAxis.MajorTickMark = TickMarkType.Outside;
+
+            XSeries xseries = chart.XValues.AddXSeries();
+            xseries.Add("Alpha", "Beta", "Gamma", "Epsilon", "Ro", "Omega");
+
+            chart.YAxis.MajorTickMark = TickMarkType.Outside;
+            chart.YAxis.HasMajorGridlines = true;
+
+            chart.PlotArea.LineFormat.Color = Colors.DarkGray;
+            chart.PlotArea.LineFormat.Width = 1;
+            chart.PlotArea.LineFormat.Visible = true;
+
+            //chart.RightArea.AddLegend();
+
+            chart.DataLabel.Type = DataLabelType.Value;
+            chart.DataLabel.Position = DataLabelPosition.Center;
+            chart.HeaderArea.AddParagraph("AAKSDFKASDJFAKSDFJ");
+
+            document.LastSection.Add(chart);
+        }
+
         private void ColumnStackedChartExample(Document document, List<SeriesData> seriesDataList)
         {
             var chart = new Chart
@@ -90,20 +140,6 @@ namespace LaserPrinter
                 series.Add(values.ToArray());
             }
 
-            //series.Add(new double[] {1, 5, -3, 20, 11});
-
-            //series = chart.SeriesCollection.AddSeries();
-            //series.Name = "Series 2";
-            //series.Add(new double[] {22, 4, 12, 8, 12});
-
-            //series = chart.SeriesCollection.AddSeries();
-            //series.Name = "Series 3";
-            //series.Add(new double[] {12, 14, 2, 18, 1});
-
-            //series = chart.SeriesCollection.AddSeries();
-            //series.Name = "Series 4";
-            //series.Add(new double[] {17, 13, 10, 9, 15});
-
             chart.XAxis.TickLabels.Format = "00";
             chart.XAxis.MajorTickMark = TickMarkType.Outside;
             chart.XAxis.Title.Caption = "X-Axis";
@@ -123,19 +159,19 @@ namespace LaserPrinter
             document.LastSection.Add(chart);
         }
 
-        private void BarChartExample(Document document)
+        private void BarChartExample(Document document, List<SeriesData> seriesDataList)
         {
             var chart = new Chart
                 {
                     Left = ShapePosition.Center,
                     Width = Unit.FromCentimeter(16),
                     Height = Unit.FromCentimeter(12),
-                    Type = ChartType.ColumnStacked2D
+                    Type = ChartType.Bar2D
                 };
 
             Series series = chart.SeriesCollection.AddSeries();
             series.Name = "Series 1";
-            series.Add(new double[] { 1, 5, -3, 20, 11 });
+            series.Add(new double[] { 1, 5, 3, 20, 11 });
 
             series = chart.SeriesCollection.AddSeries();
             series.Name = "Series 2";
@@ -144,10 +180,6 @@ namespace LaserPrinter
             series = chart.SeriesCollection.AddSeries();
             series.Name = "Series 3";
             series.Add(new double[] { 12, 14, 2, 18, 1 });
-
-            series = chart.SeriesCollection.AddSeries();
-            series.Name = "Series 4";
-            series.Add(new double[] { 17, 13, 10, 9, 15 });
 
             chart.XAxis.MajorTickMark = TickMarkType.Outside;
             chart.XAxis.Title.Caption = "X-Axis";
@@ -263,7 +295,7 @@ namespace LaserPrinter
             document.LastSection.Add(chart);
         }
 
-        private void ExplodedPieChartExample(Document document)
+        private void ExplodedPieChartExample(Document document, List<SeriesData> seriesDataList)
         {
             var chart = new Chart
             {

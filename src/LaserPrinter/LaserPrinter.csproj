@@ -67,13 +67,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Decode.cs" />
+    <Compile Include="AnalysisNote.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="GraphManager.cs" />
     <Compile Include="DocumentManager.cs" />
     <Compile Include="GraphType.cs" />
     <Compile Include="IDocumentManager.cs" />
     <Compile Include="IGraphManager.cs" />
+    <Compile Include="ITableManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
