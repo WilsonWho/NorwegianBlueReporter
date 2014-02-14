@@ -3,7 +3,7 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 
-namespace LaserPrinter
+namespace LaserPrinter.Graphs
 {
     public abstract class Graph
     {

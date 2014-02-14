@@ -1,6 +1,6 @@
 ﻿using MigraDoc.DocumentObjectModel;
 
-namespace LaserPrinter
+namespace LaserPrinter.Obsolete
 {
     public interface ITableManager
     {

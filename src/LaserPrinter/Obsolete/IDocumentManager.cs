@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using StatsReader;
-using GraphType = LaserPrinter.GraphType;
 
-namespace LaserPrinter
+namespace LaserPrinter.Obsolete
 {
     public interface IDocumentManager
     {

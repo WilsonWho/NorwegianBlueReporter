@@ -2,7 +2,7 @@
 using MigraDoc.DocumentObjectModel;
 using StatsReader;
 
-namespace LaserPrinter
+namespace LaserPrinter.Obsolete
 {
     public interface IGraphManager
     {

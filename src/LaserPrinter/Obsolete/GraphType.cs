@@ -1,4 +1,4 @@
-﻿namespace LaserPrinter
+﻿namespace LaserPrinter.Obsolete
 {
     public enum GraphType
     {

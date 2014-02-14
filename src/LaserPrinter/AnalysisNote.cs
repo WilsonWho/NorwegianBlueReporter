@@ -1,4 +1,6 @@
-﻿namespace LaserPrinter
+﻿using LaserPrinter.Graphs;
+
+namespace LaserPrinter
 {
     public class AnalysisNote
     {

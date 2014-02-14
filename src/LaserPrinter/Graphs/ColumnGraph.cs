@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 
-namespace LaserPrinter
+namespace LaserPrinter.Graphs
 {
     public class ColumnGraph : Graph
     {
-        private List<Tuple<string, double>>  _data;
+        private readonly List<Tuple<string, double>> _data;
 
         public ColumnGraph(string name, bool hasLegend, LegendPositionEnum legendPosition, bool hasDataLabel, List<Tuple<string, double>> data)
             : base(name, hasLegend, legendPosition, hasDataLabel)

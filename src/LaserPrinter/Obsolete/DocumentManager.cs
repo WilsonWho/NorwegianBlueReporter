@@ -12,9 +12,8 @@ using MigraDoc.Rendering;
 using StatsReader;
 using iTextSharp.text.pdf;
 using MigraDoc.Extensions.Markdown;
-using GraphType = LaserPrinter.GraphType;
 
-namespace LaserPrinter
+namespace LaserPrinter.Obsolete
 {
     public class DocumentManager : IDocumentManager
     {

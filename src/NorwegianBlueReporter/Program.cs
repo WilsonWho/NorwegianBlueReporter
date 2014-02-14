@@ -2,9 +2,12 @@
 using System.Diagnostics;
 using System.IO;
 using LaserPrinter;
+using LaserPrinter.Graphs;
+using LaserPrinter.Obsolete;
 using MigraDoc.DocumentObjectModel;
 using StatsReader;
-using GraphType = LaserPrinter.GraphType;
+using Graph = LaserPrinter.Graphs.Graph;
+using GraphType = LaserPrinter.Obsolete.GraphType;
 
 namespace NorwegianBlueReporter
 {
@@ -31,8 +34,11 @@ namespace NorwegianBlueReporter
 
             var document = new Document();
             var documentManager = new DocumentManager(document);
-            documentManager.AddMarkDown(analysisNote.Summary);
-            documentManager.CreateGraphSection(GraphType.ColumnStacked, analysisNote.Graph.SeriesData);
+            //documentManager.AddMarkDown(analysisNote.Summary);
+            //documentManager.CreateGraphSection(GraphType.ColumnStacked, analysisNote.Graph.SeriesData);
+
+            var graph = new ColumnStackedGraph("Column Stacked Graph", false, Graph.LegendPositionEnum.Left, false, analysisNote.Graph.SeriesData);
+            graph.Draw(document);
 
             const string fileName = "Experiment Alpha";
             documentManager.SaveAsPdf(fileName);

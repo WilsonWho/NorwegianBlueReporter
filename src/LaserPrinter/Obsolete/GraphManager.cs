@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using StatsReader;
 
-namespace LaserPrinter
+namespace LaserPrinter.Obsolete
 {
     public class GraphManager : IGraphManager
     {
@@ -90,42 +89,7 @@ namespace LaserPrinter
 
         private void ColumnStackedChartExample(Document document, List<SeriesData> seriesDataList)
         {
-            var chart = new Chart
-                {
-                    Left = ShapePosition.Center,
-                    Width = Unit.FromCentimeter(16),
-                    Height = Unit.FromCentimeter(12),
-                    Type = ChartType.ColumnStacked2D
-                };
-
             
-
-            foreach (var seriesData in seriesDataList)
-            {
-                Series series = chart.SeriesCollection.AddSeries();
-                series.Name = seriesData.Name;
-                var values = seriesData.Data.Select(data => data.Item2).Cast<double>().ToList();
-
-                series.Add(values.ToArray());
-            }
-
-            chart.XAxis.TickLabels.Format = "00";
-            chart.XAxis.MajorTickMark = TickMarkType.Outside;
-            chart.XAxis.Title.Caption = "X-Axis";
-
-            chart.YAxis.MajorTickMark = TickMarkType.Outside;
-            chart.YAxis.HasMajorGridlines = true;
-
-            chart.PlotArea.LineFormat.Color = Colors.DarkGray;
-            chart.PlotArea.LineFormat.Width = 1;
-            chart.PlotArea.LineFormat.Visible = true;
-
-            chart.RightArea.AddLegend();
-
-            chart.DataLabel.Type = DataLabelType.Value;
-            chart.DataLabel.Position = DataLabelPosition.Center;
-
-            document.LastSection.Add(chart);
         }
 
         private void BarChartExample(Document document, List<SeriesData> seriesDataList)
