@@ -70,8 +70,10 @@
     <Compile Include="Decode.cs" />
     <Compile Include="AnalysisNote.cs" />
     <Compile Include="Graphs\ColumnStackedGraph.cs" />
+    <Compile Include="Graphs\ExplodedPieGraph.cs" />
     <Compile Include="Graphs\LineStackedGraph.cs" />
     <Compile Include="Graphs\Graph.cs" />
+    <Compile Include="Graphs\PieGraph.cs" />
     <Compile Include="Obsolete\GraphManager.cs" />
     <Compile Include="Obsolete\DocumentManager.cs" />
     <Compile Include="Graphs\LineGraph.cs" />

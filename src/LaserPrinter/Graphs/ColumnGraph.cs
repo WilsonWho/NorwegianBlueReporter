@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
+using StatsReader;
 
 namespace LaserPrinter.Graphs
 {
     public class ColumnGraph : Graph
     {
-        private readonly List<Tuple<string, double>> _data;
-
-        public ColumnGraph(string name, bool hasLegend, LegendPositionEnum legendPosition, bool hasDataLabel, List<Tuple<string, double>> data)
-            : base(name, hasLegend, legendPosition, hasDataLabel)
+        public ColumnGraph(GraphData graphData)
+            : base(graphData)
         {
-            _data = data;
+            if (graphData.SeriesData.Count != 1)
+            {
+                throw new ArgumentException("Graph data series count is not equal to 1 ...");
+            }
         }
 
         public override void Draw(Document document)
@@ -20,13 +21,7 @@ namespace LaserPrinter.Graphs
             var chart = SetUp(ChartType.Column2D, document);
 
             Series series = chart.SeriesCollection.AddSeries();
-            XSeries xseries = chart.XValues.AddXSeries();
-
-            foreach (var tuple in _data)
-            {
-                xseries.Add(tuple.Item1);
-                series.Add(tuple.Item2);
-            }
+            series.Add(GraphData.SeriesData[0].Data.ToArray());
 
             chart.XAxis.TickLabels.Format = "00";
             chart.XAxis.MajorTickMark = TickMarkType.Outside;
@@ -37,7 +32,7 @@ namespace LaserPrinter.Graphs
             chart.PlotArea.LineFormat.Color = Colors.DarkGray;
             chart.PlotArea.LineFormat.Width = 1;
             chart.PlotArea.LineFormat.Visible = true;
-            chart.HeaderArea.AddParagraph(Name);
+            chart.HeaderArea.AddParagraph(GraphData.Title);
             
             SetGlobalChartOptions(chart);
 

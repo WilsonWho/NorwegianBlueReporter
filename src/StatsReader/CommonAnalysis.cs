@@ -90,7 +90,7 @@ namespace StatsReader
 
             //            var avgData = averages.Select(kvp => new Tuple<dynamic, dynamic>(kvp.Key, kvp.Value)).ToList();
             //            var avgSeries = new List<SeriesData>() { new SeriesData("Variable", avgData) };
-            //            var avgGraph = new Graph("Averages", GraphType.Bar, avgSeries);
+            //            var avgGraph = new GraphData("Averages", GraphType.Bar, avgSeries);
             //
             //            var analysisNote = new AnalysisNote("Interval Averages",
             //@"#Title- Interval Averages

@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using StatsReader;
 
 namespace LaserPrinter.Graphs
 {
-    public class LineGraph : Graph
+    public class PieGraph : Graph
     {
-        public LineGraph(GraphData graphData) : base(graphData)
+        public PieGraph(GraphData graphData) : base(graphData)
         {
             if (graphData.SeriesData.Count != 1)
             {
@@ -18,18 +17,10 @@ namespace LaserPrinter.Graphs
 
         public override void Draw(Document document)
         {
-            var chart = SetUp(ChartType.Line, document);
+            var chart = SetUp(ChartType.Pie2D, document);
 
-            Series series = chart.SeriesCollection.AddSeries();
-            series.Name = GraphData.SeriesData[0].Name;
+            var series = chart.SeriesCollection.AddSeries();
             series.Add(GraphData.SeriesData[0].Data.ToArray());
-
-            chart.XAxis.MajorTickMark = TickMarkType.Outside;
-            chart.XAxis.Title.Caption = "X-Axis";
-
-            chart.YAxis.MajorTickMark = TickMarkType.Outside;
-            chart.YAxis.Title.Caption = "Y-Axis";
-            chart.YAxis.HasMajorGridlines = true;
 
             SetGlobalChartOptions(chart);
 

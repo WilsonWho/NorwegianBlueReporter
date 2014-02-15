@@ -6,6 +6,8 @@ using LaserPrinter.Graphs;
 using LaserPrinter.Obsolete;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
+using StatsReader;
+using Graph = LaserPrinter.Graphs.Graph;
 
 namespace LaserPrinter
 {
@@ -64,42 +66,44 @@ namespace LaserPrinter
             //documentManager.CreateTableSection();
             document.AddSection();
 
-            var tuples = new List<Tuple<string, double>>
-                {
-                    new Tuple<string, double>("Julian", 1),
-                    new Tuple<string, double>("Angel", 3),
-                    new Tuple<string, double>("Wilson", 2)
-                };
+            //var tuples = new List<Tuple<dynamic, dynamic>>
+            //    {
+            //        new Tuple<dynamic, dynamic>("Julian", 1),
+            //        new Tuple<dynamic, dynamic>("Angel", 3),
+            //        new Tuple<dynamic, dynamic>("Wilson", 2)
+            //    };
 
-            var columnGraph = new ColumnGraph("WICKED GRAPH", false, Graph.LegendPositionEnum.Left, false, tuples);
+            //var seriesData = new SeriesData("Test", tuples);
 
-            var lineData = new List<double>
-                {
-                    3.0,
-                    10.2,
-                    5.6,
-                    17.1,
-                    8.4
-                };
+            //var columnGraph = new ColumnGraph("WICKED GRAPH", false, Graph.LegendPositionEnum.Left, false, seriesData);
 
-            var lineGraph = new LineGraph("WICKED LINE GRAPH", false, Graph.LegendPositionEnum.Right, false, lineData);
+            //var lineData = new List<double>
+            //    {
+            //        3.0,
+            //        10.2,
+            //        5.6,
+            //        17.1,
+            //        8.4
+            //    };
 
-            var comboLineData = new List<Tuple<string, List<double>>>
-                {
-                    new Tuple<string, List<double>>("Series 1", new List<double> {1, 2, 3, 4, 5, 6}),
-                    new Tuple<string, List<double>>("Series 2", new List<double> {1, 5, 7, 8, 9, 12}),
-                    new Tuple<string, List<double>>("Series 3", new List<double> {4, 5, 6, 9, 10, 16})
-                };
+            //var lineGraph = new LineGraph("WICKED LINE GRAPH", false, Graph.LegendPositionEnum.Right, false, lineData);
 
-            var lineStackedGraph = new LineStackedGraph("WICKED LINE STACKED GRAPH", false, Graph.LegendPositionEnum.Footer, false, comboLineData);
+            //var comboLineData = new List<Tuple<string, List<double>>>
+            //    {
+            //        new Tuple<string, List<double>>("Series 1", new List<double> {1, 2, 3, 4, 5, 6}),
+            //        new Tuple<string, List<double>>("Series 2", new List<double> {1, 5, 7, 8, 9, 12}),
+            //        new Tuple<string, List<double>>("Series 3", new List<double> {4, 5, 6, 9, 10, 16})
+            //    };
 
-            var tableGraph = new TableGraph("WICKED TABLE GRAPH", false, Graph.LegendPositionEnum.Footer, false);
+            //var lineStackedGraph = new LineStackedGraph("WICKED LINE STACKED GRAPH", false, Graph.LegendPositionEnum.Footer, false, comboLineData);
 
-            document.LastSection.AddParagraph("HELLO PASERUASDF");
-            columnGraph.Draw(document);
-            lineGraph.Draw(document);
-            lineStackedGraph.Draw(document);
-            tableGraph.Draw(document);
+            //var tableGraph = new TableGraph("WICKED TABLE GRAPH", false, Graph.LegendPositionEnum.Footer, false);
+
+            //document.LastSection.AddParagraph("HELLO PASERUASDF");
+            //columnGraph.Draw(document);
+            //lineGraph.Draw(document);
+            //lineStackedGraph.Draw(document);
+            //tableGraph.Draw(document);
 
 
             const string fileName = "Experiment Alpha.pdf";

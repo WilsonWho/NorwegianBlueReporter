@@ -2,29 +2,17 @@
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
+using StatsReader;
 
 namespace LaserPrinter.Graphs
 {
     public abstract class Graph
     {
-        public enum LegendPositionEnum
-        {
-            Left,
-            Right,
-            Footer
-        }
+        protected GraphData GraphData; 
 
-        public string Name { get; private set; }
-        public bool HasLegend { get; private set; }
-        public LegendPositionEnum LegendPosition { get; private set; }
-        public bool HasDataLabel { get; private set; }
-
-        protected Graph(string name, bool hasLegend, LegendPositionEnum legendPosition, bool hasDataLabel)
+        protected Graph(GraphData graphData)
         {
-            Name = name;
-            HasLegend = hasLegend;
-            LegendPosition = legendPosition;
-            HasDataLabel = hasDataLabel;
+            GraphData = graphData;
         }
 
         protected Chart SetUp(ChartType chartType, Document document)
@@ -37,20 +25,23 @@ namespace LaserPrinter.Graphs
                 Type = chartType
             };
 
+            XSeries xseries = chart.XValues.AddXSeries();
+            xseries.Add(GraphData.Labels.ToArray());
+
             return chart;
         }
 
         protected void SetGlobalChartOptions(Chart chart)
         {
-            if (HasDataLabel)
+            if (GraphData.HasDataLabel)
             {
                 chart.DataLabel.Type = DataLabelType.Value;
                 chart.DataLabel.Position = DataLabelPosition.Center;
             }
 
-            if (HasLegend)
+            if (GraphData.HasLegend)
             {
-                switch (LegendPosition)
+                switch (GraphData.LegendPosition)
                 {
                     case LegendPositionEnum.Footer:
                         chart.FooterArea.AddLegend();
@@ -68,5 +59,10 @@ namespace LaserPrinter.Graphs
         }
 
         public abstract void Draw(Document document);
+
+        public static void blah()
+        {
+            
+        }
     }
 }

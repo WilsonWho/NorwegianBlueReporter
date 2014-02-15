@@ -8,25 +8,20 @@ namespace LaserPrinter.Graphs
 {
     public class ColumnStackedGraph : Graph
     {
-        private readonly List<SeriesData> _seriesDataList; 
-
-        public ColumnStackedGraph(string name, bool hasLegend, LegendPositionEnum legendPosition, bool hasDataLabel, List<SeriesData> seriesDataList)
-            : base(name, hasLegend, legendPosition, hasDataLabel)
+        public ColumnStackedGraph(GraphData graphData)
+            : base(graphData)
         {
-            _seriesDataList = seriesDataList;
         }
 
         public override void Draw(Document document)
         {
             var chart = SetUp(ChartType.ColumnStacked2D, document);
 
-            foreach (var seriesData in _seriesDataList)
+            foreach (var seriesData in GraphData.SeriesData)
             {
                 Series series = chart.SeriesCollection.AddSeries();
                 series.Name = seriesData.Name;
-                var values = seriesData.Data.Select(data => data.Item2).Cast<double>().ToList();
-
-                series.Add(values.ToArray());
+                series.Add(seriesData.Data.ToArray());
             }
 
             chart.XAxis.TickLabels.Format = "00";

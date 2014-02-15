@@ -1,10 +1,11 @@
 ﻿using MigraDoc.DocumentObjectModel;
+using StatsReader;
 
 namespace LaserPrinter.Graphs
 {
     public class TableGraph : Graph
     {
-        public TableGraph(string name, bool hasLegend, LegendPositionEnum legendPosition, bool hasDataLabel) : base(name, hasLegend, legendPosition, hasDataLabel)
+        public TableGraph(GraphData graphData) : base(graphData)
         {
         }
 
@@ -20,6 +21,7 @@ namespace LaserPrinter.Graphs
             for (int i = 0; i < 10; i++)
             {
                 var column = table.AddColumn();
+                column.Width = (10d / 24d) * 72;
                 column.Format.Alignment = ParagraphAlignment.Center;
             }
 
@@ -27,10 +29,10 @@ namespace LaserPrinter.Graphs
             {
                 var row = table.AddRow();
                 row.Format.Alignment = ParagraphAlignment.Center;
-                row.Shading.Color = Colors.Honeydew;
+                row.Shading.Color = Colors.MidnightBlue;
             }
 
-            table.Rows[0].Cells[0].Shading.Color = Colors.Lavender;
+            table.Rows[0].Cells[0].Shading.Color = Colors.MintCream;
         }
     }
 }

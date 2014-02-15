@@ -37,8 +37,8 @@ namespace NorwegianBlueReporter
             //documentManager.AddMarkDown(analysisNote.Summary);
             //documentManager.CreateGraphSection(GraphType.ColumnStacked, analysisNote.Graph.SeriesData);
 
-            var graph = new ColumnStackedGraph("Column Stacked Graph", false, Graph.LegendPositionEnum.Left, false, analysisNote.Graph.SeriesData);
-            graph.Draw(document);
+            //var graph = new ColumnStackedGraph("Column Stacked Graph", false, Graph.LegendPositionEnum.Left, false, analysisNote.GraphData.SeriesData);
+            //graph.Draw(document);
 
             const string fileName = "Experiment Alpha";
             documentManager.SaveAsPdf(fileName);
