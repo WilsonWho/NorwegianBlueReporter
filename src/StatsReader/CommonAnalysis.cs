@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using OpenCvSharp;
@@ -124,6 +125,7 @@ namespace StatsReader
             {
                 // putting data initialization for next step here to avoid another loop over all the statistics collected
                 var row2 = row as IStatisticsAnalysis;
+                Debug.Assert(row2 != null, "row2 != null");
                 row2.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
 
                 int colIdx = 0;
