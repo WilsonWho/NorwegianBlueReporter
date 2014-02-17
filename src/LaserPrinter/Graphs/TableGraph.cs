@@ -11,6 +11,11 @@ namespace LaserPrinter.Graphs
 
         public override void Draw(Document document)
         {
+            // figure out dimensions
+            var defaultPageSetup = document.DefaultPageSetup;
+            var columnWidth = defaultPageSetup.PageWidth - defaultPageSetup.RightMargin - defaultPageSetup.LeftMargin
+
+   
             var table = document.LastSection.AddTable();
             table.Style = "Table";
             table.Borders.Color = Colors.IndianRed;
