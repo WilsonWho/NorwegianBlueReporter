@@ -54,6 +54,13 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Markdown, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\FSharp.Markdown.Pdf\bin\FSharp.Markdown.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Markdown.Pdf">
+      <HintPath>..\..\..\FSharp.Markdown.Pdf\bin\FSharp.Markdown.Pdf.dll</HintPath>
+    </Reference>
     <Reference Include="MigraDoc.DocumentObjectModel">
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
     </Reference>

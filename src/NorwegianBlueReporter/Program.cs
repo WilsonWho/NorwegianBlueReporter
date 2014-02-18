@@ -8,6 +8,7 @@ using MigraDoc.DocumentObjectModel;
 using StatsReader;
 using Graph = LaserPrinter.Graphs.Graph;
 using GraphType = LaserPrinter.Obsolete.GraphType;
+using FSharp.Markdown.Pdf;
 
 namespace NorwegianBlueReporter
 {
@@ -38,6 +39,9 @@ namespace NorwegianBlueReporter
             //documentManager.AddMarkDown(analysisNote.Summary);
 
             document.AddSection();
+
+            MarkdownPdf.AddMarkdown(document, document.LastSection, analysisNote.Summary);
+
             var ctg = new ColorTableGraph(analysisNote.GraphData);
             ctg.Draw(document);
 
