@@ -13,7 +13,7 @@ namespace LaserPrinter.Graphs
         {
             // figure out dimensions
             var defaultPageSetup = document.DefaultPageSetup;
-            var columnWidth = defaultPageSetup.PageWidth - defaultPageSetup.RightMargin - defaultPageSetup.LeftMargin
+            var columnWidth = defaultPageSetup.PageWidth - defaultPageSetup.RightMargin - defaultPageSetup.LeftMargin;
 
    
             var table = document.LastSection.AddTable();

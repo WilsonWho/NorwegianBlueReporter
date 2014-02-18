@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using OpenCvSharp;
@@ -108,15 +109,16 @@ namespace StatsReader
 
         public void ClusterAnalysis(IStatisticsSetAnalysis statSet)
         {
-            int statCount = statSet.Statistics.Count;
-
-            var keys = new List<string>();
-            foreach (var val in statSet.AnalysisScratchPad.AllStatsHeaders)
-            {
-                keys.Add(val);
-            }
+            //var keys = new List<string>();
+            List<string> keys = statSet.AnalysisScratchPad.AllStatsHeaders.ToList();
+//            foreach (var val in statSet.AnalysisScratchPad.AllStatsHeaders)
+//            {
+//                keys.Add(val);
+//            }
             keys.Sort();
 
+            var labels = new List<string>();
+            int statCount = statSet.Statistics.Count;
             int rowIdx = 0;
             var data = new CvMat(statCount, keys.Count, MatrixType.F32C1);
             var clusters = Cv.CreateMat(statCount, 1, MatrixType.S32C1);
@@ -124,9 +126,12 @@ namespace StatsReader
             foreach (var row in statSet.Statistics)
             {
                 // putting data initialization for next step here to avoid another loop over all the statistics collected
+                labels.Add(row.TimeStamp.ToString(CultureInfo.InvariantCulture));
+
                 var row2 = row as IStatisticsAnalysis;
                 Debug.Assert(row2 != null, "row2 != null");
                 row2.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
+
 
                 int colIdx = 0;
                 foreach (var k in keys)
@@ -146,18 +151,45 @@ namespace StatsReader
                 rowIdx++;
             }
 
+
+            var series = new List<SeriesData>();
             for (int power = 1; power < 3; power++)
             {
                 int clusterCount = (int) Math.Pow(2d, (float) power);
                 var x = OpenCvSharp.Cv.KMeans2(data, clusterCount, clusters, new CvTermCriteria(10, 1.0));
 
                 rowIdx = 0;
+                var clusterSeriesName = string.Format("k:{0}", clusterCount);
+                var clusterSeriesData = new List<double>();
                 foreach (IStatisticsAnalysis stat in statSet.Statistics)
                 {
-                    stat.AnalysisScratchPad.Clusters[clusterCount] = (int) clusters[rowIdx];
+                    var cluster = clusters[rowIdx];
+                    stat.AnalysisScratchPad.Clusters[clusterCount] = (int) cluster;
+                    clusterSeriesData.Add((double) cluster);
                     rowIdx++;
                 }
+                series.Add(new SeriesData(clusterSeriesName, clusterSeriesData));
             }
+
+            var graph = new GraphData("Clustering",
+                                      labels,
+                                      false,
+                                      LegendPositionEnum.Left,
+                                      false,
+                                      GraphType.ColorTableGraph,
+                                      series);
+
+            var analysisNote = new AnalysisNote("Clustering Analysis",
+@"
+#Clustering Analysis
+
+Run all data through k-means algorithm for given k and group samples to that number of clusters.
+
+*NB* Using all data collected in every sample.
+
+",
+                                                graph);
+            statSet.AddAnalysisNote(analysisNote);
         }
     }
 

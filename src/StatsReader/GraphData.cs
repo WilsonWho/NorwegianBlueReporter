@@ -12,7 +12,8 @@ namespace StatsReader
         Column,
         ColumnStacked,
         Bar,
-        ExplodedPie
+        ExplodedPie,
+        ColorTableGraph
     };
 
     public enum LegendPositionEnum
