@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using StatsReader;

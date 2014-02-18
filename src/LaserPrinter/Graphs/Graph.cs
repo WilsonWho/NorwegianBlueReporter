@@ -59,10 +59,5 @@ namespace LaserPrinter.Graphs
         }
 
         public abstract void Draw(Document document);
-
-        public static void blah()
-        {
-            
-        }
     }
 }

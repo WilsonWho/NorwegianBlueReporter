@@ -15,7 +15,7 @@ namespace NorwegianBlueReporter
     {
         static void Main(string[] args)
         {
-            const string filename = @"C:\dev\NorwegianBlueReporter\src\StatsReader\parrot-server-stats.log";
+            const string filename = @"C:\tmp\parrot-server-stats.log";
             StreamReader reader = File.OpenText(filename);
             var stats = new IagoStatisticsSet();
             stats.Parse(reader);
@@ -26,6 +26,7 @@ namespace NorwegianBlueReporter
 
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
             setAnalysisMethods.Add(setAnalyzers.SummaryStats);
+            setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
 
             stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 
@@ -35,10 +36,10 @@ namespace NorwegianBlueReporter
             var document = new Document();
             var documentManager = new DocumentManager(document);
             //documentManager.AddMarkDown(analysisNote.Summary);
-            //documentManager.CreateGraphSection(GraphType.ColumnStacked, analysisNote.Graph.SeriesData);
 
-            //var graph = new ColumnStackedGraph("Column Stacked Graph", false, Graph.LegendPositionEnum.Left, false, analysisNote.GraphData.SeriesData);
-            //graph.Draw(document);
+            document.AddSection();
+            var ctg = new ColorTableGraph(analysisNote.GraphData);
+            ctg.Draw(document);
 
             const string fileName = "Experiment Alpha";
             documentManager.SaveAsPdf(fileName);

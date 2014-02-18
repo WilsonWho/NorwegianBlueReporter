@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StatsReader
 {
@@ -38,7 +36,6 @@ namespace StatsReader
 
     public class GraphData
     {
-
         public string Title { get; private set; }
         public List<string> Labels { get; private set; }
         public bool HasLegend { get; private set; }
@@ -47,7 +44,7 @@ namespace StatsReader
         public GraphType GraphType { get; private set; }
         public List<SeriesData> SeriesData { get; private set; }
 
-        public GraphData(string title, List<string> Labels, bool hasLegend, LegendPositionEnum legendPosition, bool hasDataLabel, GraphType graphType, List<SeriesData> data)
+        public GraphData(string title, List<string> labels, bool hasLegend, LegendPositionEnum legendPosition, bool hasDataLabel, GraphType graphType, List<SeriesData> data)
         {
             if (data == null || data.Count == 0)
             {
@@ -56,13 +53,14 @@ namespace StatsReader
 
             for (int i = 1; i < data.Count; i++)
             {
-                if (data[i].Data.Count != Labels.Count)
+                if (data[i].Data.Count != labels.Count)
                 {
                     throw new ArgumentException("Label counts are not equal ...");
                 }
             }
 
             Title = title;
+            Labels = labels;
             HasLegend = hasLegend;
             LegendPosition = legendPosition;
             HasDataLabel = hasDataLabel;

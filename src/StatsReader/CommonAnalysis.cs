@@ -109,12 +109,13 @@ namespace StatsReader
 
         public void ClusterAnalysis(IStatisticsSetAnalysis statSet)
         {
-            //var keys = new List<string>();
-            List<string> keys = statSet.AnalysisScratchPad.AllStatsHeaders.ToList();
-//            foreach (var val in statSet.AnalysisScratchPad.AllStatsHeaders)
-//            {
-//                keys.Add(val);
-//            }
+            var keys = new List<string>();
+
+            foreach (var val in statSet.AnalysisScratchPad.AllStatsHeaders)
+            {
+                keys.Add(val);
+            }
+
             keys.Sort();
 
             var labels = new List<string>();
@@ -153,9 +154,14 @@ namespace StatsReader
 
 
             var series = new List<SeriesData>();
-            for (int power = 1; power < 3; power++)
+            for (int power = 1; power < 5; power++)
             {
                 int clusterCount = (int) Math.Pow(2d, (float) power);
+                if (clusterCount > statCount)
+                {
+                    break;
+                }
+
                 var x = OpenCvSharp.Cv.KMeans2(data, clusterCount, clusters, new CvTermCriteria(10, 1.0));
 
                 rowIdx = 0;

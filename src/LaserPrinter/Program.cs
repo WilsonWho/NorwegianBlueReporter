@@ -8,6 +8,7 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using StatsReader;
 using Graph = LaserPrinter.Graphs.Graph;
+using GraphType = StatsReader.GraphType;
 
 namespace LaserPrinter
 {
@@ -97,13 +98,22 @@ namespace LaserPrinter
 
             //var lineStackedGraph = new LineStackedGraph("WICKED LINE STACKED GRAPH", false, Graph.LegendPositionEnum.Footer, false, comboLineData);
 
-            //var tableGraph = new TableGraph("WICKED TABLE GRAPH", false, Graph.LegendPositionEnum.Footer, false);
+
+            var seriesData = new List<SeriesData>
+                {
+                    new SeriesData("AHHH", new List<double> {1, 2, 3})
+                };
+
+
+            var graphData = new GraphData("WICKED COLOR TABLE GRAPH THING", null, false, LegendPositionEnum.Left, false,
+                                          GraphType.None, seriesData);
+            var tableGraph = new ColorTableGraph(graphData);
 
             //document.LastSection.AddParagraph("HELLO PASERUASDF");
             //columnGraph.Draw(document);
             //lineGraph.Draw(document);
             //lineStackedGraph.Draw(document);
-            //tableGraph.Draw(document);
+            tableGraph.Draw(document);
 
 
             const string fileName = "Experiment Alpha.pdf";
