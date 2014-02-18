@@ -86,6 +86,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GraphFactory.cs" />
     <Compile Include="Graphs\ColumnGraph.cs" />
     <Compile Include="Decode.cs" />
     <Compile Include="AnalysisNote.cs" />

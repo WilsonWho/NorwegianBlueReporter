@@ -7,9 +7,12 @@ namespace StatsReader
     {
         None,
         Combo,
+        Line,
+        LineStacked,
         Column,
         ColumnStacked,
         Bar,
+        Pie,
         ExplodedPie,
         ColorTableGraph
     };
