@@ -88,7 +88,6 @@ namespace LaserPrinter
             pdfStamper.Close();
         }
 
-
         //
         //
         // TODO: Code below this is a work in progress...
