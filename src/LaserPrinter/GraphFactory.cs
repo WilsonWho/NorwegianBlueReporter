@@ -6,7 +6,7 @@ namespace LaserPrinter
 {
     public static class GraphFactory
     {
-        public static Graph AssembleGraph(GraphData graphData)
+        public static Graph CreateGraph(GraphData graphData)
         {
             Graph graph;
 
