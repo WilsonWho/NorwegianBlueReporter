@@ -6,14 +6,14 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using LaserPrinter.Obsolete;
 using MigraDoc.DocumentObjectModel;
-using MigraDoc.Extensions.Html;
 using MigraDoc.Rendering;
 using StatsReader;
 using iTextSharp.text.pdf;
-using MigraDoc.Extensions.Markdown;
+using GraphType = LaserPrinter.Obsolete.GraphType;
 
-namespace LaserPrinter.Obsolete
+namespace LaserPrinter
 {
     public class DocumentManager : IDocumentManager
     {
@@ -31,25 +31,17 @@ namespace LaserPrinter.Obsolete
         // TODO: Add set of statistics as another parameter and (?)header info(?)
         public void CreateGraphSection(GraphType graphType, List<SeriesData> seriesDataList)
         {
-
             _document.AddSection();
-
-            // Add description text
-            // Check for if graph exists
 
             switch (graphType)
             {
                 case GraphType.Combo:
-                    // Extract required fields from the set of statistics for the line combo graph and pass it in as a parameter
-                    // Pass in required header info as well(?)
                     _graphManager.DefineComboGraph(_document, seriesDataList);
                     break;
                 case GraphType.Column:
                     _graphManager.DefineColumnGraph(_document, seriesDataList);
                     break;
                 case GraphType.ColumnStacked:
-                    // Extract required fields from the set of statistics for the column stacked graph and pass it in as a parameter
-                    // Pass in required header info as well(?)
                     _graphManager.DefineColumnStackedGraph(_document, seriesDataList);
                     break;
                 case GraphType.Bar:
@@ -96,19 +88,10 @@ namespace LaserPrinter.Obsolete
             pdfStamper.Close();
         }
 
+
+        //
+        //
         // TODO: Code below this is a work in progress...
-        public void AddMarkDown(string markdown)
-        {
-            var section = new Section();
-            _document.Sections.Add(section.AddMarkdown(markdown));
-        }
-
-        public void AddHtml(string html)
-        {
-            var section = new Section();
-            _document.Sections.Add(section.AddHtml(html));
-        }
-
         public void EmbedFile(string pdfFile, string embeddedFile)
         {
             ImplantData(pdfFile, embeddedFile, 52, 0, "/Type /EmbeddedFile", Decode.Flate);

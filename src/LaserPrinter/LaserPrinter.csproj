@@ -95,11 +95,11 @@
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\PieGraph.cs" />
     <Compile Include="Obsolete\GraphManager.cs" />
-    <Compile Include="Obsolete\DocumentManager.cs" />
+    <Compile Include="DocumentManager.cs" />
     <Compile Include="Graphs\LineGraph.cs" />
     <Compile Include="Graphs\ColorTableGraph.cs" />
     <Compile Include="Obsolete\GraphType.cs" />
-    <Compile Include="Obsolete\IDocumentManager.cs" />
+    <Compile Include="IDocumentManager.cs" />
     <Compile Include="Obsolete\IGraphManager.cs" />
     <Compile Include="Obsolete\ITableManager.cs" />
     <Compile Include="Program.cs" />
@@ -111,14 +111,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MigraDoc.Extensions\MigraDoc.Extensions.Html\MigraDoc.Extensions.Html.csproj">
-      <Project>{CA3F8535-EA5E-4362-8922-FFBD86DF498F}</Project>
-      <Name>MigraDoc.Extensions.Html</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MigraDoc.Extensions\MigraDoc.Extensions.Markdown\MigraDoc.Extensions.Markdown.csproj">
-      <Project>{ea990c7e-f7ec-4857-9a12-372ffe74b004}</Project>
-      <Name>MigraDoc.Extensions.Markdown</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StatsReader\StatsReader.csproj">
       <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
       <Name>StatsReader</Name>
