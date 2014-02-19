@@ -5,11 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-<<<<<<< HEAD:src/LaserPrinter/Obsolete/DocumentManager.cs
-=======
 using FSharp.Markdown.Pdf;
-using LaserPrinter.Obsolete;
->>>>>>> all the pieces together:src/LaserPrinter/DocumentManager.cs
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using StatsReader;
@@ -21,7 +17,7 @@ namespace LaserPrinter.Obsolete
     {
         private readonly Document _document;
 
-        public DocumentManager()
+        public DocumentManager(Document document)
         {
             _document = document;
             _document = new Document();

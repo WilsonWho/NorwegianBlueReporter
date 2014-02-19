@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using LaserPrinter;
+using MigraDoc.DocumentObjectModel;
 using StatsReader;
 
 namespace NorwegianBlueReporter
@@ -51,7 +52,8 @@ namespace NorwegianBlueReporter
 
             stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 
-            var documentManager = new DocumentManager();
+            var document = new Document();
+            var documentManager = new DocumentManager(document);
 
             // TODO: Immediately - read an intro chunk of markdown from a file and insert it. E.g. -intro= commandline option
             // TODO: Immediately - fix the overly large headers
