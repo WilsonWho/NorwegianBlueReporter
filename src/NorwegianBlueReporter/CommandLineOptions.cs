@@ -5,10 +5,10 @@ namespace NorwegianBlueReporter
 {
     public class CommandLineOptions
     {
-        [Option('i', "input", Required = true, HelpText = "Input file name")]
+        [Option('i', "input", Required = true, HelpText = "Full path to the input file")]
         public string InputFileName { get; set; }
 
-        [Option('o', "output", Required = true, HelpText = "Output file name")]
+        [Option('o', "output", Required = true, HelpText = "Path to output the document that is generated")]
         public string OutputFileName { get; set; }
 
         [ParserState]
