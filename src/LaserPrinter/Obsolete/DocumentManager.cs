@@ -5,6 +5,11 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+<<<<<<< HEAD:src/LaserPrinter/Obsolete/DocumentManager.cs
+=======
+using FSharp.Markdown.Pdf;
+using LaserPrinter.Obsolete;
+>>>>>>> all the pieces together:src/LaserPrinter/DocumentManager.cs
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using StatsReader;
@@ -16,14 +21,53 @@ namespace LaserPrinter.Obsolete
     {
         private readonly Document _document;
 
-        public DocumentManager(Document document)
+        public DocumentManager()
         {
             _document = document;
+            _document = new Document();
+            _graphManager = new GraphManager();
+            _tableManager = new TableManager();
         }
 
         public void CreateGraphSection(GraphData graphData)
         {
             GraphFactory.CreateGraph(graphData);
+        }
+
+        public void AppendMarkdown(string markdown, Section section = null)
+        {
+            if (section == null)
+            {
+                section = _document.LastSection;
+            }
+            MarkdownPdf.AddMarkdown(_document, section, markdown);   
+        }
+
+        public void AddMarkdown(string markdown)
+        {
+            AppendMarkdown( markdown, _document.AddSection());
+        }
+
+        public void AppendAnalysisNote(AnalysisNote analysisNote, Section section = null)
+        {
+            bool summaryPresent = !string.IsNullOrEmpty(analysisNote.Summary);
+            bool graphPresent = (analysisNote.GraphData != null);
+
+            if (section == null)
+            {
+                section = _document.LastSection;
+            }
+
+            if (summaryPresent)
+            {
+                AppendMarkdown(analysisNote.Summary, section);
+            }
+
+            if (graphPresent)
+            {
+                var graph = GraphFactory.CreateGraph(analysisNote.GraphData);
+                graph.Draw(_document);
+            }
         }
 
         public void SaveAsPdf(string fileName)

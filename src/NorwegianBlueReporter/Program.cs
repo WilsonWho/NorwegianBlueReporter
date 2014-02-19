@@ -3,13 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using LaserPrinter;
-using LaserPrinter.Graphs;
-using LaserPrinter.Obsolete;
-using MigraDoc.DocumentObjectModel;
 using StatsReader;
-using Graph = LaserPrinter.Graphs.Graph;
-using GraphType = LaserPrinter.Obsolete.GraphType;
-using FSharp.Markdown.Pdf;
 
 namespace NorwegianBlueReporter
 {
@@ -42,30 +36,51 @@ namespace NorwegianBlueReporter
             stats.Parse(reader);
 
             var setAnalyzers = new CommonStatSetAnalysis();
+            var statAnalyzers = new CommonStatAnalysis();
             var setAnalysisMethods = new List<SetAnalyzer>();
             var statAnalysisMethods = new List<StatAnalyzer>();
 
+            // TODO: Populate these by reflection
+            // Set analysis
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
             setAnalysisMethods.Add(setAnalyzers.SummaryStats);
             setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
 
+            // individual stat analysis
+            statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
+
             stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 
-            var analysisNote = stats.AnalysisNotes[0];
+            var documentManager = new DocumentManager();
 
+            // TODO: Immediately - read an intro chunk of markdown from a file and insert it. E.g. -intro= commandline option
+            // TODO: Immediately - fix the overly large headers
+            documentManager.AddMarkdown(@"# All Stats
+Some text.
 
-            var document = new Document();
-            var documentManager = new DocumentManager(document);
-            //documentManager.AddMarkDown(analysisNote.Summary);
+Some more text...
+");
 
-            document.AddSection();
+            // Add the Analysis Notes for the set
+            foreach (var analysisNote in stats.AnalysisNotes)
+            {
+                documentManager.AppendAnalysisNote(analysisNote);
+            }
 
-            MarkdownPdf.AddMarkdown(document, document.LastSection, analysisNote.Summary);
+            documentManager.AddMarkdown(@"# Each Stat");
 
-            var ctg = new ColorTableGraph(analysisNote.GraphData);
-            ctg.Draw(document);
+            foreach (var stat in stats.Statistics)
+            {
+                var timestamp = string.Format("###{0}\n", stat.TimeStamp);
+                documentManager.AppendMarkdown(timestamp);
+                foreach (var analysisNote in stat.AnalysisNotes)
+                {
+                    documentManager.AppendAnalysisNote(analysisNote);
+                }
+            
+            }
 
-            const string fileName = "Experiment Alpha";
+            const string fileName = "Experiment Alpha.pdf";
             documentManager.SaveAsPdf(fileName);
 
             Process.Start(fileName);

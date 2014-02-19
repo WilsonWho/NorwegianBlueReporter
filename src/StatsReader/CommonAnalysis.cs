@@ -162,7 +162,7 @@ namespace StatsReader
                     break;
                 }
 
-                var x = OpenCvSharp.Cv.KMeans2(data, clusterCount, clusters, new CvTermCriteria(10, 1.0));
+                var x = Cv.KMeans2(data, clusterCount, clusters, new CvTermCriteria(10, 1.0));
 
                 rowIdx = 0;
                 var clusterSeriesName = string.Format("k:{0}", clusterCount);
@@ -201,6 +201,104 @@ Run all data through k-means algorithm for given k and group samples to that num
 
     public class CommonStatAnalysis
     {
+        // MigraDoc/PDFSharp don't wrap cell contents... so this needs quite a lot of work to be a reasonable
+        // presentation
+        // TODO: make this usable
+        public void SummaryStatComparisonAsTables(IStatisticsSetAnalysis statSet, IStatisticsAnalysis stat)
+        {
+            var stdDevs = new StringBuilder();
+            var missingFields = new StringBuilder();
+
+            const int numStdDevCols = 3;
+            const int numMissingValCols = 3;
+
+            var stdDevHeader = new StringBuilder("*Fields more than 1 std dev from mean*:\n\n");
+            var stdDevTableHeader1 = new StringBuilder("Field|Standard-Deviations-from-Mean");
+            var stdDevTableHeader2 = new StringBuilder("------------------|-----------------");
+            for (int i = 0; i < numStdDevCols - 1; i++)
+            {
+                stdDevTableHeader1.Append("|Field|Standard-Deviations-from-Mean");
+                stdDevTableHeader2.Append("|------------------|-----------------");
+            }
+            stdDevTableHeader1.Append("\n");
+            stdDevTableHeader2.Append("\n");
+            stdDevHeader.Append(stdDevTableHeader1);
+            stdDevHeader.Append(stdDevTableHeader2);
+
+            var missingValHeader = new StringBuilder("*Missing fields:*\n\n");
+
+            int stdDevCol = 0;
+            int missingValCol = 0;
+            foreach (string item in statSet.AnalysisScratchPad.AllStatsHeaders)
+            {
+                if (stat.Stats.ContainsKey(item))
+                {
+                    var numberOfSigmaFromMean = Math.Abs(stat.Stats[item] - statSet.AnalysisScratchPad.Averages[item]) / statSet.AnalysisScratchPad.StdDeviations[item];
+                    if (numberOfSigmaFromMean > 1)
+                    {
+                        stdDevCol++;
+                        stdDevs.AppendFormat("``{0}``|{1}", item, Math.Round(numberOfSigmaFromMean, 2));
+                        if (stdDevCol< numStdDevCols)
+                        {
+                            stdDevs.Append("|");
+                        } 
+                        else
+                        {
+                            stdDevCol = 0;
+                            stdDevs.Append("\n");
+                        }
+                    }
+                }
+                else
+                {
+                    missingValCol++;
+                    missingFields.AppendFormat("``{0}``", item);
+                    if (missingValCol < numMissingValCols)
+                    {
+                        missingFields.Append("|");
+                    }
+                    else
+                    {
+                        missingValCol = 0;
+                        missingFields.Append("\n");
+                    }
+                }
+            }
+            
+            if (stdDevs.Length > 0)
+            {
+                if (stdDevCol != 0)
+                {
+                    for (int i = stdDevCol; i < numStdDevCols; i++)
+                    {
+                        stdDevs.Append("||");
+                    }
+                    stdDevs.Append("|\n");
+                }
+                stdDevs.Insert(0, stdDevHeader);
+                stdDevs.Append("\n\n");
+                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString(), null);
+                stat.AddAnalysisNote(analysisNote);
+            }
+
+            if (missingFields.Length > 0)
+            {
+                if (missingValCol != 0)
+                {
+                    for (int i = missingValCol; i < numMissingValCols; i++)
+                    {
+                        missingFields.Append("||");
+                    }
+                    missingFields.Append("|\n");
+                }
+                missingFields.Insert(0, missingValHeader);
+                missingFields.Append("\n\n");
+                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString(), null);
+                stat.AddAnalysisNote(analysisNote);
+            }
+
+        }
+
         public void SummaryStatComparison(IStatisticsSetAnalysis statSet, IStatisticsAnalysis stat)
         {
             var stdDevs = new StringBuilder();
@@ -213,35 +311,27 @@ Run all data through k-means algorithm for given k and group samples to that num
                     var numberOfSigmaFromMean = Math.Abs(stat.Stats[item] - statSet.AnalysisScratchPad.Averages[item]) / statSet.AnalysisScratchPad.StdDeviations[item];
                     if (numberOfSigmaFromMean > 1)
                     {
-                        if (stdDevs.Length > 0)
-                        {
-                            stdDevs.Append(", ");
-                        }
-                        stdDevs.AppendFormat("{0} [{1}]", item, Math.Round(numberOfSigmaFromMean, 2));
+                        stdDevs.AppendFormat("``{0}`` \\[{1}\\]\n", item, Math.Round(numberOfSigmaFromMean, 2));
                     }
                 }
                 else
                 {
-                    if (missingFields.Length > 0)
-                    {
-                        missingFields.Append(", ");
-                    }
-                    missingFields.AppendFormat("{0}", item);
+                    missingFields.AppendFormat("``{0}``\n", item);
                 }
             }
-            
+
             if (stdDevs.Length > 0)
             {
-                stdDevs.Insert(0, "*Fields more than 1 std dev from mean*: ");
-                stdDevs.Append(".");
+                stdDevs.Insert(0, "####Fields more than 1 std dev from mean:\n");
+                stdDevs.Append("\n\n");
                 var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString(), null);
                 stat.AddAnalysisNote(analysisNote);
             }
 
             if (missingFields.Length > 0)
             {
-                missingFields.Insert(0, "*Missing fields*: ");
-                stdDevs.Append(".");
+                missingFields.Insert(0, "####Missing fields:\n");
+                missingFields.Append("\n\n");
                 var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString(), null);
                 stat.AddAnalysisNote(analysisNote);
             }

@@ -53,7 +53,8 @@ namespace LaserPrinter
 
             // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-            var documentManager = new DocumentManager(document);
+            // TODO -- changed the constructor for DocumentManager; so the next part is probably busted
+            var documentManager = new DocumentManager();
             document.AddSection();
 
             var seriesData = new List<SeriesData>

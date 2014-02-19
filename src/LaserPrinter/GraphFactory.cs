@@ -30,6 +30,9 @@ namespace LaserPrinter
                 case GraphType.ExplodedPie:
                     graph = new ExplodedPieGraph(graphData);
                     break;
+                case GraphType.ColorTableGraph:
+                    graph = new ColorTableGraph(graphData);
+                    break;
                 default:
                     throw new InvalidEnumArgumentException("Unsupported graph type ...");
             }
