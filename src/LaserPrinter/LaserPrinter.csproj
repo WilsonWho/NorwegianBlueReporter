@@ -86,6 +86,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocumentExtensions.cs" />
     <Compile Include="GraphFactory.cs" />
     <Compile Include="Graphs\ColumnGraph.cs" />
     <Compile Include="Decode.cs" />
@@ -96,11 +97,11 @@
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\PieGraph.cs" />
     <Compile Include="Obsolete\GraphManager.cs" />
-    <Compile Include="DocumentManager.cs" />
+    <Compile Include="Obsolete\DocumentManager.cs" />
     <Compile Include="Graphs\LineGraph.cs" />
     <Compile Include="Graphs\ColorTableGraph.cs" />
     <Compile Include="Obsolete\GraphType.cs" />
-    <Compile Include="IDocumentManager.cs" />
+    <Compile Include="Obsolete\IDocumentManager.cs" />
     <Compile Include="Obsolete\IGraphManager.cs" />
     <Compile Include="Obsolete\ITableManager.cs" />
     <Compile Include="Program.cs" />

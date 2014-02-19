@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using LaserPrinter.Graphs;
+using LaserPrinter.Obsolete;
 using MigraDoc.DocumentObjectModel;
 using StatsReader;
 using GraphType = StatsReader.GraphType;

@@ -1,64 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using LaserPrinter.Obsolete;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using StatsReader;
 using iTextSharp.text.pdf;
-using GraphType = LaserPrinter.Obsolete.GraphType;
 
-namespace LaserPrinter
+namespace LaserPrinter.Obsolete
 {
     public class DocumentManager : IDocumentManager
     {
         private readonly Document _document;
-        private readonly GraphManager _graphManager;
-        private readonly TableManager _tableManager;
 
         public DocumentManager(Document document)
         {
             _document = document;
-            _graphManager = new GraphManager();
-            _tableManager = new TableManager();
         }
 
-        // TODO: Add set of statistics as another parameter and (?)header info(?)
-        public void CreateGraphSection(GraphType graphType, List<SeriesData> seriesDataList)
+        public void CreateGraphSection(GraphData graphData)
         {
-            _document.AddSection();
-
-            switch (graphType)
-            {
-                case GraphType.Combo:
-                    _graphManager.DefineComboGraph(_document, seriesDataList);
-                    break;
-                case GraphType.Column:
-                    _graphManager.DefineColumnGraph(_document, seriesDataList);
-                    break;
-                case GraphType.ColumnStacked:
-                    _graphManager.DefineColumnStackedGraph(_document, seriesDataList);
-                    break;
-                case GraphType.Bar:
-                    _graphManager.DefineBarGraph(_document, seriesDataList);
-                    break;
-                case GraphType.ExplodedPie:
-                    _graphManager.DefineExplodedPieGraph(_document, seriesDataList);
-                    break;
-                default:
-                    throw new InvalidEnumArgumentException("Specified graph type is not supported ...");
-            }
-        }
-
-        public void CreateTableSection()
-        {
-            _document.AddSection();
-            _tableManager.DefineTable(_document);
+            GraphFactory.CreateGraph(graphData);
         }
 
         public void SaveAsPdf(string fileName)
@@ -88,9 +53,11 @@ namespace LaserPrinter
             pdfStamper.Close();
         }
 
+
+
         //
         //
-        // TODO: Code below this is a work in progress...
+        // TODO: Code below this are works in progress...
         public void EmbedFile(string pdfFile, string embeddedFile)
         {
             ImplantData(pdfFile, embeddedFile, 52, 0, "/Type /EmbeddedFile", Decode.Flate);
