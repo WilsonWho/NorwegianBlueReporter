@@ -68,13 +68,15 @@ namespace NorwegianBlueReporter
 
             stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 
+            //------------------------------------------------------------------
+
             var document = new Document();
-            var documentManager = new DocumentManager(document);
+            //var documentManager = new DocumentManager(document);
 
             // TODO: Immediately - read an intro chunk of markdown from a file and insert it. E.g. -intro= commandline option
             if (!string.IsNullOrEmpty(markdown))
             {
-                documentManager.AddMarkdown(markdown);
+                document.AddMarkdown(markdown);
             }
 
             // TODO: Immediately - fix the overly large headers
@@ -87,7 +89,7 @@ namespace NorwegianBlueReporter
                 };
 
             document.Add(headerStyle);
-            documentManager.AddMarkdown(@"# All Stats
+            document.AddMarkdown(@"# All Stats
 Some text.
 
 Some more text...
@@ -96,24 +98,24 @@ Some more text...
             // Add the Analysis Notes for the set
             foreach (var analysisNote in stats.AnalysisNotes)
             {
-                documentManager.AppendAnalysisNote(analysisNote);
+                document.AppendAnalysisNote(analysisNote);
             }
 
-            documentManager.AddMarkdown(@"# Each Stat");
+            document.AddMarkdown(@"# Each Stat");
 
             foreach (var stat in stats.Statistics)
             {
                 var timestamp = string.Format("###{0}\n", stat.TimeStamp);
-                documentManager.AppendMarkdown(timestamp);
+                document.AppendMarkdown(timestamp);
                 foreach (var analysisNote in stat.AnalysisNotes)
                 {
-                    documentManager.AppendAnalysisNote(analysisNote);
+                    document.AppendAnalysisNote(analysisNote);
                 }
             }
 
             const string fileName = "Experiment Alpha.pdf";
             const string ext = ".pdf";
-            documentManager.SaveAsPdf(fileName);
+            document.SaveFile(fileName, ext);
 
             Process.Start(fileName);
         }
