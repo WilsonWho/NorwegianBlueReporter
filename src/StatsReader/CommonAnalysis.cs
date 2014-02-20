@@ -298,13 +298,15 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
             int missingValCol = 0;
             foreach (string item in statSet.AnalysisScratchPad.AllStatsHeaders)
             {
+                var hyphenatedItem = item.InsertSoftHyphens();
+
                 if (stat.Stats.ContainsKey(item))
                 {
                     var numberOfSigmaFromMean = Math.Abs(stat.Stats[item] - statSet.AnalysisScratchPad.Averages[item]) / statSet.AnalysisScratchPad.StdDeviations[item];
                     if (numberOfSigmaFromMean > 1)
                     {
                         stdDevCol++;
-                        stdDevs.AppendFormat("``{0}``|{1}", item, Math.Round(numberOfSigmaFromMean, 2));
+                        stdDevs.AppendFormat("``{0}``|{1}", hyphenatedItem, Math.Round(numberOfSigmaFromMean, 2));
                         if (stdDevCol< numStdDevCols)
                         {
                             stdDevs.Append("|");
@@ -319,7 +321,7 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
                 else
                 {
                     missingValCol++;
-                    missingFields.AppendFormat("``{0}``", item);
+                    missingFields.AppendFormat("``{0}``", hyphenatedItem);
                     if (missingValCol < numMissingValCols)
                     {
                         missingFields.Append("|");
@@ -373,17 +375,19 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
 
             foreach (string item in statSet.AnalysisScratchPad.AllStatsHeaders)
             {
+                var hyphenatedItem = item.InsertSoftHyphens();
+
                 if (stat.Stats.ContainsKey(item))
                 {
                     var numberOfSigmaFromMean = Math.Abs(stat.Stats[item] - statSet.AnalysisScratchPad.Averages[item]) / statSet.AnalysisScratchPad.StdDeviations[item];
                     if (numberOfSigmaFromMean > 1)
                     {
-                        stdDevs.AppendFormat("``{0}`` \\[{1}\\]\n", item, Math.Round(numberOfSigmaFromMean, 2));
+                        stdDevs.AppendFormat("``{0}`` \\[{1}\\]\n", hyphenatedItem, Math.Round(numberOfSigmaFromMean, 2));
                     }
                 }
                 else
                 {
-                    missingFields.AppendFormat("``{0}``\n", item);
+                    missingFields.AppendFormat("``{0}``\n", hyphenatedItem);
                 }
             }
 

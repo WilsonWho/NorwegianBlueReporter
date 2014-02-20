@@ -128,7 +128,7 @@ Some more text...
             // NOTE: using GetType/ "is" from object worked fine for me, but making element a 
             // DocumentElement -> I couldn't use it as a paragraph etc...???? Odd???
             foreach (object element in document.LastSection.Elements)
-            {
+            {                
                 if (element is Paragraph)
                 {
                     (element as Paragraph).Format.Font.Size = Unit.FromPoint(8);
