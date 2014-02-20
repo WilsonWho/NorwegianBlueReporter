@@ -84,27 +84,81 @@ namespace StatsReader
             Apply(stdDeviations, (value) => Math.Sqrt(value/statCount));
             statSet.AnalysisScratchPad.StdDeviations = stdDeviations;
 
-            var keyStats = new List<string> { @"client\/request_latency_ms", "" };
+            // Latency summary
+            var labels = new List<string>()
+                {
+                    "client/request_latency_ms_average",
+                    "client/request_latency_ms_maximum",
+                    "client/request_latency_ms_minimum",
+                    "client/request_latency_ms_p50",
+                    "client/request_latency_ms_p90",
+                    "client/request_latency_ms_p95"
+                };
 
+            var series = new List<SeriesData>();
+            var notes = new StringBuilder();
+            
+            // get the stat-by-stat values
+            foreach (var label in labels)
+            {
+                var data = new List<double>();
+                foreach (var stats in statSet.Statistics)
+                {
+                    if (stats.Stats.ContainsKey(label))
+                    {
+                        data.Add(stats.Stats[label]);
+                    }
+                    else
+                    {
+                        data.Add(data.Count > 0 ? data[data.Count] : 0d);
+                        notes.AppendFormat("{0} Missing value for {1}\n", stats.TimeStamp, label);
+                    }
+                }
+                series.Add(new SeriesData(label, data));
+            }
 
+            // add the averages from the entire dataset for each value
+            var avgLabels = new List<string>();
+            foreach (var label in labels)
+            {
+                var avgLabelName = label + " set average";
+                avgLabels.Add(avgLabelName);
+                var data = new List<double>();
+                double avg = averages[label];
+                for (int i = 0; i < statSet.Statistics.Count; i++)
+                {
+                 data.Add(avg);   
+                }
 
+                series.Add(new SeriesData(avgLabelName, data));
+            }
 
-            //            var avgData = averages.Select(kvp => new Tuple<dynamic, dynamic>(kvp.Key, kvp.Value)).ToList();
-            //            var avgSeries = new List<SeriesData>() { new SeriesData("Variable", avgData) };
-            //            var avgGraph = new GraphData("Averages", GraphType.Bar, avgSeries);
-            //
-            //            var analysisNote = new AnalysisNote("Interval Averages",
-            //@"#Title- Interval Averages
-            //
-            //This is some paragraph text with **bold**
-            //
-            //",
-            //                                                avgGraph);
-            //
-            //            statSet.AddAnalysisNote(analysisNote);
+            labels = labels.Concat(avgLabels).ToList();
 
+            var requestLatencyGraph = new GraphData("Request Latencies", labels, true, LegendPositionEnum.Footer, true,
+                                                    GraphType.LineStacked, series);
 
+            var analysisSummary = new StringBuilder(
+@"# Average Request Latency
 
+The following graphs the average client request statistics for each minute of the test duration.
+"
+                );
+
+            if (notes.Length > 0)
+            {
+                analysisSummary.Append(
+@"*Notes*:
+Missing data is replaced either with a 0 when there is no preceeding data or the previous value.
+
+*Time stamps with Missing Data*
+"
+                    );
+                analysisSummary.Append(notes);
+
+            }
+
+            statSet.AddAnalysisNote(new AnalysisNote("Request Latencies", analysisSummary.ToString(), requestLatencyGraph));
         }
 
         public void ClusterAnalysis(IStatisticsSetAnalysis statSet)
@@ -189,9 +243,11 @@ namespace StatsReader
 @"
 #Clustering Analysis
 
-Run all data through k-means algorithm for given k and group samples to that number of clusters.
+All the data is passed through the [openCV](http://opencv.org/) implementation of the [k-Means](http://en.wikipedia.org/wiki/K-means_clustering) clustering algorithm.
 
-*NB* Using all data collected in every sample.
+This is done several times to see if there are any 'obvious' groupings to the data.
+
+The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as a bar, where colour indicates cluster membership, and distance (left to right) represents time.
 
 ",
                                                 graph);
