@@ -32,6 +32,7 @@ namespace NorwegianBlueReporter
                 if (!string.IsNullOrEmpty(options.OutputFileName))
                 {
                     Console.WriteLine("File saved as {0}", options.OutputFileName);
+                    output = options.OutputFileName;
                 }
                 else
                 {
