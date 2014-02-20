@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using LaserPrinter;
-using LaserPrinter.Obsolete;
 using MigraDoc.DocumentObjectModel;
 using StatsReader;
 
@@ -63,6 +61,8 @@ namespace NorwegianBlueReporter
 
             var setAnalyzers = new CommonStatSetAnalysis();
             var statAnalyzers = new CommonStatAnalysis();
+            var iagoSetAnalyzers = new IagoStatSetAnalysis();
+
             var setAnalysisMethods = new List<SetAnalyzer>();
             var statAnalysisMethods = new List<StatAnalyzer>();
 
@@ -71,6 +71,7 @@ namespace NorwegianBlueReporter
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
             setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
             setAnalysisMethods.Add(setAnalyzers.SummaryStats);
+            setAnalysisMethods.Add(iagoSetAnalyzers.IagoRequestLatencySummary);
 
             // individual stat analysis
             // statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
@@ -111,10 +112,9 @@ namespace NorwegianBlueReporter
             style.ParagraphFormat.SpaceBefore = Unit.FromPoint(6d);
             style.ParagraphFormat.SpaceAfter = Unit.FromPoint(6d);
  
-            document.AddMarkdown(@"# All Stats
-Some text.
+            document.AddMarkdown(@"# Analysis of the Aggregate Set
 
-Some more text...
+The following sections are various analysis over the entire set of data collected.
 ");
 
             // Add the Analysis Notes for the set
@@ -123,7 +123,11 @@ Some more text...
                 document.AppendAnalysisNote(analysisNote);
             }
 
-            document.AddMarkdown(@"# Each Stat");
+            document.AddMarkdown(@"# Each Stat
+
+The following sections are an analysis for anomolies for each entry in the collected stats file.
+
+");
 
             foreach (var stat in stats.Statistics)
             {
@@ -153,7 +157,6 @@ Some more text...
             document.SaveFile(output, ext);
 
             //Process.Start(fileName);
-
 
             Console.WriteLine("-----------------------");
             Console.WriteLine("Press enter to close...");

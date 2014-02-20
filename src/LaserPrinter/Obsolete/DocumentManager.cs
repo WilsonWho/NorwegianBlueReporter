@@ -59,8 +59,11 @@ namespace LaserPrinter.Obsolete
 
             if (graphPresent)
             {
-                var graph = GraphFactory.CreateGraph(analysisNote.GraphData);
-                graph.Draw(_document);
+                foreach (var graphData in analysisNote.GraphData)
+                {
+                    var graph = GraphFactory.CreateGraph(graphData);
+                    graph.Draw(_document);
+                }
             }
         }
 

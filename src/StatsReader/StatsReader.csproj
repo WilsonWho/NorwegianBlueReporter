@@ -89,6 +89,7 @@
     <Compile Include="AnalysisNote.cs" />
     <Compile Include="CommonAnalysis.cs" />
     <Compile Include="GraphData.cs" />
+    <Compile Include="IagoAnalysis.cs" />
     <Compile Include="IagoStatistics.cs" />
     <Compile Include="IagoStatisticsSet.cs" />
     <Compile Include="IStatisticsSet.cs" />
