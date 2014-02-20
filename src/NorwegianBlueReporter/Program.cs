@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using LaserPrinter;
+using LaserPrinter.Obsolete;
 using MigraDoc.DocumentObjectModel;
 using StatsReader;
 
@@ -12,6 +13,8 @@ namespace NorwegianBlueReporter
     {
         static void Main(string[] args)
         {
+            string markdown = string.Empty;
+
             // Parse command line arguments
             var options = new CommandLineOptions();
             if (CommandLine.Parser.Default.ParseArguments(args, options))
@@ -24,6 +27,19 @@ namespace NorwegianBlueReporter
                 if (!string.IsNullOrEmpty(options.OutputFileName))
                 {
                     Console.WriteLine("File saved as {0}", options.OutputFileName);
+                }
+
+                if (!string.IsNullOrEmpty(options.AttachmentsDirectory))
+                {
+                    Console.WriteLine("Attachments taken from {0}", options.AttachmentsDirectory);
+                }
+
+                if (!string.IsNullOrEmpty(options.Markdown))
+                {
+                    Console.WriteLine("Using markdown file {0}", options.Markdown);
+
+                    markdown = File.ReadAllText(options.Markdown);
+
                 }
             }
             else
@@ -56,7 +72,21 @@ namespace NorwegianBlueReporter
             var documentManager = new DocumentManager(document);
 
             // TODO: Immediately - read an intro chunk of markdown from a file and insert it. E.g. -intro= commandline option
+            if (!string.IsNullOrEmpty(markdown))
+            {
+                documentManager.AddMarkdown(markdown);
+            }
+
             // TODO: Immediately - fix the overly large headers
+            var headerStyle = new Style("MdHeading1", "Normal")
+                {
+                    Font =
+                        {
+                            Size = "10pt"
+                        }
+                };
+
+            document.Add(headerStyle);
             documentManager.AddMarkdown(@"# All Stats
 Some text.
 
@@ -79,10 +109,10 @@ Some more text...
                 {
                     documentManager.AppendAnalysisNote(analysisNote);
                 }
-            
             }
 
             const string fileName = "Experiment Alpha.pdf";
+            const string ext = ".pdf";
             documentManager.SaveAsPdf(fileName);
 
             Process.Start(fileName);

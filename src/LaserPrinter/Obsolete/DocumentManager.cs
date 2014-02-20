@@ -16,6 +16,8 @@ namespace LaserPrinter.Obsolete
     public class DocumentManager : IDocumentManager
     {
         private readonly Document _document;
+        private readonly GraphManager _graphManager;
+        private readonly TableManager _tableManager;
 
         public DocumentManager(Document document)
         {
@@ -25,23 +27,19 @@ namespace LaserPrinter.Obsolete
             _tableManager = new TableManager();
         }
 
-        public void CreateGraphSection(GraphData graphData)
-        {
-            GraphFactory.CreateGraph(graphData);
-        }
-
         public void AppendMarkdown(string markdown, Section section = null)
         {
             if (section == null)
             {
                 section = _document.LastSection;
             }
-            MarkdownPdf.AddMarkdown(_document, section, markdown);   
+
+            MarkdownPdf.AddMarkdown(_document, section, markdown);
         }
 
         public void AddMarkdown(string markdown)
         {
-            AppendMarkdown( markdown, _document.AddSection());
+            AppendMarkdown(markdown, _document.AddSection());
         }
 
         public void AppendAnalysisNote(AnalysisNote analysisNote, Section section = null)
@@ -64,6 +62,11 @@ namespace LaserPrinter.Obsolete
                 var graph = GraphFactory.CreateGraph(analysisNote.GraphData);
                 graph.Draw(_document);
             }
+        }
+
+        public void CreateGraphSection(GraphData graphData)
+        {
+            GraphFactory.CreateGraph(graphData);
         }
 
         public void SaveAsPdf(string fileName)

@@ -57,10 +57,6 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Markdown, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\FSharp.Markdown.Pdf\bin\FSharp.Markdown.dll</HintPath>
-    </Reference>
     <Reference Include="FSharp.Markdown.Pdf">
       <HintPath>..\..\..\FSharp.Markdown.Pdf\bin\FSharp.Markdown.Pdf.dll</HintPath>
     </Reference>

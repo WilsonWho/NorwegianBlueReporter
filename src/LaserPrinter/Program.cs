@@ -54,24 +54,24 @@ namespace LaserPrinter
             // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
             // TODO -- changed the constructor for DocumentManager; so the next part is probably busted
-            var documentManager = new DocumentManager();
-            document.AddSection();
+            //var documentManager = new DocumentManager();
+            //document.AddSection();
 
-            var seriesData = new List<SeriesData>
-                {
-                    new SeriesData("AHHH", new List<double> {1, 2, 3})
-                };
-
-
-            var graphData = new GraphData("WICKED COLOR TABLE GRAPH THING", null, false, LegendPositionEnum.Left, false,
-                                          GraphType.None, seriesData);
-
-            var tableGraph = new ColorTableGraph(graphData);
-            tableGraph.Draw(document);
+            //var seriesData = new List<SeriesData>
+            //    {
+            //        new SeriesData("AHHH", new List<double> {1, 2, 3})
+            //    };
 
 
-            const string fileName = "Experiment Alpha.pdf";
-            documentManager.SaveAsPdf(fileName);
+            //var graphData = new GraphData("WICKED COLOR TABLE GRAPH THING", null, false, LegendPositionEnum.Left, false,
+            //                              GraphType.None, seriesData);
+
+            //var tableGraph = new ColorTableGraph(graphData);
+            //tableGraph.Draw(document);
+
+
+            //const string fileName = "Experiment Alpha.pdf";
+            //documentManager.SaveAsPdf(fileName);
 
             //const string newFileName = "Experiment Beta.pdf";
             //documentManager.AttachFileToDocument(fileName, newFileName, "TestCSV.csv");
@@ -79,7 +79,7 @@ namespace LaserPrinter
             //const string embed = "TestCSV.csv";
             //documentManager.EmbedFile(fileName, embed);
 
-            Process.Start(fileName);
+            //Process.Start(fileName);
         }
     }
 }
