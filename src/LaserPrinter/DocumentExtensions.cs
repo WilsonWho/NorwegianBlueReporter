@@ -39,7 +39,6 @@ namespace LaserPrinter
                 document.AppendMarkdown(analysisNote.Summary, section);
             }
 
-
             if (graphPresent)
             {
                 var graph = GraphFactory.CreateGraph(analysisNote.GraphData);
@@ -59,6 +58,32 @@ namespace LaserPrinter
             var pdfAttachment = PdfFileSpecification.FileEmbedded(pdfWriter, attachmentFile, attachmentFile, null);
             pdfStamper.AddFileAttachment(attachmentFile, pdfAttachment);
             pdfStamper.Close();
+        }
+
+        public static void AttachAllFiles(this Document document, string existingPdfFile, string updatedPdfFile, string path)
+        {
+            var files = Directory.GetFiles(path);
+            document.AttachFiles(existingPdfFile, updatedPdfFile, files);
+        }
+
+        public static void AttachAllFiles(this Document document, string existingPdfFile, string updatedPdfFile, string path, string searchPattern)
+        {
+            var files = Directory.GetFiles(path, searchPattern);
+            document.AttachFiles(existingPdfFile, updatedPdfFile, files);
+        }
+
+        public static void AttachAllFiles(this Document document, string existingPdfFile, string updatedPdfFile, string path, string searchPattern, SearchOption searchOption)
+        {
+            var files = Directory.GetFiles(path, searchPattern, searchOption);
+            document.AttachFiles(existingPdfFile, updatedPdfFile, files);
+        }
+
+        private static void AttachFiles(this Document document, string existingPdf, string updatedPdf, string[] files)
+        {
+            foreach (var file in files)
+            {
+                document.AttachFile(existingPdf, updatedPdf, file);
+            }
         }
 
         public static void SaveFile(this Document document, string fileName, string fileExtension)

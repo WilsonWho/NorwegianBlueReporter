@@ -14,6 +14,8 @@ namespace NorwegianBlueReporter
         static void Main(string[] args)
         {
             string markdown = string.Empty;
+            string fileName = string.Empty;
+            string output = string.Empty;
 
             // Parse command line arguments
             var options = new CommandLineOptions();
@@ -22,11 +24,20 @@ namespace NorwegianBlueReporter
                 if (!string.IsNullOrEmpty(options.InputFileName))
                 {
                     Console.WriteLine("Input file: {0}", options.InputFileName);
+                    fileName = options.InputFileName;
+                }
+                else
+                {
+                    throw new ArgumentException("No stats log was provided ...");
                 }
 
                 if (!string.IsNullOrEmpty(options.OutputFileName))
                 {
                     Console.WriteLine("File saved as {0}", options.OutputFileName);
+                }
+                else
+                {
+                    throw new ArgumentException("No output file was specified ...");
                 }
 
                 if (!string.IsNullOrEmpty(options.AttachmentsDirectory))
@@ -39,7 +50,6 @@ namespace NorwegianBlueReporter
                     Console.WriteLine("Using markdown file {0}", options.Markdown);
 
                     markdown = File.ReadAllText(options.Markdown);
-
                 }
             }
             else
@@ -47,8 +57,7 @@ namespace NorwegianBlueReporter
                 throw new ArgumentException("Invalid command line arguments!");
             }
 
-            const string filename = @"C:\tmp\parrot-server-stats.log";
-            StreamReader reader = File.OpenText(filename);
+            StreamReader reader = File.OpenText(fileName);
             var stats = new IagoStatisticsSet();
             stats.Parse(reader);
 
@@ -72,7 +81,12 @@ namespace NorwegianBlueReporter
             //------------------------------------------------------------------
 
             var document = new Document();
-            //var documentManager = new DocumentManager(document);
+            
+            // Add notes about the previous report if available
+            if (!string.IsNullOrEmpty(markdown))
+            {
+                document.AddMarkdown(markdown);
+            }
 
             // TODO: Immediately - read an intro chunk of markdown from a file and insert it. E.g. -intro= commandline option
             if (!string.IsNullOrEmpty(markdown))
@@ -127,16 +141,16 @@ Some more text...
             // element.Elements recursively and apply the font size to each paragraph.
             // NOTE: using GetType/ "is" from object worked fine for me, but making element a 
             // DocumentElement -> I couldn't use it as a paragraph etc...???? Odd???
-            foreach (object element in document.LastSection.Elements)
-            {                
-                if (element is Paragraph)
-                {
-                    (element as Paragraph).Format.Font.Size = Unit.FromPoint(8);
-                }
-            }
-            const string fileName = "Experiment Alpha.pdf";
+            //foreach (object element in document.LastSection.Elements)
+            //{                
+            //    if (element is Paragraph)
+            //    {
+            //        (element as Paragraph).Format.Font.Size = Unit.FromPoint(8);
+            //    }
+            //}
+
             const string ext = ".pdf";
-            document.SaveFile(fileName, ext);
+            document.SaveFile(output, ext);
 
             //Process.Start(fileName);
 
