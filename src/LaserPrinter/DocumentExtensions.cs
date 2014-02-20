@@ -39,6 +39,7 @@ namespace LaserPrinter
                 document.AppendMarkdown(analysisNote.Summary, section);
             }
 
+
             if (graphPresent)
             {
                 var graph = GraphFactory.CreateGraph(analysisNote.GraphData);

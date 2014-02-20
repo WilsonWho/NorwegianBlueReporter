@@ -85,7 +85,7 @@ namespace StatsReader
             statSet.AnalysisScratchPad.StdDeviations = stdDeviations;
 
             // Latency summary
-            var labels = new List<string>()
+            var requestLatencySeries = new List<string>()
                 {
                     "client/request_latency_ms_average",
                     "client/request_latency_ms_maximum",
@@ -95,48 +95,48 @@ namespace StatsReader
                     "client/request_latency_ms_p95"
                 };
 
-            var series = new List<SeriesData>();
+            var seriesData = new List<SeriesData>();
             var notes = new StringBuilder();
             
             // get the stat-by-stat values
-            foreach (var label in labels)
+            foreach (var seriesName in requestLatencySeries)
             {
                 var data = new List<double>();
                 foreach (var stats in statSet.Statistics)
                 {
-                    if (stats.Stats.ContainsKey(label))
+                    if (stats.Stats.ContainsKey(seriesName))
                     {
-                        data.Add(stats.Stats[label]);
+                        data.Add(Math.Log10(stats.Stats[seriesName]));
                     }
                     else
                     {
-                        data.Add(data.Count > 0 ? data[data.Count] : 0d);
-                        notes.AppendFormat("{0} Missing value for {1}\n", stats.TimeStamp, label);
+                        data.Add(data.Count > 0 ? data[data.Count-1] : 0d);
+                        notes.AppendFormat("{0} Missing value for {1}\n", stats.TimeStamp, seriesName);
                     }
                 }
-                series.Add(new SeriesData(label, data));
+
+                seriesData.Add(new SeriesData(seriesName, data));
             }
 
             // add the averages from the entire dataset for each value
-            var avgLabels = new List<string>();
-            foreach (var label in labels)
+            var avgRequestLatencySeries = new List<string>();
+            foreach (var series in requestLatencySeries)
             {
-                var avgLabelName = label + " set average";
-                avgLabels.Add(avgLabelName);
+                var avgSeriesName = series + " set average";
+                avgRequestLatencySeries.Add(avgSeriesName);
                 var data = new List<double>();
-                double avg = averages[label];
+                double avg = Math.Log10(averages[series]);
                 for (int i = 0; i < statSet.Statistics.Count; i++)
                 {
                  data.Add(avg);   
                 }
 
-                series.Add(new SeriesData(avgLabelName, data));
+                seriesData.Add(new SeriesData(avgSeriesName, data));
             }
 
-            labels = labels.Concat(avgLabels).ToList();
-
-            var requestLatencyGraph = new GraphData("Request Latencies", labels, true, LegendPositionEnum.Footer, true,
-                                                    GraphType.LineStacked, series);
+            var labels = statSet.Statistics.Select(stats => stats.TimeStamp.ToString(CultureInfo.InvariantCulture)).ToList();
+            var requestLatencyGraph = new GraphData("Request Latencies", labels, true, LegendPositionEnum.Footer, false,
+                                                    GraphType.LineStacked, seriesData);
 
             var analysisSummary = new StringBuilder(
 @"# Average Request Latency
@@ -265,8 +265,8 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
             var stdDevs = new StringBuilder();
             var missingFields = new StringBuilder();
 
-            const int numStdDevCols = 3;
-            const int numMissingValCols = 3;
+            const int numStdDevCols = 1;
+            const int numMissingValCols = 1;
 
             var stdDevHeader = new StringBuilder("*Fields more than 1 std dev from mean*:\n\n");
             var stdDevTableHeader1 = new StringBuilder("Field|Standard-Deviations-from-Mean");
@@ -282,6 +282,17 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
             stdDevHeader.Append(stdDevTableHeader2);
 
             var missingValHeader = new StringBuilder("*Missing fields:*\n\n");
+            var missingValTableHeader1 = new StringBuilder("Field");
+            var missingValTableHeader2 = new StringBuilder("------------------");
+            for (int i = 0; i < numMissingValCols - 1; i++)
+            {
+                missingValTableHeader1.Append("|Field");
+                missingValTableHeader2.Append("|------------------");
+            }
+            missingValTableHeader1.Append("|\n");
+            missingValTableHeader2.Append("|\n");
+            missingValHeader.Append(missingValTableHeader1);
+            missingValHeader.Append(missingValTableHeader2);
 
             int stdDevCol = 0;
             int missingValCol = 0;
@@ -316,7 +327,7 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
                     else
                     {
                         missingValCol = 0;
-                        missingFields.Append("\n");
+                        missingFields.Append("|\n");
                     }
                 }
             }
@@ -343,9 +354,9 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
                 {
                     for (int i = missingValCol; i < numMissingValCols; i++)
                     {
-                        missingFields.Append("||");
+                        missingFields.Append("|");
                     }
-                    missingFields.Append("|\n");
+                    missingFields.Append("\n");
                 }
                 missingFields.Insert(0, missingValHeader);
                 missingFields.Append("\n\n");

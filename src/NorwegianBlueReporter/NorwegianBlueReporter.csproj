@@ -57,9 +57,6 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Markdown.Pdf">
-      <HintPath>..\..\..\FSharp.Markdown.Pdf\bin\FSharp.Markdown.Pdf.dll</HintPath>
-    </Reference>
     <Reference Include="MigraDoc.DocumentObjectModel">
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
     </Reference>
@@ -89,6 +86,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FSharp.Markdown.Pdf\src\FSharp.Markdown.Pdf\FSharp.Markdown.Pdf.fsproj">
+      <Project>{9f3249dc-0d86-4945-a39f-d5d41dbf2bb8}</Project>
+      <Name>FSharp.Markdown.Pdf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LaserPrinter\LaserPrinter.csproj">
       <Project>{1b6edf1c-1fa0-46af-bcf8-fc225da4e4be}</Project>
       <Name>LaserPrinter</Name>

@@ -26,7 +26,19 @@ namespace LaserPrinter.Graphs
             };
 
             XSeries xseries = chart.XValues.AddXSeries();
-            xseries.Add(GraphData.Labels.ToArray());
+
+            // HACK - to many labels on an axis -> black goo
+            // Until have time to do something better, take the first and last of the 
+            // supplied labels; they'll be placed at the two ends of the axis.
+            if (GraphData.Labels.Count >= 1)
+            {
+                xseries.Add(GraphData.Labels[0]);
+            }
+
+            if (GraphData.Labels.Count >= 2)
+            {
+                xseries.Add(GraphData.Labels[GraphData.Labels.Count - 1]);
+            }
 
             return chart;
         }

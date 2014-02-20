@@ -60,11 +60,12 @@ namespace NorwegianBlueReporter
             // TODO: Populate these by reflection
             // Set analysis
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
-            setAnalysisMethods.Add(setAnalyzers.SummaryStats);
             setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
+            setAnalysisMethods.Add(setAnalyzers.SummaryStats);
 
             // individual stat analysis
-            statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
+            // statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
+            statAnalysisMethods.Add(statAnalyzers.SummaryStatComparisonAsTables);
 
             stats.Analyze(setAnalysisMethods, statAnalysisMethods);
 
@@ -80,15 +81,22 @@ namespace NorwegianBlueReporter
             }
 
             // TODO: Immediately - fix the overly large headers
-            var headerStyle = new Style("MdHeading1", "Normal")
-                {
-                    Font =
-                        {
-                            Size = "10pt"
-                        }
-                };
+            const int numHeaderLevels = 6;
+            for (int i = 1; i <= numHeaderLevels; i++)
+            {
+                var mdHeaderName = string.Format("MdHeading{0}", i);
+                var mdHeaderBaseName = string.Format("Heading{0}", i);
+                var mdHeaderStyle = new Style(mdHeaderName, mdHeaderBaseName);
+                mdHeaderStyle.Font.Bold = true;
+                mdHeaderStyle.Font.Size = 8 + (numHeaderLevels - i)*2;
+                mdHeaderStyle.ParagraphFormat.SpaceBefore = Unit.FromPoint(numHeaderLevels - i);
+                document.Add(mdHeaderStyle);
+            }
 
-            document.Add(headerStyle);
+            var style = document.Styles.Normal;
+            style.ParagraphFormat.SpaceBefore = Unit.FromPoint(6d);
+            style.ParagraphFormat.SpaceAfter = Unit.FromPoint(6d);
+ 
             document.AddMarkdown(@"# All Stats
 Some text.
 
@@ -113,11 +121,29 @@ Some more text...
                 }
             }
 
+
+            //TODO: would be nice to reduce the size of the "Each Stats" output section
+            // below worked for all top level paragraphs, but needs to recursively go through each
+            // element.Elements recursively and apply the font size to each paragraph.
+            // NOTE: using GetType/ "is" from object worked fine for me, but making element a 
+            // DocumentElement -> I couldn't use it as a paragraph etc...???? Odd???
+            foreach (object element in document.LastSection.Elements)
+            {
+                if (element is Paragraph)
+                {
+                    (element as Paragraph).Format.Font.Size = Unit.FromPoint(8);
+                }
+            }
             const string fileName = "Experiment Alpha.pdf";
             const string ext = ".pdf";
             document.SaveFile(fileName, ext);
 
-            Process.Start(fileName);
+            //Process.Start(fileName);
+
+
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("Press enter to close...");
+            Console.ReadLine();
         }
     }
 }
