@@ -122,17 +122,10 @@
     <Compile Include="Graphs\LineStackedGraph.cs" />
     <Compile Include="Graphs\Graph.cs" />
     <Compile Include="Graphs\PieGraph.cs" />
-    <Compile Include="Obsolete\GraphManager.cs" />
-    <Compile Include="Obsolete\DocumentManager.cs" />
     <Compile Include="Graphs\LineGraph.cs" />
     <Compile Include="Graphs\ColorTableGraph.cs" />
-    <Compile Include="Obsolete\GraphType.cs" />
-    <Compile Include="Obsolete\IDocumentManager.cs" />
-    <Compile Include="Obsolete\IGraphManager.cs" />
-    <Compile Include="Obsolete\ITableManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Obsolete\TableManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
