@@ -112,6 +112,8 @@ namespace LaserPrinter.Graphs
                 series.Name = seriesShortName.ToString();
                 series.Add(seriesData.Data.ToArray());
 
+                series.MarkerStyle = MarkerStyle.None;
+
                 seriesShortName++;
                 if (seriesShortName > 'Z')
                 {

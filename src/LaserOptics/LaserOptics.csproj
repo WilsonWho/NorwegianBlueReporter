@@ -7,8 +7,8 @@
     <ProjectGuid>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StatsReader</RootNamespace>
-    <AssemblyName>StatsReader</AssemblyName>
+    <RootNamespace>LaserOptics</RootNamespace>
+    <AssemblyName>LaserOptics</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
