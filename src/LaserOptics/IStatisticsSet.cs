@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace StatsReader
+namespace LaserOptics
 {
 
     public interface IStatisticsSet

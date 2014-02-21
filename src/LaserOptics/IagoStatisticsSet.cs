@@ -5,7 +5,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 
-namespace StatsReader
+namespace LaserOptics
 {
     public class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
     {

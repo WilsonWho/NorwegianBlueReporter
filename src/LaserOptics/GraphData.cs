@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace StatsReader
+namespace LaserOptics
 {
     public enum GraphType
     {

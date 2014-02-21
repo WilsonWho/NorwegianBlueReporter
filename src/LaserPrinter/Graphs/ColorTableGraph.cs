@@ -2,7 +2,7 @@
 using System.Linq;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
-using StatsReader;
+using LaserOptics;
 
 namespace LaserPrinter.Graphs
 {

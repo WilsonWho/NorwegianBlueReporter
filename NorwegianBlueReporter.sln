@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsReader", "src\StatsReader\StatsReader.csproj", "{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CED169D0-3979-4E89-9D85-11246F9AA68C}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -16,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlueReporter", "sr
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Markdown.Pdf", "src\FSharp.Markdown.Pdf\src\FSharp.Markdown.Pdf\FSharp.Markdown.Pdf.fsproj", "{9F3249DC-0D86-4945-A39F-D5D41DBF2BB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaserOptics", "src\LaserOptics\LaserOptics.csproj", "{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,18 +26,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|x64.ActiveCfg = Debug|x64
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|x64.Build.0 = Debug|x64
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|x64.ActiveCfg = Release|x64
-		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|x64.Build.0 = Release|x64
 		{1B6EDF1C-1FA0-46AF-BCF8-FC225DA4E4BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1B6EDF1C-1FA0-46AF-BCF8-FC225DA4E4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B6EDF1C-1FA0-46AF-BCF8-FC225DA4E4BE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -71,6 +59,18 @@ Global
 		{9F3249DC-0D86-4945-A39F-D5D41DBF2BB8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9F3249DC-0D86-4945-A39F-D5D41DBF2BB8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9F3249DC-0D86-4945-A39F-D5D41DBF2BB8}.Release|x64.ActiveCfg = Release|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|x64.ActiveCfg = Debug|x64
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Debug|x64.Build.0 = Debug|x64
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|x64.ActiveCfg = Release|x64
+		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

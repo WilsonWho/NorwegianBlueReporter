@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using LaserPrinter;
 using MigraDoc.DocumentObjectModel;
-using StatsReader;
+using LaserOptics;
 
 namespace NorwegianBlueReporter
 {

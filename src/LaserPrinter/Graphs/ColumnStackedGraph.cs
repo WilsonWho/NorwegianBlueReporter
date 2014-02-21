@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MigraDoc.DocumentObjectModel;
+﻿using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
-using StatsReader;
+using LaserOptics;
 
 namespace LaserPrinter.Graphs
 {

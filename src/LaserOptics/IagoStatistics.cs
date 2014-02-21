@@ -10,7 +10,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace StatsReader
+namespace LaserOptics
 {
     class IagoStatistics : IStatistics, IStatisticsAnalysis
     {

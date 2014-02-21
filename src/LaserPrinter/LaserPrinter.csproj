@@ -136,9 +136,9 @@
       <Project>{9f3249dc-0d86-4945-a39f-d5d41dbf2bb8}</Project>
       <Name>FSharp.Markdown.Pdf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StatsReader\StatsReader.csproj">
-      <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
-      <Name>StatsReader</Name>
+    <ProjectReference Include="..\LaserOptics\LaserOptics.csproj">
+      <Project>{6b0bb122-19c3-47a2-90f7-fb5d1299e82e}</Project>
+      <Name>LaserOptics</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

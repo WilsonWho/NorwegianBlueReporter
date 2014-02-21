@@ -2,7 +2,7 @@
 using FSharp.Markdown.Pdf;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
-using StatsReader;
+using LaserOptics;
 using iTextSharp.text.pdf;
 
 namespace LaserPrinter
