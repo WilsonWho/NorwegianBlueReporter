@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using LaserPrinter;
 using MigraDoc.DocumentObjectModel;
@@ -11,52 +12,14 @@ namespace NorwegianBlueReporter
     {
         static void Main(string[] args)
         {
+            var options = ParseCommandLineArgs(args);
+
             string markdown = string.Empty;
-            string fileName = string.Empty;
+            string iagoStatsInputFileName = string.Empty;
             string output = string.Empty;
 
-            // Parse command line arguments
-            var options = new CommandLineOptions();
-            if (CommandLine.Parser.Default.ParseArguments(args, options))
-            {
-                if (!string.IsNullOrEmpty(options.InputFileName))
-                {
-                    Console.WriteLine("Input file: {0}", options.InputFileName);
-                    fileName = options.InputFileName;
-                }
-                else
-                {
-                    throw new ArgumentException("No stats log was provided ...");
-                }
 
-                if (!string.IsNullOrEmpty(options.OutputFileName))
-                {
-                    Console.WriteLine("File saved as {0}", options.OutputFileName);
-                    output = options.OutputFileName;
-                }
-                else
-                {
-                    throw new ArgumentException("No output file was specified ...");
-                }
-
-                if (!string.IsNullOrEmpty(options.AttachmentsDirectory))
-                {
-                    Console.WriteLine("Attachments taken from {0}", options.AttachmentsDirectory);
-                }
-
-                if (!string.IsNullOrEmpty(options.Markdown))
-                {
-                    Console.WriteLine("Using markdown file {0}", options.Markdown);
-
-                    markdown = File.ReadAllText(options.Markdown);
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid command line arguments!");
-            }
-
-            StreamReader reader = File.OpenText(fileName);
+            StreamReader reader = File.OpenText(iagoStatsInputFileName);
             var stats = new IagoStatisticsSet();
             stats.Parse(reader);
 
@@ -90,13 +53,6 @@ namespace NorwegianBlueReporter
                 document.AddMarkdown(markdown);
             }
 
-            // TODO: Immediately - read an intro chunk of markdown from a file and insert it. E.g. -intro= commandline option
-            if (!string.IsNullOrEmpty(markdown))
-            {
-                document.AddMarkdown(markdown);
-            }
-
-            // TODO: Immediately - fix the overly large headers
             const int numHeaderLevels = 6;
             for (int i = 1; i <= numHeaderLevels; i++)
             {
@@ -159,9 +115,68 @@ The following sections are an analysis for anomolies for each entry in the colle
 
             //Process.Start(fileName);
 
-            Console.WriteLine("-----------------------");
-            Console.WriteLine("Press enter to close...");
-            Console.ReadLine();
+            // pause if a debugger is running, so we can see any console output
+            if (Debugger.IsAttached)
+            {
+                Console.WriteLine("-----------------------");
+                Console.WriteLine("Press enter to close...");
+                Console.ReadLine();
+            }
+        }
+
+        static AppOptions ParseCommandLineArgs(string[] args)
+        {
+            string iagoStatsInputFileName = null;
+            string outputFileName = null;
+            string attachmentsSourceDirectory = null;
+            string markdownFileName = null;
+
+
+            // Parse command line arguments
+            var options = new CommandLineOptions();
+            if (CommandLine.Parser.Default.ParseArguments(args, options))
+            {
+                if (!string.IsNullOrEmpty(options.InputFileName))
+                {
+                    Console.WriteLine("Input file: {0}", options.InputFileName);
+                    iagoStatsInputFileName = options.InputFileName;
+                }
+                else
+                {
+                    throw new ArgumentException("No stats log was provided ...");
+                }
+
+                if (!string.IsNullOrEmpty(options.OutputFileName))
+                {
+                    Console.WriteLine("File saved as {0}", options.OutputFileName);
+                    outputFileName = options.OutputFileName;
+                }
+                else
+                {
+                    throw new ArgumentException("No output file was specified ...");
+                }
+
+                if (!string.IsNullOrEmpty(options.AttachmentsDirectory))
+                {
+                    Console.WriteLine("Attachments taken from {0}", options.AttachmentsDirectory);
+                    attachmentsSourceDirectory = options.AttachmentsDirectory;
+                }
+
+                if (!string.IsNullOrEmpty(options.Markdown))
+                {
+                    Console.WriteLine("Using markdown file {0}", options.Markdown);
+
+                    markdownFileName = options.Markdown;
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid command line arguments!");
+            }
+
+
+            return new AppOptions(new Dictionary<Type, string>() {{typeof(IagoStatisticsSet), iagoStatsInputFileName}},
+                                  outputFileName, attachmentsSourceDirectory, markdownFileName);
         }
     }
 }
