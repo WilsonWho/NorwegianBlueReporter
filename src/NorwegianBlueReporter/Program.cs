@@ -14,14 +14,11 @@ namespace NorwegianBlueReporter
         {
             var options = ParseCommandLineArgs(args);
 
-            string markdown = string.Empty;
-            string iagoStatsInputFileName = string.Empty;
-            string output = string.Empty;
-
-
-            StreamReader reader = File.OpenText(iagoStatsInputFileName);
+            StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet)]);
             var stats = new IagoStatisticsSet();
             stats.Parse(reader);
+
+            reader.Close();
 
             var setAnalyzers = new CommonStatSetAnalysis();
             var statAnalyzers = new CommonStatAnalysis();
@@ -48,8 +45,9 @@ namespace NorwegianBlueReporter
             var document = new Document();
             
             // Add notes about the previous report if available
-            if (!string.IsNullOrEmpty(markdown))
+            if (!string.IsNullOrEmpty(options.MarkdownNotesFileName))
             {
+                var markdown = File.ReadAllText(options.MarkdownNotesFileName);
                 document.AddMarkdown(markdown);
             }
 
@@ -111,7 +109,7 @@ The following sections are an analysis for anomolies for each entry in the colle
             //}
 
             const string ext = ".pdf";
-            document.SaveFile(output, ext);
+            document.SaveFile(options.OutputFileName, ext);
 
             //Process.Start(fileName);
 
