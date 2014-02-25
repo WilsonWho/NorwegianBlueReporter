@@ -6,8 +6,6 @@ namespace NorwegianBlueReporter
 {
     class AppOptions
     {
-
-
         public Dictionary<Type, string> InputFileNames { get; private set; }
         public string OutputFileName { get; private set; }
         public string AttachmentsDirectory { get; private set; }

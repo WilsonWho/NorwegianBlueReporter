@@ -5,6 +5,8 @@ using System.IO;
 using LaserPrinter;
 using MigraDoc.DocumentObjectModel;
 using LaserOptics;
+using NorwegianBlueReporter.Yaml;
+using NorwegianBlueReporter.Yaml.DTOs;
 
 namespace NorwegianBlueReporter
 {
@@ -13,6 +15,9 @@ namespace NorwegianBlueReporter
         static void Main(string[] args)
         {
             var options = ParseCommandLineArgs(args);
+
+            var configuration = YamlParser.Instance.Deserialize<Configuration>(@"../../../config.yaml");
+            var iagoRuleSet = YamlParser.Instance.GetConfiguration<IagoStatisticsSet>(configuration);
 
             StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet)]);
             var stats = new IagoStatisticsSet();
@@ -124,6 +129,7 @@ The following sections are an analysis for anomolies for each entry in the colle
 
         static AppOptions ParseCommandLineArgs(string[] args)
         {
+            string configurationFileName = null;
             string iagoStatsInputFileName = null;
             string outputFileName = null;
             string attachmentsSourceDirectory = null;
@@ -173,7 +179,7 @@ The following sections are an analysis for anomolies for each entry in the colle
             }
 
 
-            return new AppOptions(new Dictionary<Type, string>() {{typeof(IagoStatisticsSet), iagoStatsInputFileName}},
+            return new AppOptions(new Dictionary<Type, string> {{typeof (IagoStatisticsSet), iagoStatsInputFileName}},
                                   outputFileName, attachmentsSourceDirectory, markdownFileName);
         }
     }

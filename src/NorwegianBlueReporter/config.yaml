@@ -1,0 +1,17 @@
+﻿Rules:
+  - Type: "IagoStatisticsSet"
+    Filters:
+        - "one"
+        - "two"
+        - "three"
+    Settings:
+        GraphType : "OxyPlot"
+        Param : "Value"
+
+  - Type: "IIS"
+    Filters:
+        - "four"
+        - "five"
+    Settings:
+        GraphType : "MigraDoc"
+        Param : "Value"
