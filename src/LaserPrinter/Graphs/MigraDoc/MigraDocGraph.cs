@@ -20,7 +20,7 @@ namespace LaserPrinter.Graphs.MigraDoc
             GraphData = graphData;
         }
 
-        protected override Chart SetUp(ChartType chartType, Document document)
+        protected Chart SetUp(ChartType chartType, Document document)
         {
             var chart = new Chart
             {

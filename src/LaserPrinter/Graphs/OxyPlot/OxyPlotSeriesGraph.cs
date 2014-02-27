@@ -14,23 +14,9 @@ namespace LaserPrinter.Graphs.OxyPlot
 
         public override void Draw(Document document)
         {
-            var myModel = new PlotModel("Example 1");
+            var plotModel = SetUp(document);
 
-            var lineSeries = new LineSeries
-                {
-                    Points = new List<IDataPoint>
-                        {
-                            new DataPoint(1, 4),
-                            new DataPoint(2, 2),
-                            new DataPoint(3, 2),
-                            new DataPoint(4, 1),
-                            new DataPoint(5, 6),
-                            new DataPoint(6, 2),
-                            new DataPoint(7, 3)
-                        }
-                };
-
-            myModel.Series.Add(lineSeries);
+            ExportPng(@"Wassup.png", plotModel);
         }
     }
 }

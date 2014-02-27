@@ -9,7 +9,7 @@ namespace LaserPrinter
     public static class GraphFactory
     {
         // Grab plot tool from YAML file
-        public static TargetLibrary GetTargetLibrary()
+        private static TargetLibrary GetTargetLibrary()
         {
             return TargetLibrary.OxyPlot; // Need to actually fetch from YAML
         }
@@ -35,6 +35,7 @@ namespace LaserPrinter
             {
                 case GraphType.Line:
                 case GraphType.LineStacked:
+                case GraphType.Column:
                 case GraphType.ColumnStacked:
                     return new MigraDocSeriesGraph(graphData);
                 case GraphType.ColorTable:
@@ -50,8 +51,10 @@ namespace LaserPrinter
             {
                 case GraphType.Line:
                 case GraphType.LineStacked:
-                case GraphType.ColumnStacked:
                     return new OxyPlotSeriesGraph(graphData);
+                case GraphType.Column:
+                case GraphType.ColumnStacked:
+                    return new MigraDocSeriesGraph(graphData);
                 case GraphType.ColorTable:
                     return new OxyPlotSeriesGraph(graphData);
                 default:

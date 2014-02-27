@@ -173,7 +173,7 @@ The following sections are an analysis for anomolies for each entry in the colle
             }
 
 
-            return new AppOptions(new Dictionary<Type, string>() {{typeof(IagoStatisticsSet), iagoStatsInputFileName}},
+            return new AppOptions(new Dictionary<Type, string> {{typeof (IagoStatisticsSet), iagoStatsInputFileName}},
                                   outputFileName, attachmentsSourceDirectory, markdownFileName);
         }
     }
