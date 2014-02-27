@@ -4,11 +4,11 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using LaserOptics;
 
-namespace LaserPrinter.Graphs
+namespace LaserPrinter.Graphs.MigraDoc
 {
-    public class ColorTableGraph : Graph
+    public class ColorTable : MigraDocGraph
     {
-        public ColorTableGraph(GraphData graphData) : base(graphData)
+        public ColorTable(GraphData graphData) : base(graphData)
         {
         }
 

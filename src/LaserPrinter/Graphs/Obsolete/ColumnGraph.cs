@@ -3,9 +3,9 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using LaserOptics;
 
-namespace LaserPrinter.Graphs
+namespace LaserPrinter.Graphs.MigraDoc
 {
-    public class ColumnGraph : Graph
+    public class ColumnGraph : MigraDocGraph
     {
         public ColumnGraph(GraphData graphData)
             : base(graphData)
