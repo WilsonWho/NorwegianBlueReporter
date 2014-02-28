@@ -2,9 +2,9 @@
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using LaserOptics;
 
-namespace LaserPrinter.Graphs
+namespace LaserPrinter.Graphs.MigraDoc
 {
-    public class ExplodedPieGraph : Graph
+    public class ExplodedPieGraph : MigraDocGraph
     {
         public ExplodedPieGraph(GraphData graphData) : base(graphData)
         {

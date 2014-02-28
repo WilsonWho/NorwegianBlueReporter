@@ -1,43 +1,63 @@
 ﻿using System.ComponentModel;
-using LaserPrinter.Graphs;
 using LaserOptics;
+using LaserPrinter.Graphs;
+using LaserPrinter.Graphs.MigraDoc;
+using LaserPrinter.Graphs.OxyPlot;
 
 namespace LaserPrinter
 {
     public static class GraphFactory
     {
+        // Grab plot tool from YAML file
+        private static TargetLibrary GetTargetLibrary()
+        {
+            return TargetLibrary.OxyPlot; // Need to actually fetch from YAML
+        }
+
         public static Graph CreateGraph(GraphData graphData)
         {
-            Graph graph;
+            var targetLibrary = GetTargetLibrary();
 
+            switch (targetLibrary)
+            {
+                case TargetLibrary.MigraDoc:
+                    return CreateMigraDocGraph(graphData);
+                case TargetLibrary.OxyPlot:
+                    return CreateOxyPlotGraph(graphData);
+                default:
+                    throw new InvalidEnumArgumentException("Graph tool is not supported ...");
+            }
+        }
+
+        private static Graph CreateMigraDocGraph(GraphData graphData)
+        {
             switch (graphData.GraphType)
             {
                 case GraphType.Line:
-                    graph = new LineGraph(graphData);
-                    break;
                 case GraphType.LineStacked:
-                    graph = new LineStackedGraph(graphData);
-                    break;
                 case GraphType.Column:
-                    graph = new ColumnGraph(graphData);
-                    break;
                 case GraphType.ColumnStacked:
-                    graph = new ColumnStackedGraph(graphData);
-                    break;
-                case GraphType.Pie:
-                    graph = new PieGraph(graphData);
-                    break;
-                case GraphType.ExplodedPie:
-                    graph = new ExplodedPieGraph(graphData);
-                    break;
-                case GraphType.ColorTableGraph:
-                    graph = new ColorTableGraph(graphData);
-                    break;
+                    return new MigraDocSeriesGraph(graphData);
+                case GraphType.ColorTable:
+                    return new MigraDocColorTableGraph(graphData);
                 default:
-                    throw new InvalidEnumArgumentException("Unsupported graph type ...");
+                    throw new InvalidEnumArgumentException("Graph tool is not supported ...");
             }
+        }
 
-            return graph;
+        private static Graph CreateOxyPlotGraph(GraphData graphData)
+        {
+            switch (graphData.GraphType)
+            {
+                case GraphType.Line:
+                case GraphType.LineStacked:
+                    return new OxyPlotSeriesGraph(graphData);
+                case GraphType.Column:
+                case GraphType.ColumnStacked:
+                    return new MigraDocSeriesGraph(graphData);
+                default:
+                    throw new InvalidEnumArgumentException("Graph tool is not supported ...");
+            }
         }
     }
 }

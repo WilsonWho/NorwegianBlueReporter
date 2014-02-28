@@ -2,9 +2,9 @@
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using LaserOptics;
 
-namespace LaserPrinter.Graphs
+namespace LaserPrinter.Graphs.MigraDoc
 {
-    public class ColumnStackedGraph : Graph
+    public class ColumnStackedGraph : MigraDocGraph
     {
         public ColumnStackedGraph(GraphData graphData)
             : base(graphData)
