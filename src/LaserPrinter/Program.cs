@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using LaserOptics;
 using MigraDoc.DocumentObjectModel;
 
@@ -49,6 +50,8 @@ namespace LaserPrinter
 
             // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+            document.AddSection();
+
             var data = new List<SeriesData>
                 {
                     new SeriesData("Series1", new List<double> {15.0, 26.0, 52.0}),
@@ -67,6 +70,8 @@ namespace LaserPrinter
 
             var graphData = new GraphData("OxyPlot", labels, false, LegendPositionEnum.Left, false, GraphType.LineStacked, data);
             var hi = GraphFactory.CreateGraph(graphData);
+            hi.Draw(document);
+            hi.Draw(document);
             hi.Draw(document);
 
             // TODO -- changed the constructor for DocumentManager; so the next part is probably busted
@@ -95,6 +100,7 @@ namespace LaserPrinter
             //const string embed = "TestCSV.csv";
             //documentManager.EmbedFile(fileName, embed);
 
+            document.SaveFile("Test", ".pdf");
             //Process.Start(fileName);
         }
     }

@@ -135,7 +135,6 @@
     <Compile Include="Graphs\Obsolete\PieGraph.cs" />
     <Compile Include="Graphs\Obsolete\LineGraph.cs" />
     <Compile Include="Graphs\Obsolete\ColorTableGraph.cs" />
-    <Compile Include="Graphs\OxyPlot\OxyPlotColorTableGraph.cs" />
     <Compile Include="Graphs\OxyPlot\OxyPlotGraph.cs" />
     <Compile Include="Graphs\OxyPlot\OxyPlotSeriesGraph.cs" />
     <Compile Include="TargetLibrary.cs" />

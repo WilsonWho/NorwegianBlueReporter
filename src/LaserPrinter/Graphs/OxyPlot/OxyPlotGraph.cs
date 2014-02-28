@@ -48,7 +48,7 @@ namespace LaserPrinter.Graphs.OxyPlot
 
         protected void ExportPng(string fileName, PlotModel plotModel)
         {
-            PngExporter.Export(plotModel, fileName, 600, 400, Brushes.White);
+            PngExporter.Export(plotModel, fileName, 800, 600, Brushes.White);
         }
 
         private void CreateLineSeries(PlotModel plotModel)

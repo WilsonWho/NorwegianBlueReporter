@@ -55,8 +55,6 @@ namespace LaserPrinter
                 case GraphType.Column:
                 case GraphType.ColumnStacked:
                     return new MigraDocSeriesGraph(graphData);
-                case GraphType.ColorTable:
-                    return new OxyPlotSeriesGraph(graphData);
                 default:
                     throw new InvalidEnumArgumentException("Graph tool is not supported ...");
             }

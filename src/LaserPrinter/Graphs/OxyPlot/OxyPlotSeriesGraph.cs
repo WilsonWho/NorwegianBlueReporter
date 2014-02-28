@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using LaserOptics;
 using MigraDoc.DocumentObjectModel;
 using OxyPlot;
@@ -15,8 +16,12 @@ namespace LaserPrinter.Graphs.OxyPlot
         public override void Draw(Document document)
         {
             var plotModel = SetUp(document);
+            var tmp = Path.GetTempFileName();
 
-            ExportPng(@"Wassup.png", plotModel);
+            ExportPng(tmp, plotModel);
+
+            var image = document.LastSection.AddImage(tmp);
+            image.Width = Unit.FromPoint(400);
         }
     }
 }

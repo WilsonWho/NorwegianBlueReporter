@@ -78,21 +78,21 @@ The following sections are various analysis over the entire set of data collecte
                 document.AppendAnalysisNote(analysisNote);
             }
 
-            document.AddMarkdown(@"# Each Stat
+//            document.AddMarkdown(@"# Each Stat
+//
+//The following sections are an analysis for anomolies for each entry in the collected stats file.
+//
+//");
 
-The following sections are an analysis for anomolies for each entry in the collected stats file.
-
-");
-
-            foreach (var stat in stats.Statistics)
-            {
-                var timestamp = string.Format("###{0}\n", stat.TimeStamp);
-                document.AppendMarkdown(timestamp);
-                foreach (var analysisNote in stat.AnalysisNotes)
-                {
-                    document.AppendAnalysisNote(analysisNote);
-                }
-            }
+//            foreach (var stat in stats.Statistics)
+//            {
+//                var timestamp = string.Format("###{0}\n", stat.TimeStamp);
+//                document.AppendMarkdown(timestamp);
+//                foreach (var analysisNote in stat.AnalysisNotes)
+//                {
+//                    document.AppendAnalysisNote(analysisNote);
+//                }
+//            }
 
 
             //TODO: would be nice to reduce the size of the "Each Stats" output section
