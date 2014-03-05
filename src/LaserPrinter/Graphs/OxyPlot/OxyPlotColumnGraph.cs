@@ -1,4 +1,5 @@
 ﻿using LaserOptics;
+using LaserOptics.Common;
 using MigraDoc.DocumentObjectModel;
 using OxyPlot;
 using OxyPlot.Axes;

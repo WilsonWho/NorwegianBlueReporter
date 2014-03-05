@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NorwegianBlueReporter.Yaml.DTOs
+namespace LaserYaml.DTOs
 {
     public class Rule
     {

@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 
-namespace LaserOptics
+namespace LaserOptics.Common
 {
     public class AnalysisNote
     {

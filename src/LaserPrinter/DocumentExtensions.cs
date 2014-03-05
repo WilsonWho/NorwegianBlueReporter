@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using FSharp.Markdown.Pdf;
+using LaserOptics.Common;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
 using LaserOptics;

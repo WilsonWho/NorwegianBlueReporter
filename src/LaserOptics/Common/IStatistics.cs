@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace LaserOptics
+namespace LaserOptics.Common
 {
     public interface IStatistics
     {

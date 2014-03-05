@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using LaserOptics;
+using LaserOptics.Common;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using OxyPlot;

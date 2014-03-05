@@ -171,6 +171,12 @@
   <ItemGroup>
     <Folder Include="IISAccessStats\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LaserYaml\LaserYaml.csproj">
+      <Project>{fcc682bb-709b-4baa-8380-41c53838360a}</Project>
+      <Name>LaserYaml</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

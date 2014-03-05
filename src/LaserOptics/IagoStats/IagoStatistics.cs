@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Dynamic;
-using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using System.Text;
 using System.Text.RegularExpressions;
+using LaserOptics.Common;
+using LaserYaml;
+using LaserYaml.DTOs;
 
-namespace LaserOptics
+namespace LaserOptics.IagoStats
 {
     class IagoStatistics : IStatistics, IStatisticsAnalysis
     {
+        private Rule _rule;
+
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}
         private static readonly Regex LineMatcher = new Regex(@"^INF \[(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})-(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2})\.(?<millis>\d{3})\] stats: \{(?<stats>.*)\}$", RegexOptions.Compiled);
@@ -32,7 +32,12 @@ namespace LaserOptics
         private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
         private ReadOnlyCollection<AnalysisNote> _roAnalysisNotes;
         public DateTime TimeStamp { get ; private set; }
-        
+
+        public IagoStatistics(Configuration configuration)
+        {
+            _rule = configuration.GetConfigurationFor<IagoStatistics>();
+        }
+
         public ReadOnlyDictionary<string, double> Stats
         {
             get { return _roStats ?? (_roStats = new ReadOnlyDictionary<String, double>(_stats)); }

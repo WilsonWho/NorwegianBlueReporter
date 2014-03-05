@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using LaserOptics.Common;
+using LaserOptics.IagoStats;
 using LaserPrinter;
+using LaserYaml;
+using LaserYaml.DTOs;
 using MigraDoc.DocumentObjectModel;
-using LaserOptics;
-using NorwegianBlueReporter.Yaml;
-using NorwegianBlueReporter.Yaml.DTOs;
 
 namespace NorwegianBlueReporter
 {
@@ -16,11 +17,19 @@ namespace NorwegianBlueReporter
         {
             var options = ParseCommandLineArgs(args);
 
-            var configuration = YamlParser.Instance.Deserialize<Configuration>(@"../../../config.yaml");
-            var iagoRuleSet = YamlParser.Instance.GetConfiguration<IagoStatisticsSet>(configuration);
+            // Grab all the required settings from YAML
+            const string path = @"../../../config.yaml";
+            var content = File.ReadAllText(path);
+            var configuration = YamlParser.Instance.Deserialize<Configuration>(content);
 
-            StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet)]);
-            var stats = new IagoStatisticsSet();
+            var target = (TargetLibrary) Enum.Parse(typeof (TargetLibrary), configuration.AppOptions.GraphType);
+            GraphFactory.SetTargetLibrary(target);
+
+            var fileType = typeof (IagoStatisticsSet).Name;
+            StreamReader reader = File.OpenText(configuration.AppOptions.InputFileNames[fileType]);
+
+            //StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
+            var stats = new IagoStatisticsSet(configuration);
             stats.Parse(reader);
 
             reader.Close();
@@ -130,7 +139,7 @@ The following sections are various analysis over the entire set of data collecte
         static AppOptions ParseCommandLineArgs(string[] args)
         {
             string configurationFileName = null;
-            string iagoStatsInputFileName = null;
+            string inputFileName = null;
             string outputFileName = null;
             string attachmentsSourceDirectory = null;
             string markdownFileName = null;
@@ -143,7 +152,7 @@ The following sections are various analysis over the entire set of data collecte
                 if (!string.IsNullOrEmpty(options.InputFileName))
                 {
                     Console.WriteLine("Input file: {0}", options.InputFileName);
-                    iagoStatsInputFileName = options.InputFileName;
+                    inputFileName = options.InputFileName;
                 }
                 else
                 {
@@ -179,8 +188,14 @@ The following sections are various analysis over the entire set of data collecte
             }
 
 
-            return new AppOptions(new Dictionary<Type, string> {{typeof (IagoStatisticsSet), iagoStatsInputFileName}},
-                                  outputFileName, attachmentsSourceDirectory, markdownFileName);
+            return new AppOptions
+                {
+                    InputFileNames = new Dictionary<string, string> {{typeof (IagoStatisticsSet).Name, inputFileName}},
+                    OutputFileName = outputFileName,
+                    AttachmentsDirectory = attachmentsSourceDirectory,
+                    MarkdownNotesFileName = markdownFileName,
+                    GraphType = "OxyPlot"
+                };
         }
     }
 }

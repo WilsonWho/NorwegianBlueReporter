@@ -4,9 +4,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using LaserOptics.Utilities;
 using OpenCvSharp;
 
-namespace LaserOptics
+namespace LaserOptics.Common
 {
     // thought: StatsSets have access to the individual stats, but stats only have access to themselves.
     // Thus analyzing individual stats happens AFTER analyzing the set, and may require information from

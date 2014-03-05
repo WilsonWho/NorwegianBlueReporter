@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace LaserOptics
+namespace LaserOptics.Utilities
 {
     public static class StringExtensions
     {

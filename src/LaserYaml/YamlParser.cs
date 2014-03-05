@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using NorwegianBlueReporter.Yaml.DTOs;
+﻿using System.IO;
 using YamlDotNet.Serialization;
 
-namespace NorwegianBlueReporter.Yaml
+namespace LaserYaml
 {
     public class YamlParser
     {
@@ -15,19 +12,12 @@ namespace NorwegianBlueReporter.Yaml
             get { return _instance ?? (_instance = new YamlParser()); }
         }
 
-        public T Deserialize<T>(string path)
+        public T Deserialize<T>(string content)
         {
-            var content = File.ReadAllText(path);
-
             var deserializer = new Deserializer();
             var configuration = deserializer.Deserialize<T>(new StringReader(content));
 
             return configuration;
-        }
-
-        public Rule GetConfiguration<T>(Configuration configuration)
-        {
-            return configuration.Rules.First(x => x.Type == typeof(T).Name);
         }
     }
 }

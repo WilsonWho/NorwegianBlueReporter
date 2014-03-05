@@ -1,8 +1,9 @@
-﻿using MigraDoc.DocumentObjectModel;
+﻿using LaserOptics.Common;
+using LaserPrinter.Graphs.MigraDoc;
+using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
-using LaserOptics;
 
-namespace LaserPrinter.Graphs.MigraDoc
+namespace LaserPrinter.Graphs.Obsolete
 {
     public class ExplodedPieGraph : MigraDocGraph
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using LaserOptics;
+using LaserOptics.Common;
 using MigraDoc.DocumentObjectModel;
 
 namespace LaserPrinter

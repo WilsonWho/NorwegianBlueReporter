@@ -4,16 +4,24 @@ using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using LaserOptics.Common;
+using LaserYaml.DTOs;
 
-namespace LaserOptics
+namespace LaserOptics.IagoStats
 {
     public class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
     {
+        private readonly Configuration _configuration;
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         private readonly List<IagoStatistics> _iagoStatistics = new List<IagoStatistics>();
         private ReadOnlyCollection<IStatisticsValues> _roIagoStatistics ;
         private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
         private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
+
+        public IagoStatisticsSet(Configuration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public ReadOnlyCollection<IStatisticsValues> Statistics 
         {
@@ -39,7 +47,7 @@ namespace LaserOptics
             string line;
             while ((line = input.ReadLine()) != null)
             {
-                var newStat = new IagoStatistics();
+                var newStat = new IagoStatistics(_configuration);
                 newStat.Parse(line);
                 _iagoStatistics.Add(newStat);
             }

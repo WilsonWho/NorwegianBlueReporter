@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace LaserOptics
+namespace LaserOptics.Common
 {
     public interface IStatsReader
     {
