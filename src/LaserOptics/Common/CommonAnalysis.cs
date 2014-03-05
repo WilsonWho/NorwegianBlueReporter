@@ -160,7 +160,7 @@ namespace LaserOptics
                                       false,
                                       LegendPositionEnum.Left,
                                       false,
-                                      GraphType.ColorTableGraph,
+                                      GraphType.ColorTable,
                                       series);
 
             var analysisNote = new AnalysisNote("Clustering Analysis",
