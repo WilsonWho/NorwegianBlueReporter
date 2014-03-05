@@ -3,23 +3,32 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using LaserOptics.Common;
 
-namespace LaserOptics
+namespace LaserOptics.IagoStats
 {
     public class IagoStatSetAnalysis
     {
-        public void IagoRequestLatencySummary(IStatisticsSetAnalysis statSet)
+        private readonly List<String> _requestLatencySeries;
+
+        private readonly List<string> _ignorableFields;
+        
+        public IagoStatSetAnalysis()
         {
-            var requestLatencySeries = new List<string>
+            // ToDo: pull from object config 
+            _requestLatencySeries = new List<string>
                 {
                     "client/request_latency_ms_average",
                     "client/request_latency_ms_maximum",
-                    "client/request_latency_ms_minimum",
-                    "client/request_latency_ms_p50",
-                    "client/request_latency_ms_p90",
-                    "client/request_latency_ms_p95"
+                    "client/request_latency_ms_minimum"
+//                    "client/request_latency_ms_p50",
+//                    "client/request_latency_ms_p90",
+//                    "client/request_latency_ms_p95"
                 };
+        }
 
+        public void IagoRequestLatencySummary(IStatisticsSetAnalysis statSet)
+        {
             var averages = statSet.AnalysisScratchPad.Averages;
 
             // Latency summary
@@ -28,7 +37,7 @@ namespace LaserOptics
             var notes = new StringBuilder();
 
             // get the stat-by-stat values
-            foreach (var seriesName in requestLatencySeries)
+            foreach (var seriesName in _requestLatencySeries)
             {
                 var data = new List<double>();
                 foreach (var stats in statSet.Statistics)
@@ -49,7 +58,7 @@ namespace LaserOptics
 
             // add the averages from the entire dataset for each value
             var avgRequestLatencySeries = new List<string>();
-            foreach (var series in requestLatencySeries)
+            foreach (var series in _requestLatencySeries)
             {
                 var avgSeriesName = series + " set average";
                 avgRequestLatencySeries.Add(avgSeriesName);
@@ -92,7 +101,7 @@ Missing data is replaced either with a 0 when there is no preceeding data or the
             }
 
             // Create Detailed graphs for each Client Request Latency
-            foreach (var latencySeries in requestLatencySeries)
+            foreach (var latencySeries in _requestLatencySeries)
             {
                 seriesData = new List<SeriesData>();
                 var data = new List<double>();

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using LaserOptics.Common;
+using LaserOptics.IagoStats;
 using LaserPrinter;
 using MigraDoc.DocumentObjectModel;
-using LaserOptics;
 
 namespace NorwegianBlueReporter
 {

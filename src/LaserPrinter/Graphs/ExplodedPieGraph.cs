@@ -1,6 +1,6 @@
-﻿using MigraDoc.DocumentObjectModel;
+﻿using LaserOptics.Common;
+using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
-using LaserOptics;
 
 namespace LaserPrinter.Graphs
 {

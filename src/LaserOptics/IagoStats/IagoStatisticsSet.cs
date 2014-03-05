@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using LaserOptics.Common;
 
-namespace LaserOptics
+namespace LaserOptics.IagoStats
 {
     public class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
     {

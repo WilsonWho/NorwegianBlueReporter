@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Dynamic;
-using System.Globalization;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using System.Text;
 using System.Text.RegularExpressions;
+using LaserOptics.Common;
 
-namespace LaserOptics
+namespace LaserOptics.IagoStats
 {
     class IagoStatistics : IStatistics, IStatisticsAnalysis
     {
@@ -49,6 +45,16 @@ namespace LaserOptics
         }
 
         public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
+
+        public IagoStatistics()
+        {
+            // ToDo: pull from object config
+            AnalysisScratchPad.ignorableFields = new List<string>
+                {
+                    "count",
+                    "200"
+                };
+        }
 
         public void Parse(String input)
         {

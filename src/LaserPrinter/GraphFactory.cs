@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
+using LaserOptics.Common;
 using LaserPrinter.Graphs;
-using LaserOptics;
 
 namespace LaserPrinter
 {

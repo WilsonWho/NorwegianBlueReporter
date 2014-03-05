@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using LaserOptics.Common;
+using LaserOptics.IagoStats;
 
 namespace LaserOptics
 {
