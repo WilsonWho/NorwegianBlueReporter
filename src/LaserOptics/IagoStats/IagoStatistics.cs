@@ -6,13 +6,12 @@ using System.IO;
 using System.Text.RegularExpressions;
 using LaserOptics.Common;
 using LaserYaml;
-using LaserYaml.DTOs;
 
 namespace LaserOptics.IagoStats
 {
     class IagoStatistics : IStatistics, IStatisticsAnalysis
     {
-        private Rule _rule;
+        private dynamic _configuration;
 
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}
@@ -33,9 +32,9 @@ namespace LaserOptics.IagoStats
         private ReadOnlyCollection<AnalysisNote> _roAnalysisNotes;
         public DateTime TimeStamp { get ; private set; }
 
-        public IagoStatistics(Configuration configuration)
+        public IagoStatistics()
         {
-            _rule = configuration.GetConfigurationFor<IagoStatistics>();
+            _configuration = YamlParser.GetConfiguration();
         }
 
         public ReadOnlyDictionary<string, double> Stats

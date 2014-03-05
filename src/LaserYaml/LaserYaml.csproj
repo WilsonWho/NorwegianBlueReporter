@@ -62,12 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationExtensions.cs" />
-    <Compile Include="DTOs\AppOptions.cs" />
+    <Compile Include="AppOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DTOs\Configuration.cs" />
-    <Compile Include="DTOs\Rule.cs" />
-    <Compile Include="DTOs\Settings.cs" />
     <Compile Include="YamlParser.cs" />
   </ItemGroup>
   <ItemGroup>

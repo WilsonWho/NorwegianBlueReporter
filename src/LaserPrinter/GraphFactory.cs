@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using LaserOptics;
+﻿using System;
+using System.ComponentModel;
 using LaserOptics.Common;
 using LaserPrinter.Graphs;
 using LaserPrinter.Graphs.MigraDoc;
@@ -11,33 +11,21 @@ namespace LaserPrinter
     {
         private static TargetLibrary? _targetLibrary;
 
-        // Grab plot tool from YAML file
-        public static void SetTargetLibrary(TargetLibrary targetLibrary)
-        {
-            _targetLibrary = targetLibrary; // Need to actually fetch from YAML
-        }
-
         public static Graph CreateGraph(GraphData graphData)
         {
-            if (_targetLibrary == null)
-            {
-                throw new InvalidEnumArgumentException("Enum has not been defined!");
-            }
-
-            if (graphData.GraphType == GraphType.ColorTable)
-            {
-                return new MigraDocColorTableGraph(graphData);
-            }
-
             switch (_targetLibrary)
             {
                 case TargetLibrary.MigraDoc:
                     return CreateMigraDocGraph(graphData);
-                case TargetLibrary.OxyPlot:
-                    return CreateOxyPlotGraph(graphData);
+                case TargetLibrary.OxyPlot: 
                 default:
-                    throw new InvalidEnumArgumentException("Graph tool is not supported ...");
+                    return CreateOxyPlotGraph(graphData);
             }
+        }
+
+        public static void SetTargetLibrary(string graphType)
+        {
+            _targetLibrary = (TargetLibrary) Enum.Parse(typeof (TargetLibrary), graphType);
         }
 
         private static Graph CreateMigraDocGraph(GraphData graphData)

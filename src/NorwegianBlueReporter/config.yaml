@@ -8,18 +8,11 @@
         AzurePerfStatsSet : "TBD"
     GraphType: "OxyPlot"
 
-Rules:
-  - Type: "IagoStatistics"
+IagoStatistics:
     Filters:
-        - "one"
-        - "two"
-        - "three"
-    Settings:
-        Param : "Value"
+        Name: "one"
+        Asdf: "two"
 
-  - Type: "IIS"
-    Filters:
-        - "four"
-        - "five"
-    Settings:
-        Param : "Value"
+IISStatistics:
+    SubKey: "asdf"
+    AppName: "asdf"

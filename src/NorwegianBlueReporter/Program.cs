@@ -6,7 +6,6 @@ using LaserOptics.Common;
 using LaserOptics.IagoStats;
 using LaserPrinter;
 using LaserYaml;
-using LaserYaml.DTOs;
 using MigraDoc.DocumentObjectModel;
 
 namespace NorwegianBlueReporter
@@ -17,19 +16,10 @@ namespace NorwegianBlueReporter
         {
             var options = ParseCommandLineArgs(args);
 
-            // Grab all the required settings from YAML
-            const string path = @"../../../config.yaml";
-            var content = File.ReadAllText(path);
-            var configuration = YamlParser.Instance.Deserialize<Configuration>(content);
+            GraphFactory.SetTargetLibrary(options.GraphType);
 
-            var target = (TargetLibrary) Enum.Parse(typeof (TargetLibrary), configuration.AppOptions.GraphType);
-            GraphFactory.SetTargetLibrary(target);
-
-            var fileType = typeof (IagoStatisticsSet).Name;
-            StreamReader reader = File.OpenText(configuration.AppOptions.InputFileNames[fileType]);
-
-            //StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
-            var stats = new IagoStatisticsSet(configuration);
+            StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
+            var stats = new IagoStatisticsSet();
             stats.Parse(reader);
 
             reader.Close();
@@ -138,7 +128,6 @@ The following sections are various analysis over the entire set of data collecte
 
         static AppOptions ParseCommandLineArgs(string[] args)
         {
-            string configurationFileName = null;
             string inputFileName = null;
             string outputFileName = null;
             string attachmentsSourceDirectory = null;
@@ -187,15 +176,11 @@ The following sections are various analysis over the entire set of data collecte
                 throw new ArgumentException("Invalid command line arguments!");
             }
 
-
-            return new AppOptions
-                {
-                    InputFileNames = new Dictionary<string, string> {{typeof (IagoStatisticsSet).Name, inputFileName}},
-                    OutputFileName = outputFileName,
-                    AttachmentsDirectory = attachmentsSourceDirectory,
-                    MarkdownNotesFileName = markdownFileName,
-                    GraphType = "OxyPlot"
-                };
+            return new AppOptions(outputFileName,
+                                  attachmentsSourceDirectory,
+                                  markdownFileName,
+                                  new Dictionary<string, string> {{typeof (IagoStatisticsSet).Name, inputFileName}},
+                                  "OxyPlot");
         }
     }
 }

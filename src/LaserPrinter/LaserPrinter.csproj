@@ -157,6 +157,10 @@
       <Project>{6b0bb122-19c3-47a2-90f7-fb5d1299e82e}</Project>
       <Name>LaserOptics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LaserYaml\LaserYaml.csproj">
+      <Project>{FCC682BB-709B-4BAA-8380-41C53838360A}</Project>
+      <Name>LaserYaml</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using LaserOptics.Common;
 using LaserOptics.IagoStats;
-using LaserYaml.DTOs;
 
 namespace LaserOptics
 {
@@ -13,7 +12,7 @@ namespace LaserOptics
         {
             const string filename = @"C:\git\NorwegianBlueReporter\src\StatsReader\parrot-server-stats.log";
             StreamReader reader = File.OpenText(filename);
-            var stats = new IagoStatisticsSet(new Configuration()); // Creating an empty configuration just to make this work
+            var stats = new IagoStatisticsSet();
             stats.Parse(reader);
 
             var setAnalyzers = new CommonStatSetAnalysis();

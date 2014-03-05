@@ -1,23 +1,48 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Dynamic;
+using System.IO;
 using YamlDotNet.Serialization;
 
 namespace LaserYaml
 {
     public class YamlParser
     {
-        private static YamlParser _instance;
+        private static dynamic _configuration;
+        private static string _configurationFile;
 
-        public static YamlParser Instance
+        private static ExpandoObject Configuration
         {
-            get { return _instance ?? (_instance = new YamlParser()); }
+            get
+            {
+                return _configuration ?? (_configuration = DeserializeConfiguration());
+            }
         }
 
-        public T Deserialize<T>(string content)
+        private static dynamic DeserializeConfiguration()
         {
-            var deserializer = new Deserializer();
-            var configuration = deserializer.Deserialize<T>(new StringReader(content));
+            if (string.IsNullOrEmpty(_configurationFile))
+            {
+                _configurationFile = @"../../../config.yaml";
+            }
 
-            return configuration;
+            var content = File.ReadAllText(_configurationFile);
+            var deserializer = new Deserializer();
+
+            return deserializer.Deserialize<ExpandoObject>(new StringReader(content));
+        }
+
+        public static void SetConfigurationFile(string path)
+        {
+            _configurationFile = path;
+        }
+
+        public static dynamic GetConfiguration()
+        {
+            var declaringType = new StackTrace().GetFrame(1).GetMethod().DeclaringType.Name;
+            var configuration = (IDictionary<string, object>)Configuration;
+
+            return configuration[declaringType];
         }
     }
 }
