@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using LaserOptics;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using OxyPlot;
-using OxyPlot.Series;
 using OxyPlot.WindowsForms;
 
 namespace LaserPrinter.Graphs.OxyPlot
@@ -15,6 +13,9 @@ namespace LaserPrinter.Graphs.OxyPlot
     {
         protected GraphData GraphData;
 
+        protected abstract void SetAxes(PlotModel plotModel);
+        protected abstract void AddData(PlotModel plotModel);
+
         protected OxyPlotGraph(GraphData graphData)
         {
             GraphData = graphData;
@@ -22,23 +23,13 @@ namespace LaserPrinter.Graphs.OxyPlot
 
         protected PlotModel SetUp(Document document)
         {
-            var plotModel = new PlotModel(GraphData.Title);
-
-            switch (GraphData.GraphType)
-            {
-                case GraphType.Line:
-                case GraphType.LineStacked:
-                    CreateLineSeries(plotModel);
-                    break;
-                case GraphType.Column:
-                case GraphType.ColumnStacked:
-                    CreateColumnSeries(plotModel);
-                    break;
-                default:
-                    throw new InvalidEnumArgumentException("Graph type not supported ...");
-            }
-
-            return plotModel;
+            return new PlotModel(GraphData.Title)
+                {
+                    LegendPlacement = LegendPlacement.Outside,
+                    LegendPosition = LegendPosition.BottomCenter,
+                    LegendOrientation = LegendOrientation.Horizontal,
+                    LegendPadding = 100
+                };
         }
 
         protected override void SetGlobalChartOptions(Chart chart)
@@ -46,41 +37,18 @@ namespace LaserPrinter.Graphs.OxyPlot
             throw new NotImplementedException();
         }
 
-        protected void ExportPng(string fileName, PlotModel plotModel)
+        protected string ExportPng(PlotModel plotModel)
         {
-            PngExporter.Export(plotModel, fileName, 800, 600, Brushes.White);
+            var tmp = Path.GetTempFileName();
+            PngExporter.Export(plotModel, tmp, 800, 800, Brushes.White);
+
+            return tmp;
         }
 
-        private void CreateLineSeries(PlotModel plotModel)
+        protected void SaveToMigraDocPdf(string fileName, Document document)
         {
-            foreach (SeriesData seriesData in GraphData.SeriesData)
-            {
-                var lineSeries = new LineSeries(seriesData.Name);
-
-                for (int j = 0; j < seriesData.Data.Count; j++)
-                {
-                    double value = seriesData.Data[j];
-                    lineSeries.Points.Add(new DataPoint(j, value));
-                }
-
-                plotModel.Series.Add(lineSeries);
-            }
-        }
-
-        private void CreateColumnSeries(PlotModel plotModel)
-        {
-            foreach (var seriesData in GraphData.SeriesData)
-            {
-                var columnSeries = new ColumnSeries();
-
-                for (int i = 0; i < seriesData.Data.Count; i++)
-                {
-                    double value = seriesData.Data[i];
-                    columnSeries.Items.Add(new ColumnItem(value, i));
-                }
-
-                plotModel.Series.Add(columnSeries);
-            } 
+            var image = document.LastSection.AddImage(fileName);
+            image.Width = Unit.FromPoint(400);
         }
     }
 }

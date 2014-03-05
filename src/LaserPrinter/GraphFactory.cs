@@ -18,6 +18,11 @@ namespace LaserPrinter
         {
             var targetLibrary = GetTargetLibrary();
 
+            if (graphData.GraphType == GraphType.ColorTable)
+            {
+                return new MigraDocColorTableGraph(graphData);
+            }
+
             switch (targetLibrary)
             {
                 case TargetLibrary.MigraDoc:
@@ -35,13 +40,12 @@ namespace LaserPrinter
             {
                 case GraphType.Line:
                 case GraphType.LineStacked:
+                    return new MigraDocLineGraph(graphData);
                 case GraphType.Column:
                 case GraphType.ColumnStacked:
-                    return new MigraDocSeriesGraph(graphData);
-                case GraphType.ColorTable:
-                    return new MigraDocColorTableGraph(graphData);
+                    return new MigraDocColumnGraph(graphData);
                 default:
-                    throw new InvalidEnumArgumentException("Graph tool is not supported ...");
+                    throw new InvalidEnumArgumentException("Graph type is not supported ...");
             }
         }
 
@@ -51,12 +55,15 @@ namespace LaserPrinter
             {
                 case GraphType.Line:
                 case GraphType.LineStacked:
-                    return new OxyPlotSeriesGraph(graphData);
+                    return new OxyPlotLineGraph(graphData);
                 case GraphType.Column:
                 case GraphType.ColumnStacked:
-                    return new MigraDocSeriesGraph(graphData);
+                    return new OxyPlotColumnGraph(graphData);
+                case GraphType.Pie:
+                case GraphType.ExplodedPie:
+                    return new OxyPlotPieGraph(graphData);
                 default:
-                    throw new InvalidEnumArgumentException("Graph tool is not supported ...");
+                    throw new InvalidEnumArgumentException("Graph type is not supported ...");
             }
         }
     }

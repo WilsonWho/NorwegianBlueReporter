@@ -33,24 +33,7 @@ namespace LaserPrinter.Graphs.MigraDoc
             var title = chart.TopArea.AddParagraph(GraphData.Title);
             title.Format.Font.Bold = true;
 
-            XSeries xseries = chart.XValues.AddXSeries();
-
-            var length = GraphData.Labels.Count;
-            for (int i = 0; i < length; i++)
-            {
-                if (i == 0)
-                {
-                    xseries.Add(GraphData.Labels[i]);
-                }
-                else if (i == length - 1)
-                {
-                    xseries.Add(GraphData.Labels[length - 1]);
-                }
-                else
-                {
-                    xseries.Add(string.Empty);
-                }
-            }
+            LabelXAxis(chart);
 
             if (GraphData.GraphType != GraphType.ColorTable)
             {
@@ -88,19 +71,25 @@ namespace LaserPrinter.Graphs.MigraDoc
             }
         }
 
-        protected ChartType Convert(GraphType graphType)
+        private void LabelXAxis(Chart chart)
         {
-            switch (graphType)
+            XSeries xseries = chart.XValues.AddXSeries();
+
+            var length = GraphData.Labels.Count;
+            for (int i = 0; i < length; i++)
             {
-                case GraphType.Line:
-                case GraphType.LineStacked:
-                    return ChartType.Line;
-                case GraphType.Column:
-                    return ChartType.Column2D;
-                case GraphType.ColumnStacked:
-                    return ChartType.ColumnStacked2D;
-                default:
-                    throw new InvalidEnumArgumentException("Graph type is not supported ...");
+                if (i == 0)
+                {
+                    xseries.Add(GraphData.Labels[i]);
+                }
+                else if (i == length - 1)
+                {
+                    xseries.Add(GraphData.Labels[length - 1]);
+                }
+                else
+                {
+                    xseries.Add(string.Empty);
+                }
             }
         }
 
