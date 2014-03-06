@@ -57,7 +57,7 @@ namespace NorwegianBlueReporter
             }
             else
             {
-                if (!string.IsNullOrEmpty((string)_configuration["MarkdownNotesFileName"]) && !File.Exists((string)_configuration["MarkdownNotesFileName"])))
+                if (!string.IsNullOrEmpty((string)_configuration["MarkdownNotesFileName"]) && !File.Exists((string)_configuration["MarkdownNotesFileName"]))
                 {
                     throw new FileNotFoundException("Markdown file was not found ...");
                 }
