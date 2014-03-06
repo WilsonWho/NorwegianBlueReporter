@@ -11,7 +11,7 @@ namespace LaserOptics.IagoStats
 {
     class IagoStatistics : IStatistics, IStatisticsAnalysis
     {
-        private dynamic _configuration;
+        private Dictionary<object, object> _configuration;
 
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}

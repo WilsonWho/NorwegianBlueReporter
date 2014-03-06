@@ -13,6 +13,11 @@ namespace LaserPrinter
 
         public static Graph CreateGraph(GraphData graphData)
         {
+            if (graphData.GraphType == GraphType.ColorTable)
+            {
+                return new MigraDocColorTableGraph(graphData);
+            }
+
             switch (_targetLibrary)
             {
                 case TargetLibrary.MigraDoc:

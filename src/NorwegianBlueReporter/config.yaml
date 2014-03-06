@@ -1,7 +1,7 @@
 ﻿AppOptions:
     OutputFileName: "Bleh"
     AttachmentsDirectory: "TBD"
-    MarkdownNotesFileName: "TBD"
+    MarkdownNotesFileName: ""
     InputFileNames:
         IagoStatisticsSet : "C:\\tmp\\parrot-server-stats.log"
         IISStatsSet : "TBD"

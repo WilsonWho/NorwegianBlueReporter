@@ -5,10 +5,7 @@ namespace NorwegianBlueReporter
 {
     public class CommandLineOptions
     {
-        [Option('i', "input", Required = true, HelpText = "Full path to the input file")]
-        public string InputFileName { get; set; }
-
-        [Option('o', "output", Required = true, HelpText = "Path and output name of the document that is generated")]
+        [Option('o', "output", Required = false, HelpText = "Path and output name of the document that is generated")]
         public string OutputFileName { get; set; }
 
         [Option('a', "attachments", Required = false, HelpText = "Path of directory containing all attachments to be added to the PDF")]

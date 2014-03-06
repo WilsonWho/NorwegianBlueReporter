@@ -9,7 +9,7 @@ namespace LaserYaml
     public class YamlParser
     {
         private static dynamic _configuration;
-        private static string _configurationFile;
+        private static string _fileName;
 
         private static ExpandoObject Configuration
         {
@@ -21,12 +21,12 @@ namespace LaserYaml
 
         private static dynamic DeserializeConfiguration()
         {
-            if (string.IsNullOrEmpty(_configurationFile))
+            if (string.IsNullOrEmpty(_fileName))
             {
-                _configurationFile = @"../../../config.yaml";
+                _fileName = @"../../../config.yaml";
             }
 
-            var content = File.ReadAllText(_configurationFile);
+            var content = File.ReadAllText(_fileName);
             var deserializer = new Deserializer();
 
             return deserializer.Deserialize<ExpandoObject>(new StringReader(content));
@@ -34,7 +34,7 @@ namespace LaserYaml
 
         public static void SetConfigurationFile(string path)
         {
-            _configurationFile = path;
+            _fileName = path;
         }
 
         public static dynamic GetConfiguration()
