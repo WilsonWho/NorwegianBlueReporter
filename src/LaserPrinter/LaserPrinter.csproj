@@ -55,22 +55,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSharpFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.3.10-beta\lib\net40\CSharpFormat.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\CSharpFormat.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.CodeFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.3.10-beta\lib\net40\FSharp.CodeFormat.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.CodeFormat.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Compiler.Service">
       <HintPath>..\..\packages\FSharp.Compiler.Service.0.0.20\lib\net40\FSharp.Compiler.Service.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Literate">
-      <HintPath>..\..\packages\FSharp.Formatting.2.3.10-beta\lib\net40\FSharp.Literate.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.Literate.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Markdown">
-      <HintPath>..\..\packages\FSharp.Formatting.2.3.10-beta\lib\net40\FSharp.Markdown.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.Markdown.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Markdown.Pdf">
+      <HintPath>..\..\packages\FSharp.Markdown.Pdf.0.3.0\lib\net40\FSharp.Markdown.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.MetadataFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.3.10-beta\lib\net40\FSharp.MetadataFormat.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.MetadataFormat.dll</HintPath>
     </Reference>
     <Reference Include="iTextSharp, Version=4.1.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
       <SpecificVersion>False</SpecificVersion>
@@ -149,10 +152,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FSharp.Markdown.Pdf\src\FSharp.Markdown.Pdf\FSharp.Markdown.Pdf.fsproj">
-      <Project>{9f3249dc-0d86-4945-a39f-d5d41dbf2bb8}</Project>
-      <Name>FSharp.Markdown.Pdf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LaserOptics\LaserOptics.csproj">
       <Project>{6b0bb122-19c3-47a2-90f7-fb5d1299e82e}</Project>
       <Name>LaserOptics</Name>
@@ -162,7 +161,9 @@
       <Name>LaserYaml</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="FSharp.Markdown.Pdf.XML" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
