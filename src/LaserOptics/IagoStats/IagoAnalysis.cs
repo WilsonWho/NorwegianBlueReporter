@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -20,10 +19,10 @@ namespace LaserOptics.IagoStats
                 {
                     "client/request_latency_ms_average",
                     "client/request_latency_ms_maximum",
-                    "client/request_latency_ms_minimum"
-//                    "client/request_latency_ms_p50",
-//                    "client/request_latency_ms_p90",
-//                    "client/request_latency_ms_p95"
+                    "client/request_latency_ms_minimum",
+                    //"client/request_latency_ms_p50",
+                    //"client/request_latency_ms_p90",
+                    //"client/request_latency_ms_p95"
                 };
         }
 
@@ -44,7 +43,7 @@ namespace LaserOptics.IagoStats
                 {
                     if (stats.Stats.ContainsKey(seriesName))
                     {
-                        data.Add(Math.Log10(stats.Stats[seriesName]));
+                        data.Add(stats.Stats[seriesName]);
                     }
                     else
                     {
@@ -63,7 +62,7 @@ namespace LaserOptics.IagoStats
                 var avgSeriesName = series + " set average";
                 avgRequestLatencySeries.Add(avgSeriesName);
                 var data = new List<double>();
-                double avg = Math.Log10(averages[series]);
+                double avg = averages[series];
                 for (int i = 0; i < statSet.Statistics.Count; i++)
                 {
                     data.Add(avg);
@@ -77,7 +76,7 @@ namespace LaserOptics.IagoStats
 
             var requestLatencyGraphs = new List<GraphData>();
             var requestLatencyGraph = new GraphData("Request Latencies", labels, true, LegendPositionEnum.Footer, false,
-                                                    GraphType.LineStacked, seriesData);
+                                                    GraphType.Line, seriesData);
             requestLatencyGraphs.Add(requestLatencyGraph);
 
             var analysisSummary = new StringBuilder(
@@ -110,7 +109,7 @@ Missing data is replaced either with a 0 when there is no preceeding data or the
                 {
                     if (stats.Stats.ContainsKey(latencySeries))
                     {
-                        data.Add(Math.Log10(stats.Stats[latencySeries]));
+                        data.Add(stats.Stats[latencySeries]);
                     }
                     else
                     {
@@ -121,11 +120,11 @@ Missing data is replaced either with a 0 when there is no preceeding data or the
                 seriesData.Add(new SeriesData(latencySeries, data));
 
                 requestLatencyGraph = new GraphData(latencySeries, labels, true, LegendPositionEnum.Footer, false,
-                                          GraphType.LineStacked, seriesData);
+                                          GraphType.Line, seriesData);
                 requestLatencyGraphs.Add(requestLatencyGraph);
             }
 
-            statSet.AddAnalysisNote(new AnalysisNote("Log10 Request Latencies", analysisSummary.ToString(),
+            statSet.AddAnalysisNote(new AnalysisNote("Request Latencies", analysisSummary.ToString(),
                                                      requestLatencyGraphs));
         }
     }

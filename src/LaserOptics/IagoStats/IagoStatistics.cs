@@ -5,11 +5,14 @@ using System.Dynamic;
 using System.IO;
 using System.Text.RegularExpressions;
 using LaserOptics.Common;
+using LaserYaml;
 
 namespace LaserOptics.IagoStats
 {
     class IagoStatistics : IStatistics, IStatisticsAnalysis
     {
+        private Dictionary<object, object> _configuration;
+
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}
         private static readonly Regex LineMatcher = new Regex(@"^INF \[(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})-(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2})\.(?<millis>\d{3})\] stats: \{(?<stats>.*)\}$", RegexOptions.Compiled);
@@ -28,7 +31,20 @@ namespace LaserOptics.IagoStats
         private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
         private ReadOnlyCollection<AnalysisNote> _roAnalysisNotes;
         public DateTime TimeStamp { get ; private set; }
-        
+
+        public IagoStatistics()
+        {
+            _configuration = YamlParser.GetConfiguration();
+
+            // ToDo: pull from object config
+            AnalysisScratchPad.ignorableFields = new List<string>
+                {
+                    "count",
+                    "200"
+                };
+
+        }
+
         public ReadOnlyDictionary<string, double> Stats
         {
             get { return _roStats ?? (_roStats = new ReadOnlyDictionary<String, double>(_stats)); }
@@ -45,16 +61,6 @@ namespace LaserOptics.IagoStats
         }
 
         public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
-
-        public IagoStatistics()
-        {
-            // ToDo: pull from object config
-            AnalysisScratchPad.ignorableFields = new List<string>
-                {
-                    "count",
-                    "200"
-                };
-        }
 
         public void Parse(String input)
         {

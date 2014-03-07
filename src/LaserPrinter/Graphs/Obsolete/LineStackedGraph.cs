@@ -1,10 +1,11 @@
 ﻿using LaserOptics.Common;
+using LaserPrinter.Graphs.MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 
-namespace LaserPrinter.Graphs
+namespace LaserPrinter.Graphs.Obsolete
 {
-    public class LineStackedGraph : Graph
+    public class LineStackedGraph : MigraDocGraph
     {
         public LineStackedGraph(GraphData graphData)
             : base(graphData)

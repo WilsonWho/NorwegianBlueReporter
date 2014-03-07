@@ -14,7 +14,7 @@ namespace LaserOptics.Common
         Bar,
         Pie,
         ExplodedPie,
-        ColorTableGraph
+        ColorTable
     };
 
     public enum LegendPositionEnum

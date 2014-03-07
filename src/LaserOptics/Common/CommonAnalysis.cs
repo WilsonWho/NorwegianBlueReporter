@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using LaserOptics.Utilities;
 using OpenCvSharp;
 
 namespace LaserOptics.Common
@@ -160,7 +161,7 @@ namespace LaserOptics.Common
                                       false,
                                       LegendPositionEnum.Left,
                                       false,
-                                      GraphType.ColorTableGraph,
+                                      GraphType.ColorTable,
                                       series);
 
             var analysisNote = new AnalysisNote("Clustering Analysis",

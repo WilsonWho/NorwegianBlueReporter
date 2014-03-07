@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using LaserOptics.Common;
+using LaserPrinter.Graphs.MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 
-namespace LaserPrinter.Graphs
+namespace LaserPrinter.Graphs.Obsolete
 {
-    public class ColorTableGraph : Graph
+    public class ColorTable : MigraDocGraph
     {
-        public ColorTableGraph(GraphData graphData) : base(graphData)
+        public ColorTable(GraphData graphData) : base(graphData)
         {
         }
 

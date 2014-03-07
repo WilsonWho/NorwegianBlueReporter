@@ -16,6 +16,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Markdown.Pdf", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaserOptics", "src\LaserOptics\LaserOptics.csproj", "{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaserYaml", "src\LaserYaml\LaserYaml.csproj", "{FCC682BB-709B-4BAA-8380-41C53838360A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,17 @@ Global
 		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|x64.ActiveCfg = Release|x64
 		{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}.Release|x64.Build.0 = Release|x64
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Debug|x64.ActiveCfg = Debug|x64
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Debug|x64.Build.0 = Debug|x64
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,8 @@
-﻿using MigraDoc.DocumentObjectModel;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using LaserOptics;
+using LaserOptics.Common;
+using MigraDoc.DocumentObjectModel;
 
 namespace LaserPrinter
 {
@@ -47,6 +51,30 @@ namespace LaserPrinter
 
             // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
+            document.AddSection();
+
+            var data = new List<SeriesData>
+                {
+                    new SeriesData("Series1", new List<double> {15.0, 26.0, 52.0}),
+                    new SeriesData("Series2", new List<double> {1.0, 36.0, 142.0}),
+                    new SeriesData("Series3", new List<double> {29.0, 165.0, 18.0}),
+                    new SeriesData("Series4", new List<double> {37.0, 10.0, 272.0}),
+                    new SeriesData("Series5", new List<double> {129.0, 89.0, 16.0}),
+                };
+
+            var labels = new List<string>
+                {
+                    "Series1 Label",
+                    "Series2 Label",
+                    "Series3 Label",
+                };
+
+            var graphData = new GraphData("OxyPlot", labels, false, LegendPositionEnum.Left, false, GraphType.LineStacked, data);
+            var hi = GraphFactory.CreateGraph(graphData);
+            hi.Draw(document);
+            hi.Draw(document);
+            hi.Draw(document);
+
             // TODO -- changed the constructor for DocumentManager; so the next part is probably busted
             //var documentManager = new DocumentManager();
             //document.AddSection();
@@ -73,6 +101,7 @@ namespace LaserPrinter
             //const string embed = "TestCSV.csv";
             //documentManager.EmbedFile(fileName, embed);
 
+            document.SaveFile("Test", ".pdf");
             //Process.Start(fileName);
         }
     }

@@ -1,11 +1,12 @@
 ﻿using System;
 using LaserOptics.Common;
+using LaserPrinter.Graphs.MigraDoc;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 
-namespace LaserPrinter.Graphs
+namespace LaserPrinter.Graphs.Obsolete
 {
-    public class ColumnGraph : Graph
+    public class ColumnGraph : MigraDocGraph
     {
         public ColumnGraph(GraphData graphData)
             : base(graphData)

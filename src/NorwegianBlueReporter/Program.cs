@@ -13,9 +13,11 @@ namespace NorwegianBlueReporter
     {
         static void Main(string[] args)
         {
-            var options = ParseCommandLineArgs(args);
+            dynamic options = new AppOptions(args);
 
-            StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet)]);
+            GraphFactory.SetTargetLibrary(options.GraphType);
+
+            StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
             var stats = new IagoStatisticsSet();
             stats.Parse(reader);
 
@@ -48,7 +50,7 @@ namespace NorwegianBlueReporter
             // Add notes about the previous report if available
             if (!string.IsNullOrEmpty(options.MarkdownNotesFileName))
             {
-                var markdown = File.ReadAllText(options.MarkdownNotesFileName);
+                string markdown = File.ReadAllText(options.MarkdownNotesFileName);
                 document.AddMarkdown(markdown);
             }
 
@@ -79,21 +81,21 @@ The following sections are various analysis over the entire set of data collecte
                 document.AppendAnalysisNote(analysisNote);
             }
 
-            document.AddMarkdown(@"# Each Stat
+//            document.AddMarkdown(@"# Each Stat
+//
+//The following sections are an analysis for anomolies for each entry in the collected stats file.
+//
+//");
 
-The following sections are an analysis for anomolies for each entry in the collected stats file.
-
-");
-
-            foreach (var stat in stats.Statistics)
-            {
-                var timestamp = string.Format("###{0}\n", stat.TimeStamp);
-                document.AppendMarkdown(timestamp);
-                foreach (var analysisNote in stat.AnalysisNotes)
-                {
-                    document.AppendAnalysisNote(analysisNote);
-                }
-            }
+//            foreach (var stat in stats.Statistics)
+//            {
+//                var timestamp = string.Format("###{0}\n", stat.TimeStamp);
+//                document.AppendMarkdown(timestamp);
+//                foreach (var analysisNote in stat.AnalysisNotes)
+//                {
+//                    document.AppendAnalysisNote(analysisNote);
+//                }
+//            }
 
 
             //TODO: would be nice to reduce the size of the "Each Stats" output section
@@ -110,7 +112,8 @@ The following sections are an analysis for anomolies for each entry in the colle
             //}
 
             const string ext = ".pdf";
-            document.SaveFile(options.OutputFileName, ext);
+            string outputFileName = options.OutputFileName;
+            document.SaveFile(outputFileName, ext);
 
             //Process.Start(fileName);
 
@@ -121,61 +124,6 @@ The following sections are an analysis for anomolies for each entry in the colle
                 Console.WriteLine("Press enter to close...");
                 Console.ReadLine();
             }
-        }
-
-        static AppOptions ParseCommandLineArgs(string[] args)
-        {
-            string iagoStatsInputFileName = null;
-            string outputFileName = null;
-            string attachmentsSourceDirectory = null;
-            string markdownFileName = null;
-
-
-            // Parse command line arguments
-            var options = new CommandLineOptions();
-            if (CommandLine.Parser.Default.ParseArguments(args, options))
-            {
-                if (!string.IsNullOrEmpty(options.InputFileName))
-                {
-                    Console.WriteLine("Input file: {0}", options.InputFileName);
-                    iagoStatsInputFileName = options.InputFileName;
-                }
-                else
-                {
-                    throw new ArgumentException("No stats log was provided ...");
-                }
-
-                if (!string.IsNullOrEmpty(options.OutputFileName))
-                {
-                    Console.WriteLine("File saved as {0}", options.OutputFileName);
-                    outputFileName = options.OutputFileName;
-                }
-                else
-                {
-                    throw new ArgumentException("No output file was specified ...");
-                }
-
-                if (!string.IsNullOrEmpty(options.AttachmentsDirectory))
-                {
-                    Console.WriteLine("Attachments taken from {0}", options.AttachmentsDirectory);
-                    attachmentsSourceDirectory = options.AttachmentsDirectory;
-                }
-
-                if (!string.IsNullOrEmpty(options.Markdown))
-                {
-                    Console.WriteLine("Using markdown file {0}", options.Markdown);
-
-                    markdownFileName = options.Markdown;
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid command line arguments!");
-            }
-
-
-            return new AppOptions(new Dictionary<Type, string>() {{typeof(IagoStatisticsSet), iagoStatsInputFileName}},
-                                  outputFileName, attachmentsSourceDirectory, markdownFileName);
         }
     }
 }
