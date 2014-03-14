@@ -7,7 +7,7 @@ namespace LaserOptics.Common
 
     public interface IStatisticsSet
     {
-        void Parse(TextReader input);
+        void Parse();
     }
 
     public interface IStatisticsSetValues

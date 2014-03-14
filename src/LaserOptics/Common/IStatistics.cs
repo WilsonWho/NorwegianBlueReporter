@@ -4,11 +4,6 @@ using System.Collections.ObjectModel;
 
 namespace LaserOptics.Common
 {
-    public interface IStatistics
-    {
-        void Parse(String input);
-    }
-
     public interface IStatisticsValues
     {
         DateTime TimeStamp { get; }

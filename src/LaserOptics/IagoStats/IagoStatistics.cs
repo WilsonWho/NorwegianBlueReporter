@@ -9,9 +9,9 @@ using LaserYaml;
 
 namespace LaserOptics.IagoStats
 {
-    class IagoStatistics : IStatistics, IStatisticsAnalysis
+    class IagoStatistics : IStatisticsAnalysis
     {
-        private Dictionary<object, object> _configuration;
+        private IDictionary<string, object> _configuration;
 
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}

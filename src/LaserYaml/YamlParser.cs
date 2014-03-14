@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using YamlDotNet.Serialization;
 
 namespace LaserYaml
@@ -9,9 +10,10 @@ namespace LaserYaml
     public class YamlParser
     {
         private static dynamic _configuration;
-        private static string _fileName;
+        private static string _publicFileName;
+        private static string _privateFileName;
 
-        private static ExpandoObject Configuration
+        private static IDictionary<string, object> Configuration
         {
             get
             {
@@ -21,28 +23,78 @@ namespace LaserYaml
 
         private static dynamic DeserializeConfiguration()
         {
-            if (string.IsNullOrEmpty(_fileName))
+            if (string.IsNullOrEmpty(_publicFileName))
             {
-                _fileName = @"../../../config.yaml";
+                _publicFileName = @"../../../config.yaml";
             }
 
-            var content = File.ReadAllText(_fileName);
+            if (string.IsNullOrEmpty(_privateFileName))
+            {
+                _privateFileName = @"../../../private.yaml";
+            }
+
             var deserializer = new Deserializer();
 
-            return deserializer.Deserialize<ExpandoObject>(new StringReader(content));
+            var publicFileContent = File.ReadAllText(_publicFileName);
+            var publicDeserializedContent = deserializer.Deserialize<ExpandoObject>(new StringReader(publicFileContent));
+            
+            var privateFileContent = File.ReadAllText(_privateFileName);
+            var privateDeserializedContent = deserializer.Deserialize<ExpandoObject>(new StringReader(privateFileContent));
+
+            return Merge(publicDeserializedContent, privateDeserializedContent);
         }
 
-        public static void SetConfigurationFile(string path)
+        public static void SetPublicConfigurationFile(string path)
         {
-            _fileName = path;
+            _publicFileName = path;
+        }
+
+        public static void SetPrivateConfigurationFile(string path)
+        {
+            _privateFileName = path;
         }
 
         public static dynamic GetConfiguration()
         {
             var declaringType = new StackTrace().GetFrame(1).GetMethod().DeclaringType.Name;
-            var configuration = (IDictionary<string, object>)Configuration;
 
-            return configuration[declaringType];
+            return Configuration[declaringType];
+        }
+
+        private static object Merge(IDictionary<string, object> obj1, IDictionary<string, object> obj2)
+        {
+            IDictionary<string, object> resultSet = new Dictionary<string, object>();
+
+            foreach (var kvp in obj1)
+            {
+                resultSet.Add(kvp.Key, kvp.Value);
+            }
+
+            foreach (var kvp in obj2)
+            {
+                if (resultSet.ContainsKey(kvp.Key))
+                {
+                    var dict1 = ConvertDictionary((IDictionary<object, object>) obj1[kvp.Key]);
+                    var dict2 = ConvertDictionary((IDictionary<object, object>) kvp.Value);
+
+                    var mergedObj = Merge(dict1, dict2);
+                    resultSet[kvp.Key] = mergedObj;
+                }
+                else
+                {
+                    resultSet.Add(kvp.Key, kvp.Value);
+                }
+            }
+
+            return resultSet;
+        }
+
+        private static IDictionary<string, object> ConvertDictionary(IDictionary<object, object> obj)
+        {
+            IDictionary<string, object> newDictionary = obj.ToDictionary(x => x.Key.ToString(),
+                                                                         x => x.Value);
+
+            return newDictionary;
         }
     }
 }

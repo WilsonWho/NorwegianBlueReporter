@@ -5,16 +5,24 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using LaserOptics.Common;
+using LaserYaml;
 
 namespace LaserOptics.IagoStats
 {
     public class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
     {
+        private readonly IDictionary<string, object> _configuration;
+
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         private readonly List<IagoStatistics> _iagoStatistics = new List<IagoStatistics>();
         private ReadOnlyCollection<IStatisticsValues> _roIagoStatistics ;
         private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
         private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
+
+        public IagoStatisticsSet()
+        {
+            _configuration = YamlParser.GetConfiguration();
+        }
 
         public ReadOnlyCollection<IStatisticsValues> Statistics 
         {
@@ -33,9 +41,11 @@ namespace LaserOptics.IagoStats
 
         public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
 
-        public void Parse(TextReader input)
+        public void Parse()
         {
             //Cv.KMeans2(points, maxClusters, clusters, new CvTermCriteria(10, 1.0));
+
+            StreamReader input = File.OpenText(_configuration["InputFileName"].ToString());
 
             string line;
             while ((line = input.ReadLine()) != null)
@@ -44,6 +54,8 @@ namespace LaserOptics.IagoStats
                 newStat.Parse(line);
                 _iagoStatistics.Add(newStat);
             }
+
+            input.Close();
         }
 
         public void Analyze(IEnumerable<SetAnalyzer> setAnalyzers , IEnumerable<StatAnalyzer> statAnalyzers)
