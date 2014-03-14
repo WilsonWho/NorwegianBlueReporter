@@ -31,11 +31,11 @@ namespace LaserOptics.IagoStats
             foreach (var seriesName in requestLatencySeries)
             {
                 var data = new List<double>();
-                foreach (var stats in statSet.Statistics)
+                foreach (var stats in statSet)
                 {
-                    if (stats.Stats.ContainsKey(seriesName))
+                    if (stats.ContainsKey(seriesName))
                     {
-                        data.Add(stats.Stats[seriesName]);
+                        data.Add(stats[seriesName]);
                     }
                     else
                     {
@@ -55,7 +55,7 @@ namespace LaserOptics.IagoStats
                 avgRequestLatencySeries.Add(avgSeriesName);
                 var data = new List<double>();
                 double avg = averages[series];
-                for (int i = 0; i < statSet.Statistics.Count; i++)
+                for (int i = 0; i < statSet.Count; i++)
                 {
                     data.Add(avg);
                 }
@@ -64,7 +64,7 @@ namespace LaserOptics.IagoStats
             }
 
             var labels =
-                statSet.Statistics.Select(stats => stats.TimeStamp.ToString(CultureInfo.InvariantCulture)).ToList();
+                statSet.Select(stats => stats.TimeStamp.ToString(CultureInfo.InvariantCulture)).ToList();
 
             var requestLatencyGraphs = new List<GraphData>();
             var requestLatencyGraph = new GraphData("Request Latencies", labels, true, LegendPositionEnum.Footer, false,
@@ -97,11 +97,11 @@ Missing data is replaced either with a 0 when there is no preceeding data or the
                 seriesData = new List<SeriesData>();
                 var data = new List<double>();
 
-                foreach (var stats in statSet.Statistics)
+                foreach (var stats in statSet)
                 {
-                    if (stats.Stats.ContainsKey(latencySeries))
+                    if (stats.ContainsKey(latencySeries))
                     {
-                        data.Add(stats.Stats[latencySeries]);
+                        data.Add(stats[latencySeries]);
                     }
                     else
                     {

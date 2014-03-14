@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LaserOptics.Common;
@@ -7,11 +8,6 @@ namespace LaserOptics.AzureMetricsStats
 {
     public class AzureMetricsStatistics : IStatisticsAnalysis
     {
-        public void Parse(string input)
-        {
-            throw new NotImplementedException();
-        }
-
         private readonly Dictionary<String, double> _stats = new Dictionary<string, double>();
         private ReadOnlyDictionary<String, double> _roStats;
 
@@ -31,6 +27,41 @@ namespace LaserOptics.AzureMetricsStats
         }
 
         public ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; private set; }
+        public int CountFiltered(bool includeIgnored, List<string> extraIgnores)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<KeyValuePair<string, double>> GetEnumerator(bool includeIgnored, IEnumerable<string> extraIgnores)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ContainsKey(string key, bool includeIgnored, IEnumerable<string> extraIgnores)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryGetValue(string key, out double value, bool includeIgnored, IEnumerable<string> extraIgnores)
+        {
+            throw new NotImplementedException();
+        }
+
+        double IStatisticsValues.this[string key, bool includeIgnored, List<string> extraIgnores]
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IEnumerable<string> FilteredKeys(bool includeIgnored, IEnumerable<string> extraIgnores)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<double> FilteredValues(bool includeIgnored, IEnumerable<string> extraIgnores)
+        {
+            throw new NotImplementedException();
+        }
+
         public dynamic AnalysisScratchPad { get; private set; }
 
         private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
@@ -44,5 +75,34 @@ namespace LaserOptics.AzureMetricsStats
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerator<KeyValuePair<string, double>> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public int Count { get; private set; }
+        public bool ContainsKey(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryGetValue(string key, out double value)
+        {
+            throw new NotImplementedException();
+        }
+
+        double IReadOnlyDictionary<string, double>.this[string key]
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IEnumerable<string> Keys { get; private set; }
+        public IEnumerable<double> Values { get; private set; }
     }
 }

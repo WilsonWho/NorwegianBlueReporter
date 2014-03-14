@@ -153,6 +153,11 @@ namespace LaserOptics.IagoStats
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }
         }
+
+        public void Parse(string dataLocation = null, DateTime? startTime = null, DateTime? endTime = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

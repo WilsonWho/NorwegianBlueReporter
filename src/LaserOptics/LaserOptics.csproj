@@ -90,6 +90,8 @@
     <Compile Include="AzureMetricsStats\AzureMetricsStatisticsSet.cs" />
     <Compile Include="Common\AnalysisNote.cs" />
     <Compile Include="Common\CommonAnalysis.cs" />
+    <Compile Include="Common\CommonStatAnalysis.cs" />
+    <Compile Include="Common\CommonStatSetAnalysis.cs" />
     <Compile Include="Common\GraphData.cs" />
     <Compile Include="Common\IStatistics.cs" />
     <Compile Include="Common\IStatisticsSet.cs" />

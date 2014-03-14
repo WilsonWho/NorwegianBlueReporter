@@ -28,18 +28,18 @@ namespace NorwegianBlueReporter
 
             //reader.Close();
 
-            using (var file = new StreamWriter(@"formatted-output.log"))
-            {
-                foreach (IStatisticsValues t in stats.Statistics)
-                {
-                    file.WriteLine("{0}NEW STATISTIC SET!{1}", Environment.NewLine, Environment.NewLine);
+            //using (var file = new StreamWriter(@"formatted-output.log"))
+            //{
+            //    foreach (IStatisticsValues t in stats.Statistics)
+            //    {
+            //        file.WriteLine("{0}NEW STATISTIC SET!{1}", Environment.NewLine, Environment.NewLine);
 
-                    foreach (KeyValuePair<string, double> t1 in t.Stats)
-                    {
-                        file.WriteLine("{0} {1}", t1.Key, t1.Value);
-                    }
-                }
-            }
+            //        foreach (KeyValuePair<string, double> t1 in t.Stats)
+            //        {
+            //            file.WriteLine("{0} {1}", t1.Key, t1.Value);
+            //        }
+            //    }
+            //}
             
             var setAnalyzers = new CommonStatSetAnalysis();
             var statAnalyzers = new CommonStatAnalysis();
