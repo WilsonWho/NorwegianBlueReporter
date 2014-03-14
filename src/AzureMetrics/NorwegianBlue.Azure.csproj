@@ -121,13 +121,13 @@
     <None Include="private.yaml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NorwegianBlue.DataModels\NorwegianBlue.DataModels.csproj">
-      <Project>{56CD9145-B907-4583-8D54-285A12A10A19}</Project>
-      <Name>NorwegianBlue.DataModels</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LaserYaml\LaserYaml.csproj">
       <Project>{FCC682BB-709B-4BAA-8380-41C53838360A}</Project>
       <Name>LaserYaml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.DataModels\NorwegianBlue.DataModels.csproj">
+      <Project>{56CD9145-B907-4583-8D54-285A12A10A19}</Project>
+      <Name>NorwegianBlue.DataModels</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

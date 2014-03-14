@@ -91,10 +91,10 @@ namespace LaserYaml
 
         private static IDictionary<string, object> ConvertDictionary(IDictionary<object, object> obj)
         {
-            IDictionary<string, object> newDictionary = obj.ToDictionary(x => x.Key.ToString(),
+            IDictionary<string, object> convertedDictionary = obj.ToDictionary(x => x.Key.ToString(),
                                                                          x => x.Value);
 
-            return newDictionary;
+            return convertedDictionary;
         }
     }
 }
