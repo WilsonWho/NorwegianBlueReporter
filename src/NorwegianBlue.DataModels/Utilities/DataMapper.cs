@@ -10,5 +10,10 @@ namespace NorwegianBlue.DataModels.Utilities
 
             return Mapper.Map<TR>(obj);
         }
+
+        private static void CreateMappings()
+        {
+            Mapper.CreateMap<>()
+        }
     }
 }

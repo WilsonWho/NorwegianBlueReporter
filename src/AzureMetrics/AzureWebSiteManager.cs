@@ -1,8 +1,8 @@
-﻿using Microsoft.WindowsAzure;
+﻿using AutoMapper;
+using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Management.WebSites;
 using Microsoft.WindowsAzure.Management.WebSites.Models;
-using NorwegianBlue.DataModels.Azure;
-using NorwegianBlue.DataModels.Utilities;
+using NorwegianBlue.Azure.DTOs.WebSiteGetHistoricalUsageMetricsResponse;
 
 namespace NorwegianBlue.Azure
 {
@@ -26,7 +26,7 @@ namespace NorwegianBlue.Azure
 
             var response = _webSiteManagementClient.WebSites.GetHistoricalUsageMetrics(PublishSettings.WebSpace, PublishSettings.WebSite, webSiteGetHistoricalUsageMetricsParameters);
 
-            return DataMapper.Map<WebSiteGetHistoricalUsageMetricsResponse, AzureGetHistoricalUsageMetricsResponse>(response);
+            return Mapper.Map<WebSiteGetHistoricalUsageMetricsResponse, AzureGetHistoricalUsageMetricsResponse>(response);
         }
     }
 }

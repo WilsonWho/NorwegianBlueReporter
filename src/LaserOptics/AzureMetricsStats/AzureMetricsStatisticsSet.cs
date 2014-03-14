@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using LaserOptics.Common;
 using LaserYaml;
 using NorwegianBlue.Azure;
-using NorwegianBlue.DataModels;
-using NorwegianBlue.DataModels.Azure;
+using NorwegianBlue.Azure.DTOs.WebSiteGetHistoricalUsageMetricsResponse;
 
 namespace LaserOptics.AzureMetricsStats
 {
@@ -36,7 +35,7 @@ namespace LaserOptics.AzureMetricsStats
                     EndTime = new DateTime(2014, 2, 24, 16, 40, 0),
                 };
 
-            var asdf = azureWebSiteManager.GetHistoricalUsageMetrics(azureGetHistoricalUsageMetricsDto);
+            var azureResponse = azureWebSiteManager.GetHistoricalUsageMetrics(azureGetHistoricalUsageMetricsDto);
         }
 
         public ReadOnlyCollection<IStatisticsValues> Statistics { get; private set; }

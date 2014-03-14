@@ -1,4 +1,5 @@
 ﻿using Microsoft.WindowsAzure;
+using NorwegianBlue.Azure.Utilities;
 
 namespace NorwegianBlue.Azure
 {
@@ -9,6 +10,8 @@ namespace NorwegianBlue.Azure
 
         public AuthenticatedClient(PublishSettings publishSettings)
         {
+            Maps.Init();
+
             PublishSettings = publishSettings;
             SubscriptionCloudCredentials = CertificateAuthenticator.GetCredentials(publishSettings.SubscriptionId, publishSettings.ManagementCertificate);
         } 
