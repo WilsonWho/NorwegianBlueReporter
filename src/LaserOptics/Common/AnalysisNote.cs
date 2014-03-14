@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using OxyPlot;
 
 namespace LaserOptics.Common
 {
@@ -6,16 +7,16 @@ namespace LaserOptics.Common
     {
         public string Name { get; private set; }
         public string Summary { get; private set; }
-        public List<GraphData> GraphData { get; private set; }
+        public List<PlotModel> GraphData { get; private set; }
 
-        public AnalysisNote(string name, string summary, GraphData graphData)
+        public AnalysisNote(string name, string summary, PlotModel graphData)
         {
             Name = name;
             Summary = summary;
-            GraphData = new List<GraphData> {graphData};
+            GraphData = new List<PlotModel> {graphData};
         }
 
-        public AnalysisNote(string name, string summary, List<GraphData> graphData)
+        public AnalysisNote(string name, string summary, List<PlotModel> graphData)
         {
             Name = name;
             Summary = summary;

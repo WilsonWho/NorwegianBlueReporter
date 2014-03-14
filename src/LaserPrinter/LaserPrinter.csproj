@@ -125,25 +125,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentExtensions.cs" />
-    <Compile Include="GraphFactory.cs" />
-    <Compile Include="Graphs\Graph.cs" />
-    <Compile Include="Graphs\MigraDoc\MigraDocColorTableGraph.cs" />
-    <Compile Include="Graphs\MigraDoc\MigraDocColumnGraph.cs" />
-    <Compile Include="Graphs\MigraDoc\MigraDocLineGraph.cs" />
-    <Compile Include="Graphs\Obsolete\ColumnGraph.cs" />
     <Compile Include="Decode.cs" />
-    <Compile Include="Graphs\Obsolete\ColumnStackedGraph.cs" />
-    <Compile Include="Graphs\Obsolete\ExplodedPieGraph.cs" />
-    <Compile Include="Graphs\Obsolete\LineStackedGraph.cs" />
-    <Compile Include="Graphs\MigraDoc\MigraDocGraph.cs" />
-    <Compile Include="Graphs\Obsolete\PieGraph.cs" />
-    <Compile Include="Graphs\Obsolete\LineGraph.cs" />
-    <Compile Include="Graphs\Obsolete\ColorTableGraph.cs" />
-    <Compile Include="Graphs\OxyPlot\OxyPlotColumnGraph.cs" />
-    <Compile Include="Graphs\OxyPlot\OxyPlotGraph.cs" />
-    <Compile Include="Graphs\OxyPlot\OxyPlotLineGraph.cs" />
-    <Compile Include="Graphs\OxyPlot\OxyPlotPieGraph.cs" />
-    <Compile Include="TargetLibrary.cs" />
+    <Compile Include="OxyPlotGraph.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

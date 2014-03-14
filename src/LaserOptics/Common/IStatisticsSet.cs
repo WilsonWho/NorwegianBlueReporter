@@ -1,23 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
+using LaserOptics.IagoStats;
 
 namespace LaserOptics.Common
 {
-
     public interface IStatisticsSet
     {
-        void Parse(TextReader input);
+        void Parse(string dataLocation=null, DateTime? startTime=null, DateTime? endTime=null);
     }
 
-    public interface IStatisticsSetValues
+    public interface IStatisticsSetValues : IList<IStatisticsValues>
     {
-        //TODO: refactor to return iterators
-
-        ReadOnlyCollection<IStatisticsValues> Statistics { get; }
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
+        DateTime ActualStartTime { get; }
+        DateTime ActualEndTime { get; }
+        DateTime DesiredStartTime { get; set; }
+        DateTime DesiredEndTime { get; set; }
+        IStatisticsValues GetNearest(DateTime time);
         // return set of values, with any missing values geting the specified default value.
-        ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders=true, string defValue = "missing");
+        ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing");
     }
 
     public interface IStatisticsSetAnalysis : IStatisticsSetValues

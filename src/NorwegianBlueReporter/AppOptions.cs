@@ -23,10 +23,6 @@ namespace NorwegianBlueReporter
                     Console.WriteLine("File saved as {0}", options.OutputFileName);
                     _configuration["OutputFileName"] = options.OutputFileName;
                 }
-                else
-                {
-                    throw new ArgumentException("No output file was specified ...");
-                }
 
                 if (!string.IsNullOrEmpty(options.AttachmentsDirectory))
                 {
@@ -50,6 +46,13 @@ namespace NorwegianBlueReporter
             {
                 _configuration["AttachmentsDirectory"] = null;
             }
+
+            // Parameter checking
+            if (!_configuration.ContainsKey("OutputFileName") || string.IsNullOrEmpty((string)_configuration["OutputFileName"]))
+            {
+                throw new ArgumentException("Missing output filename");
+            }
+
 
             if (!_configuration.ContainsKey("MarkdownNotesFileName"))
             {

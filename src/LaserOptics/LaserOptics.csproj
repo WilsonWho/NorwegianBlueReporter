@@ -72,6 +72,9 @@
     <Reference Include="OpenCvSharp.UserInterface">
       <HintPath>..\..\packages\OpenCvSharp-x64.2.4.8.20140203\lib\net40\OpenCvSharp.UserInterface.dll</HintPath>
     </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\..\packages\OxyPlot.Core.2014.1.249.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -88,11 +91,11 @@
   <ItemGroup>
     <Compile Include="Common\AnalysisNote.cs" />
     <Compile Include="Common\CommonAnalysis.cs" />
-    <Compile Include="Common\GraphData.cs" />
+    <Compile Include="Common\CommonStatSetAnalysis.cs" />
+    <Compile Include="Common\CommonStatAnalysis.cs" />
     <Compile Include="Common\IStatistics.cs" />
     <Compile Include="Common\IStatisticsSet.cs" />
-    <Compile Include="Common\IStatsReader.cs" />
-    <Compile Include="IagoStats\IagoAnalysis.cs" />
+    <Compile Include="IagoStats\IagoStatSetAnalysis.cs" />
     <Compile Include="IagoStats\IagoStatistics.cs" />
     <Compile Include="IagoStats\IagoStatisticsSet.cs" />
     <Compile Include="Program.cs" />

@@ -17,11 +17,8 @@ namespace NorwegianBlueReporter
 
             GraphFactory.SetTargetLibrary(options.GraphType);
 
-            StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
             var stats = new IagoStatisticsSet();
-            stats.Parse(reader);
-
-            reader.Close();
+            stats.Parse();
 
             var setAnalyzers = new CommonStatSetAnalysis();
             var statAnalyzers = new CommonStatAnalysis();

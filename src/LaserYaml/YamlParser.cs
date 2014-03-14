@@ -23,7 +23,7 @@ namespace LaserYaml
         {
             if (string.IsNullOrEmpty(_fileName))
             {
-                _fileName = @"../../../config.yaml";
+                _fileName = @"config.yaml";
             }
 
             var content = File.ReadAllText(_fileName);

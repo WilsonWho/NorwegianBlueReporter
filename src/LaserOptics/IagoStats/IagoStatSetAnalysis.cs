@@ -10,8 +10,6 @@ namespace LaserOptics.IagoStats
     public class IagoStatSetAnalysis
     {
         private readonly List<String> _requestLatencySeries;
-
-        private readonly List<string> _ignorableFields;
         
         public IagoStatSetAnalysis()
         {
@@ -42,9 +40,9 @@ namespace LaserOptics.IagoStats
                 var data = new List<double>();
                 foreach (var stats in statSet.Statistics)
                 {
-                    if (stats.Stats.ContainsKey(seriesName))
+                    if (stats.ContainsKey(seriesName))
                     {
-                        data.Add(stats.Stats[seriesName]);
+                        data.Add(stats[seriesName]);
                     }
                     else
                     {
@@ -108,9 +106,9 @@ Missing data is replaced either with a 0 when there is no preceeding data or the
 
                 foreach (var stats in statSet.Statistics)
                 {
-                    if (stats.Stats.ContainsKey(latencySeries))
+                    if (stats.ContainsKey(latencySeries))
                     {
-                        data.Add(stats.Stats[latencySeries]);
+                        data.Add(stats[latencySeries]);
                     }
                     else
                     {
