@@ -60,7 +60,7 @@ namespace LaserOptics.IagoStats
             }
         }
 
-        public void Parse(DateTime startTime, DateTime endTime)
+        public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
         {
             throw new NotImplementedException();
         }
@@ -154,7 +154,7 @@ namespace LaserOptics.IagoStats
             set { throw new NotImplementedException(); }
         }
 
-        public void Parse(string dataLocation = null, DateTime? startTime = null, DateTime? endTime = null)
+        public void Parse(string dataLocation = null, DateTime? startTime = null, DateTime? endTime = null, TimeZone timeZone = null)
         {
             throw new NotImplementedException();
         }

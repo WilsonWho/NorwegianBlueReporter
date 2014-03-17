@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using LaserOptics.Common;
 using LaserYaml;
 using NorwegianBlue.Azure;
@@ -17,6 +18,8 @@ namespace LaserOptics.AzureMetricsStats
         {
             _configuration = YamlParser.GetConfiguration();
         }
+
+        private readonly List<AzureMetricsStatistics> _azureMetricsStatistics = new List<AzureMetricsStatistics>();
 
         public ReadOnlyCollection<IStatisticsValues> Statistics { get; private set; }
         public ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; private set; }
@@ -46,7 +49,7 @@ namespace LaserOptics.AzureMetricsStats
             throw new System.NotImplementedException();
         }
 
-        public void Parse(string dataLocation = null, DateTime? startTime = null, DateTime? endTime = null)
+        public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
         {
             var publishSettings = (IDictionary<object, object>)_configuration["PublishSettings"];
             var azureWebSiteManager = new AzureWebSiteManager(new PublishSettings
@@ -60,11 +63,28 @@ namespace LaserOptics.AzureMetricsStats
             var azureGetHistoricalUsageMetricsDto = new AzureGetHistoricalUsageMetricsRequest
             {
                 MetricNames = new List<string> { "CpuTime", "AverageMemoryWorkingSet", "MemoryWorkingSet" },
-                StartTime = new DateTime(2014, 2, 24, 16, 13, 0),
-                EndTime = new DateTime(2014, 2, 24, 16, 40, 0),
+                StartTime = Convert.ToDateTime(startTime),
+                EndTime = Convert.ToDateTime(endTime),
             };
 
             var azureResponse = azureWebSiteManager.GetHistoricalUsageMetrics(azureGetHistoricalUsageMetricsDto);
+
+            if (azureResponse.UsageMetrics.Count > 0)
+            {
+                var length = azureResponse.UsageMetrics[0].Data.Values.Count;
+
+                for (int i = 0; i < length; i++)
+                {
+                    var azureMetricsStatistic = new AzureMetricsStatistics();
+
+                    foreach (var azureHistoricalUsageMetric in azureResponse.UsageMetrics)
+                    {
+                        azureMetricsStatistic.Parse(i, azureHistoricalUsageMetric.Data);
+                    }
+
+                    _azureMetricsStatistics.Add(azureMetricsStatistic);
+                }
+            }
         }
 
         public IEnumerator<IStatisticsValues> GetEnumerator()

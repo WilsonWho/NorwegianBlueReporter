@@ -7,7 +7,7 @@ namespace LaserOptics.Common
 {
     public interface IStatisticsSet
     {
-        void Parse(string dataLocation=null, DateTime? startTime=null, DateTime? endTime=null);
+        void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime);
     }
 
     public interface IStatisticsSetValues : IList<IStatisticsValues>

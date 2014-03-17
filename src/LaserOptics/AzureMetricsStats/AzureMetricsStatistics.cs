@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using LaserOptics.Common;
+using NorwegianBlue.Azure.DTOs.WebSiteGetHistoricalUsageMetricsResponse;
 
 namespace LaserOptics.AzureMetricsStats
 {
     public class AzureMetricsStatistics : IStatisticsAnalysis
     {
-        private readonly Dictionary<String, double> _stats = new Dictionary<string, double>();
+        private readonly Dictionary<string, double> _stats = new Dictionary<string, double>();
         private ReadOnlyDictionary<String, double> _roStats;
 
         private readonly Dictionary<String, string> _nonStats = new Dictionary<string, string>();
@@ -24,6 +25,17 @@ namespace LaserOptics.AzureMetricsStats
         public ReadOnlyDictionary<string, string> NonStats
         {
             get { return _roNonStats ?? (_roNonStats = new ReadOnlyDictionary<String, String>(_nonStats)); }
+        }
+
+        public void Parse(int index, AzureHistoricalUsageMetricData azureHistoricalUsageMetricData)
+        {
+            // Rip out the time stamp and add to the dictionary the CPUTime and memory metrics
+            TimeStamp = azureHistoricalUsageMetricData.Values[index].TimeCreated;
+            var key = azureHistoricalUsageMetricData.DisplayName;
+            var value = Convert.ToDouble(azureHistoricalUsageMetricData.Values[index].Total);
+
+            _stats.Add(key, value);
+                
         }
 
         public ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; private set; }
