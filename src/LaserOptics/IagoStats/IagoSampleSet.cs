@@ -10,17 +10,16 @@ using LaserYaml;
 
 namespace LaserOptics.IagoStats
 {
-    public class IagoStatisticsSet : IStatisticsSet, IStatisticsSetAnalysis
+    public class IagoSampleSet : IStatisticsSet, IStatisticsSetAnalysis
     {
-        private readonly string _inputFile;
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
-        private readonly List<IagoStatistics> _iagoStatistics = new List<IagoStatistics>();
+        private readonly List<IagoSample> _iagoSamples = new List<IagoSample>();
         private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
         private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
 
         public ReadOnlyCollection<AnalysisNote> AnalysisNotes
         {
-            get { return _roAnalysisNote ?? ( _roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
+            get { return _roAnalysisNote ?? (_roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
         }
 
         public DateTime ActualStartTime { get; private set; }
@@ -28,9 +27,12 @@ namespace LaserOptics.IagoStats
         public DateTime DesiredStartTime { get; set; }
         public DateTime DesiredEndTime { get; set; }
 
-        public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
+        public dynamic AnalysisScratchPad
+        {
+            get { return _analysisScratchPad; }
+        }
 
-        public IagoStatisticsSet()
+        public IagoSampleSet()
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();
 
@@ -42,27 +44,22 @@ namespace LaserOptics.IagoStats
             {
                 AnalysisScratchPad.ignorableFields = new List<string>();
             }
-
-            _inputFile = configuration["InputFile"].ToString();
         }
 
-        public void Parse()
+        public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
         {
-            using (var input = File.OpenText(_inputFile))
+            using (var input = File.OpenText(dataLocation))
             {
                 string line;
                 while ((line = input.ReadLine()) != null)
                 {
-                    var newStat = new IagoStatistics();
+                    var newStat = new IagoSample();
                     newStat.Parse(line);
-                    _iagoStatistics.Add(newStat);
+                    _iagoSamples.Add(newStat);
                 }
             }
-        }
 
-        public void Parse(DateTime startTime, DateTime endTime)
-        {
-            throw new NotImplementedException();
+            _iagoSamples.Sort();
         }
 
         public IStatisticsValues GetNearest(DateTime time)
@@ -70,19 +67,20 @@ namespace LaserOptics.IagoStats
             throw new NotImplementedException();
         }
 
-        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing")
+        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true,
+                                                                                       string defValue = "missing")
         {
             throw new NotImplementedException();
         }
 
-        public void Analyze(IEnumerable<SetAnalyzer> setAnalyzers , IEnumerable<StatAnalyzer> statAnalyzers)
+        public void Analyze(IEnumerable<SetAnalyzer> setAnalyzers, IEnumerable<StatAnalyzer> statAnalyzers)
         {
             foreach (var analyzer in setAnalyzers)
             {
                 analyzer.Invoke(this);
             }
 
-            foreach (var stat in _iagoStatistics)
+            foreach (var stat in _iagoSamples)
             {
                 foreach (var analyzer in statAnalyzers)
                 {
@@ -106,53 +104,11 @@ namespace LaserOptics.IagoStats
             return GetEnumerator();
         }
 
-        public void Add(IStatisticsValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(IStatisticsValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(IStatisticsValues[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(IStatisticsValues item)
-        {
-            throw new NotImplementedException();
-        }
-
         public int Count { get; private set; }
-        public bool IsReadOnly { get; private set; }
-        public int IndexOf(IStatisticsValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, IStatisticsValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
 
         public IStatisticsValues this[int index]
         {
             get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
         }
     }
-
 }

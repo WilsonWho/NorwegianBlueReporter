@@ -7,11 +7,11 @@ using LaserOptics.Common;
 
 namespace LaserOptics.IagoStats
 {
-    public class IagoStatSetAnalysis
+    public class IagoSampleSetAnalysis
     {
         private readonly List<String> _requestLatencySeries;
         
-        public IagoStatSetAnalysis()
+        public IagoSampleSetAnalysis()
         {
             // ToDo: pull from object config 
             _requestLatencySeries = new List<string>

@@ -95,9 +95,9 @@
     <Compile Include="Common\CommonStatAnalysis.cs" />
     <Compile Include="Common\IStatistics.cs" />
     <Compile Include="Common\IStatisticsSet.cs" />
-    <Compile Include="IagoStats\IagoStatSetAnalysis.cs" />
-    <Compile Include="IagoStats\IagoStatistics.cs" />
-    <Compile Include="IagoStats\IagoStatisticsSet.cs" />
+    <Compile Include="IagoStats\IagoSampleSetAnalysis.cs" />
+    <Compile Include="IagoStats\IagoSample.cs" />
+    <Compile Include="IagoStats\IagoSampleSet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />

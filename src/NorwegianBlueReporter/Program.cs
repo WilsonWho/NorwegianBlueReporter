@@ -17,12 +17,12 @@ namespace NorwegianBlueReporter
 
             GraphFactory.SetTargetLibrary(options.GraphType);
 
-            var stats = new IagoStatisticsSet();
+            var stats = new IagoSampleSet();
             stats.Parse();
 
             var setAnalyzers = new CommonStatSetAnalysis();
             var statAnalyzers = new CommonStatAnalysis();
-            var iagoSetAnalyzers = new IagoStatSetAnalysis();
+            var iagoSetAnalyzers = new IagoSampleSetAnalysis();
 
             var setAnalysisMethods = new List<SetAnalyzer>();
             var statAnalysisMethods = new List<StatAnalyzer>();

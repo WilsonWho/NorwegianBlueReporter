@@ -11,7 +11,7 @@ using LaserYaml;
 
 namespace LaserOptics.IagoStats
 {
-    class IagoStatistics : IStatisticsAnalysis
+    class IagoSample : IStatisticsAnalysis
     {
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}
@@ -44,7 +44,7 @@ namespace LaserOptics.IagoStats
 
         public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
 
-        public IagoStatistics()
+        public IagoSample()
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();
             if (configuration.ContainsKey("FieldsToIgnore"))

@@ -5,29 +5,34 @@ namespace LaserOptics.Common
 {
     public class AnalysisNote
     {
-        public string Name { get; private set; }
-        public string Summary { get; private set; }
-        public List<PlotModel> GraphData { get; private set; }
-
-        public AnalysisNote(string name, string summary, PlotModel graphData)
+        public enum AnalysisNoteType
         {
-            Name = name;
-            Summary = summary;
-            GraphData = new List<PlotModel> {graphData};
+            Summary,
+            Details
         }
 
-        public AnalysisNote(string name, string summary, List<PlotModel> graphData)
+        public enum AnalysisNotePriorities
+        {
+            Critical,
+            Important,
+            Informational,
+            Debug
+        }
+
+        public string Name { get; private set; }
+        public string Summary { get; private set; }
+        public AnalysisNoteType NoteType { get; private set; }
+        public AnalysisNotePriorities NotePriority { get; private set; }
+        public List<PlotModel> GraphData { get; private set; }
+
+        public AnalysisNote(string name, string summary, AnalysisNoteType noteType, AnalysisNotePriorities notePriority, List<PlotModel> graphData)
         {
             Name = name;
             Summary = summary;
+            NoteType = noteType;
+            NotePriority = notePriority;
             GraphData = graphData;
         }
 
-        public AnalysisNote(string name, string summary)
-        {
-            Name = name;
-            Summary = summary;
-            GraphData = null;
-        }
     }
 }
