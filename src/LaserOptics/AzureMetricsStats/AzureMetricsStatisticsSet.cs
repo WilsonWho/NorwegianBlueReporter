@@ -63,8 +63,8 @@ namespace LaserOptics.AzureMetricsStats
             var azureGetHistoricalUsageMetricsDto = new AzureGetHistoricalUsageMetricsRequest
             {
                 MetricNames = new List<string> { "CpuTime", "AverageMemoryWorkingSet", "MemoryWorkingSet" },
-                StartTime = Convert.ToDateTime(startTime),
-                EndTime = Convert.ToDateTime(endTime),
+                StartTime = TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(startTime)),
+                EndTime = TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(endTime)),
             };
 
             var azureResponse = azureWebSiteManager.GetHistoricalUsageMetrics(azureGetHistoricalUsageMetricsDto);

@@ -20,7 +20,10 @@ namespace NorwegianBlueReporter
             GraphFactory.SetTargetLibrary(options.GraphType);
 
             var azureStats = new AzureMetricsStatisticsSet();
-            azureStats.Parse(TimeZone.CurrentTimeZone, string.Empty, new DateTime(2014, 3, 8, 16, 0, 0), new DateTime(2014, 3, 8, 18, 0, 0));
+
+            var startTime = new DateTime(2014, 3, 8, 16, 0, 0, DateTimeKind.Local);
+            var endTime = new DateTime(2014, 3, 8, 18, 0, 0, DateTimeKind.Local);
+            azureStats.Parse(TimeZone.CurrentTimeZone, string.Empty, startTime, endTime);
 
             //StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
             var stats = new IagoStatisticsSet();
