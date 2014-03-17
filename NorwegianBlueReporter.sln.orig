@@ -82,20 +82,21 @@ Global
 		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|x64.ActiveCfg = Release|Any CPU
+<<<<<<< HEAD
 		{FCC682BB-709B-4BAA-8380-41C53838360A}.Release|x86.ActiveCfg = Release|Any CPU
+=======
 		{689E7697-1664-41F1-979D-758624BA511A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Debug|x64.ActiveCfg = Debug|x64
 		{689E7697-1664-41F1-979D-758624BA511A}.Debug|x64.Build.0 = Debug|x64
-		{689E7697-1664-41F1-979D-758624BA511A}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{689E7697-1664-41F1-979D-758624BA511A}.Release|x64.ActiveCfg = Release|Any CPU
-		{689E7697-1664-41F1-979D-758624BA511A}.Release|x86.ActiveCfg = Release|Any CPU
+>>>>>>> azure-perf-metrics
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

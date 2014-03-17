@@ -10,8 +10,6 @@ namespace LaserOptics.IagoStats
     public class IagoStatSetAnalysis
     {
         private readonly List<String> _requestLatencySeries;
-
-        private readonly List<string> _ignorableFields;
         
         public IagoStatSetAnalysis()
         {
@@ -40,7 +38,7 @@ namespace LaserOptics.IagoStats
             foreach (var seriesName in _requestLatencySeries)
             {
                 var data = new List<double>();
-                foreach (var stats in statSet)
+                foreach (var stats in statSet.Statistics)
                 {
                     if (stats.ContainsKey(seriesName))
                     {
@@ -64,7 +62,7 @@ namespace LaserOptics.IagoStats
                 avgRequestLatencySeries.Add(avgSeriesName);
                 var data = new List<double>();
                 double avg = averages[series];
-                for (int i = 0; i < statSet.Count; i++)
+                for (int i = 0; i < statSet.Statistics.Count; i++)
                 {
                     data.Add(avg);
                 }
@@ -73,7 +71,7 @@ namespace LaserOptics.IagoStats
             }
 
             var labels =
-                statSet.Select(stats => stats.TimeStamp.ToString(CultureInfo.InvariantCulture)).ToList();
+                statSet.Statistics.Select(stats => stats.TimeStamp.ToString(CultureInfo.InvariantCulture)).ToList();
 
             var requestLatencyGraphs = new List<GraphData>();
             var requestLatencyGraph = new GraphData("Request Latencies", labels, true, LegendPositionEnum.Footer, false,
@@ -106,7 +104,7 @@ Missing data is replaced either with a 0 when there is no preceeding data or the
                 seriesData = new List<SeriesData>();
                 var data = new List<double>();
 
-                foreach (var stats in statSet)
+                foreach (var stats in statSet.Statistics)
                 {
                     if (stats.ContainsKey(latencySeries))
                     {

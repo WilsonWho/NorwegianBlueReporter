@@ -2,16 +2,19 @@
     OutputFileName: "Bleh"
     AttachmentsDirectory: "TBD"
     MarkdownNotesFileName: ""
-    InputFileNames:
-        IagoStatisticsSet : "C:\\tmp\\parrot-server-stats.log"
-        IISStatsSet : "TBD"
-        AzurePerfStatsSet : "TBD"
     GraphType: "OxyPlot"
 
 IagoStatistics:
+    IagoStatisticsSet : "C:\\tmp\\parrot-server-stats.log"
     Filters:
         Name: "one"
         Asdf: "two"
+
+AzureMetricsStatisticsSet:
+    Fields:
+        - "CpuTime"
+        - "AverageMemoryWorkingSet"
+        - "MemoryWorkingSet"
 
 IISStatistics:
     SubKey: "asdf"

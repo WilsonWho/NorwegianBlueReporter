@@ -13,7 +13,7 @@ namespace LaserOptics
             const string filename = @"C:\git\NorwegianBlueReporter\src\StatsReader\parrot-server-stats.log";
             StreamReader reader = File.OpenText(filename);
             var stats = new IagoStatisticsSet();
-            stats.Parse(reader);
+            stats.Parse();
 
             var setAnalyzers = new CommonStatSetAnalysis();
             var statAnalyzers = new CommonStatAnalysis();

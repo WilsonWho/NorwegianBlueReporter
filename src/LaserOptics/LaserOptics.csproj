@@ -86,8 +86,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AzureMetricsStats\AzureMetricsStatistics.cs" />
+    <Compile Include="AzureMetricsStats\AzureMetricsStatisticsSet.cs" />
     <Compile Include="Common\AnalysisNote.cs" />
     <Compile Include="Common\CommonAnalysis.cs" />
+    <Compile Include="Common\CommonStatAnalysis.cs" />
+    <Compile Include="Common\CommonStatSetAnalysis.cs" />
     <Compile Include="Common\GraphData.cs" />
     <Compile Include="Common\IStatistics.cs" />
     <Compile Include="Common\IStatisticsSet.cs" />
@@ -172,6 +176,10 @@
     <Folder Include="IISAccessStats\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AzureMetrics\NorwegianBlue.Azure.csproj">
+      <Project>{689E7697-1664-41F1-979D-758624BA511A}</Project>
+      <Name>NorwegianBlue.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LaserYaml\LaserYaml.csproj">
       <Project>{fcc682bb-709b-4baa-8380-41c53838360a}</Project>
       <Name>LaserYaml</Name>
