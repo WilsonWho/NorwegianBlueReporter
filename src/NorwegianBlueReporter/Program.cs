@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using LaserOptics.AzureMetricsStats;
-using LaserOptics.Common;
-using LaserOptics.IagoStats;
-using LaserPrinter;
 using MigraDoc.DocumentObjectModel;
+using NorwegianBlue.Analysis;
+using NorwegianBlue.Analysis.CommonAlgorithms;
+using NorwegianBlue.IagoIntegration.Analysis;
+using NorwegianBlue.IagoIntegration.Samples;
+using NorwegianBlue.Integration.Azure.Samples;
 
 namespace NorwegianBlueReporter
 {
@@ -17,18 +17,15 @@ namespace NorwegianBlueReporter
         {
             dynamic options = new AppOptions(args);
 
-            GraphFactory.SetTargetLibrary(options.GraphType);
-
-            var azureStats = new AzureMetricsStatisticsSet();
+            var azureStats = new AzureMetricsSampleSet();
 
             var startTime = new DateTime(2014, 3, 8, 16, 0, 0, DateTimeKind.Local);
             var endTime = new DateTime(2014, 3, 8, 18, 0, 0, DateTimeKind.Local);
             azureStats.Parse(TimeZone.CurrentTimeZone, string.Empty, startTime, endTime);
 
             //StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
-            var stats = new IagoStatisticsSet();
-            stats.Parse();
-
+            var stats = new IagoSampleSet();
+            stats.Parse(null, null, null, null);
             //reader.Close();
 
             //using (var file = new StreamWriter(@"formatted-output.log"))
@@ -46,7 +43,7 @@ namespace NorwegianBlueReporter
             
             var setAnalyzers = new CommonStatSetAnalysis();
             var statAnalyzers = new CommonStatAnalysis();
-            var iagoSetAnalyzers = new IagoStatSetAnalysis();
+            var iagoSetAnalyzers = new IagoSampleSetAnalysis();
 
             var setAnalysisMethods = new List<SetAnalyzer>();
             var statAnalysisMethods = new List<StatAnalyzer>();
