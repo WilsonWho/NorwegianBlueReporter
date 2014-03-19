@@ -58,25 +58,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSharpFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\CSharpFormat.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\CSharpFormat.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.CodeFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.CodeFormat.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.CodeFormat.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Compiler.Service">
-      <HintPath>..\..\packages\FSharp.Compiler.Service.0.0.20\lib\net40\FSharp.Compiler.Service.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Compiler.Service.0.0.39\lib\net40\FSharp.Compiler.Service.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Literate">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.Literate.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.Literate.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Markdown">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.Markdown.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.Markdown.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Markdown.Pdf">
       <HintPath>..\..\packages\FSharp.Markdown.Pdf.0.3.0\lib\net40\FSharp.Markdown.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.MetadataFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.MetadataFormat.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.MetadataFormat.dll</HintPath>
     </Reference>
     <Reference Include="iTextSharp, Version=4.1.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
       <SpecificVersion>False</SpecificVersion>
@@ -94,13 +94,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
     </Reference>
-    <Reference Include="OxyPlot, Version=2014.1.231.1, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.231.1\lib\NET45\OxyPlot.dll</HintPath>
+    <Reference Include="OxyPlot">
+      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.257.1\lib\NET45\OxyPlot.dll</HintPath>
     </Reference>
-    <Reference Include="OxyPlot.WindowsForms, Version=2014.1.231.1, Culture=neutral, PublicKeyToken=245eacd6b5d2d338, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.231.1\lib\NET45\OxyPlot.WindowsForms.dll</HintPath>
+    <Reference Include="OxyPlot.WindowsForms">
+      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.257.1\lib\NET45\OxyPlot.WindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -111,14 +109,14 @@
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="RazorEngine">
-      <HintPath>..\..\packages\RazorEngine.3.3.0\lib\net40\RazorEngine.dll</HintPath>
+      <HintPath>..\..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -152,6 +150,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
