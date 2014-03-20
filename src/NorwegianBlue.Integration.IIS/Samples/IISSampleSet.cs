@@ -11,7 +11,7 @@ namespace NorwegianBlue.Integration.IIS.Samples
 {
     public class IISSampleSet : ISampleSet, ISampleSetAnalysis
     {
-        private Dictionary<string, object> _configuration;
+        private readonly Dictionary<string, object> _configuration;
 
         public IISSampleSet()
         {
@@ -27,8 +27,6 @@ namespace NorwegianBlue.Integration.IIS.Samples
                     Password = _configuration["Password"].ToString()
                 };
 
-            var ftpClient = new FtpClient(uri, creds);
-            ftpClient.DownloadFiles();
         }
 
         public IEnumerator<ISampleValues> GetEnumerator()

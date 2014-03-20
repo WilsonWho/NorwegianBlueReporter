@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using NorwegianBlue.Util.Web;
 
-namespace NorwegianBlue.Util.Web
+namespace NorwegianBlue.Integration.IIS
 {
     public class IISLogFileProbe
     {

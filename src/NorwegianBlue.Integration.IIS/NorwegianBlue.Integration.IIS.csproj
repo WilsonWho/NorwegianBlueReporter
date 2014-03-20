@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IISLogFileProbe.cs" />
+    <Compile Include="IISLogSearchParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\IISSample.cs" />
     <Compile Include="Samples\IISSampleSet.cs" />
@@ -72,6 +74,10 @@
     <ProjectReference Include="..\NorwegianBlue.Util.Configuration\NorwegianBlue.Util.Configuration.csproj">
       <Project>{FCC682BB-709B-4BAA-8380-41C53838360A}</Project>
       <Name>NorwegianBlue.Util.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.Util.Web\NorwegianBlue.Util.Web.csproj">
+      <Project>{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}</Project>
+      <Name>NorwegianBlue.Util.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

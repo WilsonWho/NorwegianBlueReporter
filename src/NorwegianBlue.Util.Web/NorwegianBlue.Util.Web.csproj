@@ -67,8 +67,6 @@
   <ItemGroup>
     <Compile Include="FtpClient.cs" />
     <Compile Include="FtpCredentials.cs" />
-    <Compile Include="IISLogFileProbe.cs" />
-    <Compile Include="IISLogSearchParameters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

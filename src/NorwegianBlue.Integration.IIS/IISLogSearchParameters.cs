@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NorwegianBlue.Util.Web
+namespace NorwegianBlue.Integration.IIS
 {
     public class IISLogSearchParameters
     {
