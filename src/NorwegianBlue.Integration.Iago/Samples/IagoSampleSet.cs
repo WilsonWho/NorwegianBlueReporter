@@ -96,7 +96,7 @@ namespace NorwegianBlue.IagoIntegration.Samples
 
         public IEnumerator<ISampleValues> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _iagoSamples.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -104,11 +104,14 @@ namespace NorwegianBlue.IagoIntegration.Samples
             return GetEnumerator();
         }
 
-        public int Count { get; private set; }
+        public int Count
+        {
+            get { return _iagoSamples.Count; }
+        }
 
         public ISampleValues this[int index]
         {
-            get { throw new NotImplementedException(); }
+            get { return _iagoSamples[index]; }
         }
     }
 }

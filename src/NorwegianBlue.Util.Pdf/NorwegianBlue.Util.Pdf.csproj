@@ -57,26 +57,33 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSharpFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\CSharpFormat.dll</HintPath>
+    <Reference Include="CSharpFormat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\CSharpFormat.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.CodeFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.CodeFormat.dll</HintPath>
+    <Reference Include="FSharp.CodeFormat, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.CodeFormat.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Compiler.Service">
-      <HintPath>..\..\packages\FSharp.Compiler.Service.0.0.40\lib\net40\FSharp.Compiler.Service.dll</HintPath>
+    <Reference Include="FSharp.Compiler.Service, Version=0.0.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FSharp.Compiler.Service.0.0.20\lib\net40\FSharp.Compiler.Service.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Literate">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.Literate.dll</HintPath>
+    <Reference Include="FSharp.Literate, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.Literate.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Markdown">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.Markdown.dll</HintPath>
+    <Reference Include="FSharp.Markdown, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.Markdown.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.Markdown.Pdf">
+    <Reference Include="FSharp.Markdown.Pdf, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FSharp.Markdown.Pdf.0.3.0\lib\net40\FSharp.Markdown.Pdf.dll</HintPath>
     </Reference>
-    <Reference Include="FSharp.MetadataFormat">
-      <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.MetadataFormat.dll</HintPath>
+    <Reference Include="FSharp.MetadataFormat, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FSharp.Formatting.2.4.0\lib\net40\FSharp.MetadataFormat.dll</HintPath>
     </Reference>
     <Reference Include="iTextSharp, Version=4.1.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
       <SpecificVersion>False</SpecificVersion>
@@ -108,15 +115,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
+    <Reference Include="RazorEngine, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RazorEngine.3.3.0\lib\net40\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
