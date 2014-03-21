@@ -41,10 +41,10 @@ namespace NorwegianBlue.Util.Pdf
 
             if (graphPresent)
             {
-                foreach (var graphData in analysisNote.GraphData)
+                var graph = new OxyPlotGraph();
+                foreach (var plotModel in analysisNote.GraphData)
                 {
-                    var graph = GraphFactory.CreateGraph(graphData);
-                    graph.Draw(document);
+                    graph.SaveToMigraDocPdf(document, plotModel);
                 }
             }
         }

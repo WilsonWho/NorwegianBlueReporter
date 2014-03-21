@@ -97,7 +97,9 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
                 }
                 stdDevs.Insert(0, stdDevHeader);
                 stdDevs.Append("\n\n");
-                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString());
+                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString(),
+                                                    AnalysisNote.AnalysisNoteType.Summary,
+                                                    AnalysisNote.AnalysisNotePriorities.Important, null);
                 stat.AddAnalysisNote(analysisNote);
             }
 
@@ -113,7 +115,9 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
                 }
                 missingFields.Insert(0, missingValHeader);
                 missingFields.Append("\n\n");
-                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString());
+                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString(),
+                                                    AnalysisNote.AnalysisNoteType.Summary,
+                                                    AnalysisNote.AnalysisNotePriorities.Informational, null);
                 stat.AddAnalysisNote(analysisNote);
             }
 
@@ -146,7 +150,9 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
             {
                 stdDevs.Insert(0, "####Fields more than 1 std dev from mean:\n");
                 stdDevs.Append("\n\n");
-                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString());
+                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString(),
+                                                    AnalysisNote.AnalysisNoteType.Details,
+                                                    AnalysisNote.AnalysisNotePriorities.Important, null);
                 stat.AddAnalysisNote(analysisNote);
             }
 
@@ -154,7 +160,9 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
             {
                 missingFields.Insert(0, "####Missing fields:\n");
                 missingFields.Append("\n\n");
-                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString());
+                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString(),
+                                                    AnalysisNote.AnalysisNoteType.Details,
+                                                    AnalysisNote.AnalysisNotePriorities.Informational, null);
                 stat.AddAnalysisNote(analysisNote);
             }
 

@@ -69,6 +69,10 @@
       <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
       <Name>NorwegianBlue.Analysis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.Util.Configuration\NorwegianBlue.Util.Configuration.csproj">
+      <Project>{FCC682BB-709B-4BAA-8380-41C53838360A}</Project>
+      <Name>NorwegianBlue.Util.Configuration</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

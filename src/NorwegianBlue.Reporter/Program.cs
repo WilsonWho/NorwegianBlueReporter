@@ -8,6 +8,7 @@ using NorwegianBlue.Analysis.CommonAlgorithms;
 using NorwegianBlue.IagoIntegration.Analysis;
 using NorwegianBlue.IagoIntegration.Samples;
 using NorwegianBlue.Integration.Azure.Samples;
+using NorwegianBlue.Util.Pdf;
 
 namespace NorwegianBlueReporter
 {
@@ -25,7 +26,7 @@ namespace NorwegianBlueReporter
 
             //StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
             var stats = new IagoSampleSet();
-            stats.Parse(null, null, null, null);
+            stats.Parse(TimeZone.CurrentTimeZone, @"c:\tmp\parrot-server-stats.log", null, null);
             //reader.Close();
 
             //using (var file = new StreamWriter(@"formatted-output.log"))
@@ -53,7 +54,7 @@ namespace NorwegianBlueReporter
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
             setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
             setAnalysisMethods.Add(setAnalyzers.SummaryStats);
-            setAnalysisMethods.Add(iagoSetAnalyzers.IagoRequestLatencySummary);
+            // TODO: setAnalysisMethods.Add(iagoSetAnalyzers.IagoRequestLatencySummary);
 
             // individual stat analysis
             // statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);

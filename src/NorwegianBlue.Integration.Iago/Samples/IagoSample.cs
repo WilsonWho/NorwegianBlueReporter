@@ -6,6 +6,9 @@ using System.Dynamic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Linq;
+using NorwegianBlue.Analysis;
+using NorwegianBlue.Analysis.Samples;
+using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.IagoIntegration.Samples
 {

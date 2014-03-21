@@ -58,6 +58,12 @@
       <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.165\lib\net45\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.165\lib\net45\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="MigraDoc.DocumentObjectModel">
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
     </Reference>
@@ -76,6 +82,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppOptions.cs" />
@@ -89,7 +96,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <None Include="private.yaml" />
+    <None Include="private.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NorwegianBlue.Analysis\NorwegianBlue.Analysis.csproj">
@@ -103,6 +112,14 @@
     <ProjectReference Include="..\NorwegianBlue.Integration.Iago\NorwegianBlue.Integration.Iago.csproj">
       <Project>{170E8018-4A2B-4AD6-9936-527648C9C127}</Project>
       <Name>NorwegianBlue.Integration.Iago</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.Util.Configuration\NorwegianBlue.Util.Configuration.csproj">
+      <Project>{FCC682BB-709B-4BAA-8380-41C53838360A}</Project>
+      <Name>NorwegianBlue.Util.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.Util.Pdf\NorwegianBlue.Util.Pdf.csproj">
+      <Project>{1B6EDF1C-1FA0-46AF-BCF8-FC225DA4E4BE}</Project>
+      <Name>NorwegianBlue.Util.Pdf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

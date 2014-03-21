@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.IO;
 using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Samples;
+using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.IagoIntegration.Samples
 {
@@ -58,7 +59,7 @@ namespace NorwegianBlue.IagoIntegration.Samples
                 }
             }
 
-            _iagoSamples.Sort();
+           // TODO:  _iagoSamples.Sort();
         }
 
         public ISampleValues GetNearest(DateTime time)

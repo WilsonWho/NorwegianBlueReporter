@@ -135,7 +135,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="private.yaml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NorwegianBlue.Analysis\NorwegianBlue.Analysis.csproj">

@@ -64,7 +64,7 @@
       <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.CodeFormat.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Compiler.Service">
-      <HintPath>..\..\packages\FSharp.Compiler.Service.0.0.39\lib\net40\FSharp.Compiler.Service.dll</HintPath>
+      <HintPath>..\..\packages\FSharp.Compiler.Service.0.0.40\lib\net40\FSharp.Compiler.Service.dll</HintPath>
     </Reference>
     <Reference Include="FSharp.Literate">
       <HintPath>..\..\packages\FSharp.Formatting.2.4.1\lib\net40\FSharp.Literate.dll</HintPath>
@@ -95,10 +95,10 @@
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot">
-      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.257.1\lib\NET45\OxyPlot.dll</HintPath>
+      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.258.1\lib\NET45\OxyPlot.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot.WindowsForms">
-      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.257.1\lib\NET45\OxyPlot.WindowsForms.dll</HintPath>
+      <HintPath>..\..\packages\OxyPlot.WindowsForms.2014.1.258.1\lib\NET45\OxyPlot.WindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

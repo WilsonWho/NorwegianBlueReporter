@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using NorwegianBlue.Analysis.Samples;
 using OpenCvSharp;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
 namespace NorwegianBlue.Analysis.CommonAlgorithms
 {
@@ -84,21 +86,18 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
 
             keys.Sort();
 
-            var labels = new List<string>();
             int statCount = statSet.Count;
-            int rowIdx = 0;
             var data = new CvMat(statCount, keys.Count, MatrixType.F32C1);
             var clusters = Cv.CreateMat(statCount, 1, MatrixType.S32C1);
 
+            // populate the OpenCV input data from the sample data
+            int rowIdx = 0;
             foreach (var row in statSet)
             {
                 // putting data initialization for next step here to avoid another loop over all the statistics collected
-                labels.Add(row.TimeStamp.ToString(CultureInfo.InvariantCulture));
-
                 var row2 = row as ISampleAnalysis;
                 Debug.Assert(row2 != null, "row2 != null");
                 row2.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
-
 
                 int colIdx = 0;
                 foreach (var k in keys)
@@ -118,8 +117,10 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
                 rowIdx++;
             }
 
+            var clusterSizeAxis = new CategoryAxis {Title = "Cluster Size", Position =  AxisPosition.Left};
+            var cvCriteria = new CvTermCriteria(10, 1.0);
 
-            var series = new List<SeriesData>();
+            var series = new List<List<double>>();
             for (int power = 1; power < 5; power++)
             {
                 var clusterCount = (int) Math.Pow(2d, power);
@@ -128,28 +129,49 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
                     break;
                 }
 
-                Cv.KMeans2(data, clusterCount, clusters, new CvTermCriteria(10, 1.0));
-
-                rowIdx = 0;
-                var clusterSeriesName = string.Format("k:{0}", clusterCount);
+                Cv.KMeans2(data, clusterCount, clusters, cvCriteria);
+                var clusterName = string.Format("k:{0}", clusterCount);
+                clusterSizeAxis.Labels.Add(clusterName);
                 var clusterSeriesData = new List<double>();
+                rowIdx = 0;
                 foreach (ISampleAnalysis stat in statSet)
                 {
                     var cluster = clusters[rowIdx];
-                    stat.AnalysisScratchPad.Clusters[clusterCount] = (int) cluster;
+                    stat.AnalysisScratchPad.Clusters[clusterCount] = (int)cluster;
+                    // convert from the OpenCV matrix to a regular C# List so we can use
+                    // this with OxyPlot
                     clusterSeriesData.Add(cluster);
                     rowIdx++;
                 }
-                series.Add(new SeriesData(clusterSeriesName, clusterSeriesData));
+                series.Add(clusterSeriesData);
             }
 
-            var graph = new GraphData("Clustering",
-                                      labels,
-                                      false,
-                                      LegendPositionEnum.Left,
-                                      false,
-                                      GraphType.ColorTable,
-                                      series);
+            var plotModel = new PlotModel();
+            plotModel.Title = "Clustering Analysis";
+            var linearColorAxis = new LinearColorAxis
+                {
+                    HighColor = OxyColors.Gray,
+                    LowColor = OxyColors.Black,
+                    Position = AxisPosition.Right
+                };
+            plotModel.Axes.Add(linearColorAxis);
+
+            var timeAxis = new DateTimeAxis(AxisPosition.Bottom, "Category Analysis", "yy-MM-dd hh:mm:ss");
+            plotModel.Axes.Add(timeAxis);
+            plotModel.Axes.Add(clusterSizeAxis);
+
+            var heatMapSeries = new HeatMapSeries {Data = new Double[statSet.Count,series.Count]};
+
+            for (int y = 0; y < series.Count; y++)
+            {
+                for (int x = 0; x < statSet.Count; x++)
+                {
+                    heatMapSeries.Data[x, y] = series[y][x];
+                }
+                
+            }
+
+            plotModel.Series.Add(heatMapSeries);
 
             var analysisNote = new AnalysisNote("Clustering Analysis",
 @"
@@ -161,10 +183,8 @@ This is done several times to see if there are any 'obvious' groupings to the da
 
 The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as a bar, where colour indicates cluster membership, and distance (left to right) represents time.
 
-",
-                                                graph);
+", AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel>{plotModel});
             statSet.AddAnalysisNote(analysisNote);
         }
     }
 }
-

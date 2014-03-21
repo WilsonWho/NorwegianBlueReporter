@@ -25,12 +25,12 @@ namespace NorwegianBlue.Util.Configuration
         {
             if (string.IsNullOrEmpty(_publicFileName))
             {
-                _publicFileName = @"../../../config.yaml";
+                _publicFileName = @"config.yaml";
             }
 
             if (string.IsNullOrEmpty(_privateFileName))
             {
-                _privateFileName = @"../../../private.yaml";
+                _privateFileName = @"private.yaml";
             }
 
             var deserializer = new Deserializer();
