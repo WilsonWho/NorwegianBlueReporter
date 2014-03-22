@@ -2,11 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CED169D0-3979-4E89-9D85-11246F9AA68C}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Analysis", "src\NorwegianBlue.Analysis\NorwegianBlue.Analysis.csproj", "{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}"
 EndProject
@@ -19,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Integration.Iago", "src\NorwegianBlue.Integration.Iago\NorwegianBlue.Integration.Iago.csproj", "{170E8018-4A2B-4AD6-9936-527648C9C127}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Reporter", "src\NorwegianBlue.Reporter\NorwegianBlue.Reporter.csproj", "{BB6F8DAE-1684-410A-B0CA-45D745B4B539}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Integration.IIS", "src\NorwegianBlue.Integration.IIS\NorwegianBlue.Integration.IIS.csproj", "{3D146E29-97B9-4CC1-AF92-212612246824}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Util.Web", "src\NorwegianBlue.Util.Web\NorwegianBlue.Util.Web.csproj", "{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +115,33 @@ Global
 		{BB6F8DAE-1684-410A-B0CA-45D745B4B539}.Release|x64.ActiveCfg = Release|x64
 		{BB6F8DAE-1684-410A-B0CA-45D745B4B539}.Release|x64.Build.0 = Release|x64
 		{BB6F8DAE-1684-410A-B0CA-45D745B4B539}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Debug|x64.ActiveCfg = Debug|x64
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Debug|x64.Build.0 = Debug|x64
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D146E29-97B9-4CC1-AF92-212612246824}.Release|x86.ActiveCfg = Release|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Debug|x64.ActiveCfg = Debug|x64
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Debug|x64.Build.0 = Debug|x64
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Release|x64.ActiveCfg = Release|x64
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Release|x64.Build.0 = Release|x64
+		{B56EA96B-2184-4CBA-B953-C1EB82F1D4BC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

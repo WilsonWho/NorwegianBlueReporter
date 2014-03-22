@@ -13,7 +13,7 @@ namespace NorwegianBlue.Integration.Azure.Samples
 {
     public class AzureMetricsSampleSet : ISampleSet, ISampleSetAnalysis
     {
-        private readonly IDictionary<string, object> _configuration;
+        private readonly IDictionary<object, object> _configuration;
 
         public AzureMetricsSampleSet()
         {

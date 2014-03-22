@@ -13,7 +13,7 @@ namespace NorwegianBlue.Util.Configuration
         private static string _publicFileName;
         private static string _privateFileName;
 
-        private static IDictionary<string, object> Configuration
+        private static IDictionary<object, object> Configuration
         {
             get
             {
@@ -63,7 +63,7 @@ namespace NorwegianBlue.Util.Configuration
 
         private static object Merge(IDictionary<string, object> obj1, IDictionary<string, object> obj2)
         {
-            IDictionary<string, object> resultSet = new Dictionary<string, object>();
+            IDictionary<object, object> resultSet = new Dictionary<object, object>();
 
             foreach (var kvp in obj1)
             {

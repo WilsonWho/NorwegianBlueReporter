@@ -113,10 +113,7 @@
       <Project>{170E8018-4A2B-4AD6-9936-527648C9C127}</Project>
       <Name>NorwegianBlue.Integration.Iago</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NorwegianBlue.Integration.IIS\NorwegianBlue.Integration.IIS.csproj">
-      <Project>{3D146E29-97B9-4CC1-AF92-212612246824}</Project>
-      <Name>NorwegianBlue.Integration.IIS</Name>
-    </ProjectReference>
+<<<<<<< HEAD
     <ProjectReference Include="..\NorwegianBlue.Util.Configuration\NorwegianBlue.Util.Configuration.csproj">
       <Project>{FCC682BB-709B-4BAA-8380-41C53838360A}</Project>
       <Name>NorwegianBlue.Util.Configuration</Name>
@@ -124,6 +121,11 @@
     <ProjectReference Include="..\NorwegianBlue.Util.Pdf\NorwegianBlue.Util.Pdf.csproj">
       <Project>{1B6EDF1C-1FA0-46AF-BCF8-FC225DA4E4BE}</Project>
       <Name>NorwegianBlue.Util.Pdf</Name>
+=======
+    <ProjectReference Include="..\NorwegianBlue.Integration.IIS\NorwegianBlue.Integration.IIS.csproj">
+      <Project>{3D146E29-97B9-4CC1-AF92-212612246824}</Project>
+      <Name>NorwegianBlue.Integration.IIS</Name>
+>>>>>>> iis-logs
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

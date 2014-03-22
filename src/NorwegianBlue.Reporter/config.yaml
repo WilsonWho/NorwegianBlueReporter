@@ -33,7 +33,7 @@ IagoSampleSet:
         - "count"
         - "200"
 
-IagoSampleAnalysis:
+IagoSampleSetAnalysis:
     StatsToLineGraph:
         - { Title: "Average Request Lantency (ms)",
             Statistic: "client/request_latency_ms_average",

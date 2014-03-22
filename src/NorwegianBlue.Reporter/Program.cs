@@ -8,6 +8,7 @@ using NorwegianBlue.Analysis.CommonAlgorithms;
 using NorwegianBlue.IagoIntegration.Analysis;
 using NorwegianBlue.IagoIntegration.Samples;
 using NorwegianBlue.Integration.Azure.Samples;
+using NorwegianBlue.Integration.IIS.Samples;
 using NorwegianBlue.Util.Pdf;
 
 namespace NorwegianBlueReporter
@@ -19,10 +20,15 @@ namespace NorwegianBlueReporter
             dynamic options = new AppOptions(args);
 
             var azureStats = new AzureMetricsSampleSet();
+            var azureStartTime = new DateTime(2014, 3, 8, 16, 0, 0, DateTimeKind.Local);
+            var azureEndTime = new DateTime(2014, 3, 8, 18, 0, 0, DateTimeKind.Local);
+            azureStats.Parse(TimeZone.CurrentTimeZone, string.Empty, azureStartTime, azureEndTime);
 
-            var startTime = new DateTime(2014, 3, 8, 16, 0, 0, DateTimeKind.Local);
-            var endTime = new DateTime(2014, 3, 8, 18, 0, 0, DateTimeKind.Local);
-            azureStats.Parse(TimeZone.CurrentTimeZone, string.Empty, startTime, endTime);
+
+            var iisStats = new IISSampleSet();
+            var iisStartTime = new DateTime(2014, 3, 12, 18, 10, 0);
+            var iisEndTime = new DateTime(2014, 3, 12, 20, 11, 0);
+            iisStats.Parse(TimeZone.CurrentTimeZone, string.Empty, iisStartTime, iisEndTime);
 
             //StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
             var stats = new IagoSampleSet();
