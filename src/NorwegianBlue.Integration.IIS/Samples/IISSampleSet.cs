@@ -31,16 +31,16 @@ namespace NorwegianBlue.Integration.IIS.Samples
             var ftpClient = new FtpClient(url, creds);
             ftpClient.Connect();
             ftpClient.ChangeWorkingDirectory(_configuration["WorkingDirectory"].ToString());
-            var locaSaveFiles = ftpClient.PullLogFiles();
+            var localSaveFiles = ftpClient.PullLogFiles();
 
             var searchParameters = new IISLogSearchParameters
                 {
                     StartTime = startTime,
                     EndTime = endTime
                 };
-            
+
             var fileProbe = new IISLogFileProbe(searchParameters);
-            var results = fileProbe.CollectLogsFromTimeInterval(locaSaveFiles);
+            var results = fileProbe.CollectLogsFromTimeInterval(localSaveFiles);
         }
 
         public IEnumerator<ISampleValues> GetEnumerator()

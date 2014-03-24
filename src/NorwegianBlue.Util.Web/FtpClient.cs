@@ -24,23 +24,23 @@ namespace NorwegianBlue.Util.Web
             _serverUri = serverUri;
         }
 
-        //public List<FileInfo> DownloadLogFiles()
-        //{
-        //    var localSaveFiles = new List<FileInfo>();
+        public List<FileInfo> DownloadLogFiles(string directory)
+        {
+            var localSaveFiles = new List<FileInfo>();
 
-        //    using (_ftpClient)
-        //    {
-        //        var files = _ftpClient.GetListing(_ftpClient.GetWorkingDirectory(), FtpListOption.AllFiles);
+            using (_ftpClient)
+            {
+                var files = _ftpClient.GetListing(_ftpClient.GetWorkingDirectory(), FtpListOption.AllFiles);
 
-        //        localSaveFiles.AddRange(from file in files
-        //                                where file.Type == FtpFileSystemObjectType.File
-        //                                select SaveToTemporaryFile(file));
+                localSaveFiles.AddRange(from file in files
+                                        where file.Type == FtpFileSystemObjectType.File
+                                        select SaveToFile(directory, file));
 
-        //        _ftpClient.Disconnect();
-        //    }
+                _ftpClient.Disconnect();
+            }
 
-        //    return localSaveFiles;
-        //}
+            return localSaveFiles;
+        }
 
         public List<FileInfo> PullLogFiles()
         {
@@ -89,13 +89,13 @@ namespace NorwegianBlue.Util.Web
             }
         }
 
-        //private FileInfo SaveToFile(FtpListItem ftpListItem)
-        //{
-        //    var tmp = Path.GetTempFileName(); // create a concrete file instead
-        //    WriteToFile(ftpListItem.FullName, tmp);
+        private FileInfo SaveToFile(string directory, FtpListItem ftpListItem)
+        {
+            string path = Path.Combine(directory, ftpListItem.Name);
+            WriteToFile(ftpListItem.FullName, path);
 
-        //    return new FileInfo(tmp);
-        //}
+            return new FileInfo(path);
+        }
 
         private FileInfo SaveToTemporaryFile(FtpListItem ftpListItem)
         {
