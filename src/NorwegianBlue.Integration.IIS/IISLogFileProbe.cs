@@ -9,6 +9,7 @@ namespace NorwegianBlue.Integration.IIS
     public class IISLogFileProbe
     {
         private const string DateTimeRegex = @"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}";
+        private const string IISLogHeaderRegex = @"#Fields: .*";
         private readonly List<string> _validLogs;
         private readonly IISLogSearchParameters _logSearchParameters;
 
@@ -20,12 +21,50 @@ namespace NorwegianBlue.Integration.IIS
         
         public List<string> CollectLogsFromTimeInterval(List<FileInfo> files)
         {
+            if (files.Count == 0)
+            {
+                throw new ArgumentException("No files specified ...");
+            }
+
+            var headers = ExtractHeaders(files[0]);
+            _validLogs.Add(headers);
+
             foreach (FileInfo file in files)
             {
                 Crop(file);
             }
 
             return _validLogs;
+        }
+
+        private string ExtractHeaders(FileInfo file)
+        {
+            string headers = string.Empty;
+            using (StreamReader reader = file.OpenText())
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    headers = ReadHeaders(line);
+
+                    if (!string.IsNullOrEmpty(headers))
+                    {
+                        break;
+                    }
+                }
+
+                reader.Close();
+            }
+
+            return headers;
+        }
+
+        private string ReadHeaders(string line)
+        {
+            var match = Regex.Match(line, IISLogHeaderRegex);
+            var headers = match.Groups[0].Value;
+
+            return headers;
         }
 
         private void Crop(FileInfo file)

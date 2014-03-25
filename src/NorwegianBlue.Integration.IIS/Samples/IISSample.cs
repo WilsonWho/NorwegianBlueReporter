@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Samples;
 
@@ -9,6 +10,12 @@ namespace NorwegianBlue.Integration.IIS.Samples
 {
     public class IISSample : ISampleAnalysis
     {
+        private readonly Dictionary<string, string> _stats = new Dictionary<string, string>();
+        private ReadOnlyDictionary<String, double> _roStats;
+
+        private readonly Dictionary<String, string> _nonStats = new Dictionary<string, string>();
+        private ReadOnlyDictionary<String, string> _roNonStats;
+
         public IEnumerator<KeyValuePair<string, double>> GetEnumerator()
         {
             throw new NotImplementedException();
@@ -20,6 +27,36 @@ namespace NorwegianBlue.Integration.IIS.Samples
         }
 
         public int Count { get; private set; }
+
+        public void Parse(string log, string[] headers)
+        {
+            var logData = log.Split(null);
+
+            string date = string.Empty;
+            string time = string.Empty;
+            for (int index = 0; index < logData.Length; index++)
+            {
+                var header = headers[index + 1];
+                var logContent = logData[index];
+
+                if (string.Equals(header, "date"))
+                {
+                    date = logContent;
+                }
+                else if (string.Equals(header, "time"))
+                {
+                    time = logContent;
+                }
+                else
+                {
+                    _stats.Add(header, logContent);
+                }
+            }
+
+            string dateTimeString = string.Format("{0} {1}", date, time);
+            TimeStamp = Convert.ToDateTime(dateTimeString);
+        }
+
         public bool ContainsKey(string key)
         {
             throw new NotImplementedException();

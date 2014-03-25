@@ -12,6 +12,7 @@ namespace NorwegianBlue.Integration.IIS.Samples
     public class IISSampleSet : ISampleSet, ISampleSetAnalysis
     {
         private readonly IDictionary<object, object> _configuration;
+        private readonly List<IISSample> _iisStatistics = new List<IISSample>();
 
         public IISSampleSet()
         {
@@ -40,7 +41,18 @@ namespace NorwegianBlue.Integration.IIS.Samples
                 };
 
             var fileProbe = new IISLogFileProbe(searchParameters);
-            var results = fileProbe.CollectLogsFromTimeInterval(localSaveFiles);
+            var logs = fileProbe.CollectLogsFromTimeInterval(localSaveFiles);
+
+            var headers = logs[0].Split(null);
+
+            for (int index = 1; index < logs.Count; index++)
+            {
+                var log = logs[index];
+                var iisSample = new IISSample();
+                iisSample.Parse(log, headers);
+
+                _iisStatistics.Add(iisSample);
+            }
         }
 
         public IEnumerator<ISampleValues> GetEnumerator()

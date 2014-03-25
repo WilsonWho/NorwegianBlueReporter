@@ -48,14 +48,9 @@ namespace NorwegianBlue.IagoIntegration.Samples
         public IagoSample()
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();
-            if (configuration.ContainsKey("FieldsToIgnore"))
-            {
-                AnalysisScratchPad.FieldsToIgnore = configuration["FieldsToIgnore"];
-            }
-            else
-            {
-                AnalysisScratchPad.FieldsToIgnore = new List<string>();
-            }
+            AnalysisScratchPad.FieldsToIgnore = configuration.ContainsKey("FieldsToIgnore")
+                                                    ? configuration["FieldsToIgnore"]
+                                                    : new List<string>();
         }
 
         public void Parse(String input)

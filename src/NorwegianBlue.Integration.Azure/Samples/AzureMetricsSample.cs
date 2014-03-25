@@ -91,7 +91,7 @@ namespace NorwegianBlue.Integration.Azure.Samples
 
         public IEnumerator<KeyValuePair<string, double>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator(false, null);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
