@@ -2,7 +2,7 @@
 # Attachment directory, markdown notes file, output file name values here can be
 # overridden on the command line.
 AppOptions:
-    OutputFileName: "Bleh"
+    OutputFileName: "Bleh.pdf"
     AttachmentsDirectory: "TBD"
     MarkdownNotesFileName: ""
     InputData:

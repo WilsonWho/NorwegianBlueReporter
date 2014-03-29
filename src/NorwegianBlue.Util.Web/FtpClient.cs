@@ -53,7 +53,8 @@ namespace NorwegianBlue.Util.Web
 
             using (_ftpClient)
             {
-                var files = _ftpClient.GetListing(_ftpClient.GetWorkingDirectory(), FtpListOption.AllFiles);
+                var ftpCwd = _ftpClient.GetWorkingDirectory();
+                var files = _ftpClient.GetListing(ftpCwd);
 
                 localSaveFiles.AddRange(from file in files
                                     where file.Type == FtpFileSystemObjectType.File
@@ -74,7 +75,9 @@ namespace NorwegianBlue.Util.Web
             };
             _ftpClient.Host = _serverUri;
             _ftpClient.Port = 21;
-            _ftpClient.DataConnectionType = FtpDataConnectionType.PORT;
+            // Using forced passive as we had trouble with double NAT 
+            // (eg windows running in a VM with a shared (NAT) network setting.
+            _ftpClient.DataConnectionType = FtpDataConnectionType.PASV;
 
             _ftpClient.Connect();
         }
