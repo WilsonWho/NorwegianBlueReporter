@@ -34,7 +34,13 @@ IagoSampleSet:
         - "200"
 
 IagoSampleSetAnalysis:
-    StatsToLineGraph:
+    Graphs:
+        - { Title: "Combined Request Latencies",
+            Statistics: ["client/request_latency_ms_minimum", "client/request_latency_ms_average", "client/request_latency_ms_maximum"],
+            Description: "",
+            IncludeAverage: "true",
+            IncludeStdDeviation: "true"
+          }
         - { Title: "Average Request Lantency (ms)",
             Statistic: "client/request_latency_ms_average",
             Description: "",
@@ -52,4 +58,16 @@ IagoSampleSetAnalysis:
             Description: "",
             IncludeAverage: "true",
             IncludeStdDeviation: "true"
+          }
+        - { Title: "Minimum Request Latency - no std dev",
+            Statistic: "client/request_latency_ms_minimum",
+            Description: "",
+            IncludeAverage: "true",
+            IncludeStdDeviation: "false"
+          }
+        - { Title: "Minimum Request Latency - no average",
+            Statistic: "client/request_latency_ms_minimum",
+            Description: "",
+            IncludeAverage: "false",
+            IncludeStdDeviation: "false "
           }

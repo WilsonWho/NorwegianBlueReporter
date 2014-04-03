@@ -1,129 +1,162 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
+using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Samples;
+using NorwegianBlue.IagoIntegration.Samples;
+using NorwegianBlue.Util.Configuration;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
 namespace NorwegianBlue.IagoIntegration.Analysis
 {
     public class IagoSampleSetAnalysis
     {
-        private readonly List<String> _requestLatencySeries;
+        private readonly List<object> _statsToLineGraph;
         
         public IagoSampleSetAnalysis()
         {
-//            // ToDo: pull from object config 
-//            _requestLatencySeries = new List<string>
-//                {
-//                    "client/request_latency_ms_average",
-//                    "client/request_latency_ms_maximum",
-//                    "client/request_latency_ms_minimum",
-//                    //"client/request_latency_ms_p50",
-//                    //"client/request_latency_ms_p90",
-//                    //"client/request_latency_ms_p95"
-//                };
-//        }
-//
-//        public void IagoRequestLatencySummary(ISampleSetAnalysis statSet)
-//        {
-//            var averages = statSet.AnalysisScratchPad.Averages;
-//
-//            // Latency summary
-//
-//            var seriesData = new List<SeriesData>();
-//            var notes = new StringBuilder();
-//
-//            // get the stat-by-stat values
-//            foreach (var seriesName in _requestLatencySeries)
-//            {
-//                var data = new List<double>();
-//                foreach (var stats in statSet)
-//                {
-//                    if (stats.ContainsKey(seriesName))
-//                    {
-//                        data.Add(stats[seriesName]);
-//                    }
-//                    else
-//                    {
-//                        data.Add(data.Count > 0 ? data[data.Count - 1] : 0d);
-//                        notes.AppendFormat("{0} Missing value for {1}\n", stats.TimeStamp, seriesName);
-//                    }
-//                }
-//
-//                seriesData.Add(new SeriesData(seriesName, data));
-//            }
-//
-//            // add the averages from the entire dataset for each value
-//            var avgRequestLatencySeries = new List<string>();
-//            foreach (var series in _requestLatencySeries)
-//            {
-//                var avgSeriesName = series + " set average";
-//                avgRequestLatencySeries.Add(avgSeriesName);
-//                var data = new List<double>();
-//                double avg = averages[series];
-//                for (int i = 0; i < statSet.Count; i++)
-//                {
-//                    data.Add(avg);
-//                }
-//
-//                seriesData.Add(new SeriesData(avgSeriesName, data));
-//            }
-//
-//            var labels =
-//                statSet.Select(stats => stats.TimeStamp.ToString(CultureInfo.InvariantCulture)).ToList();
-//
-//            var requestLatencyGraphs = new List<GraphData>();
-//            var requestLatencyGraph = new GraphData("Request Latencies", labels, true, LegendPositionEnum.Footer, false,
-//                                                    GraphType.Line, seriesData);
-//            requestLatencyGraphs.Add(requestLatencyGraph);
-//
-//            var analysisSummary = new StringBuilder(
-//                @"# Average Request Latency
-//
-//The following graphs the average client request statistics for each minute of the test duration.
-//"
-//                );
-//
-//            if (notes.Length > 0)
-//            {
-//                analysisSummary.Append(
-//                    @"*Notes*:
-//Missing data is replaced either with a 0 when there is no preceeding data or the previous value.
-//
-//*Time stamps with Missing Data*
-//"
-//                    );
-//                analysisSummary.Append(notes);
-//
-//            }
-//
-//            // Create Detailed graphs for each Client Request Latency
-//            foreach (var latencySeries in _requestLatencySeries)
-//            {
-//                seriesData = new List<SeriesData>();
-//                var data = new List<double>();
-//
-//                foreach (var stats in statSet)
-//                {
-//                    if (stats.ContainsKey(latencySeries))
-//                    {
-//                        data.Add(stats[latencySeries]);
-//                    }
-//                    else
-//                    {
-//                        data.Add(data.Count > 0 ? data[data.Count - 1] : 0d); 
-//                        // don't need to add anything to the notes; would've alread been done when we generated the combined log graph above
-//                    }
-//                }
-//                seriesData.Add(new SeriesData(latencySeries, data));
-//
-//                requestLatencyGraph = new GraphData(latencySeries, labels, true, LegendPositionEnum.Footer, false,
-//                                          GraphType.Line, seriesData);
-//                requestLatencyGraphs.Add(requestLatencyGraph);
-//            }
-//
-//            statSet.AddAnalysisNote(new AnalysisNote("Request Latencies", analysisSummary.ToString(),
-//                                                     requestLatencyGraphs));
+            Dictionary<object, object> configuration = YamlParser.GetConfiguration();
+            _statsToLineGraph = (List<object>)configuration["Graphs"];
+        }
+               
+        public void IagoRequestLatencySummary(IagoSampleSet sampleSet)
+        {
+            var averages = sampleSet.AnalysisScratchPad.Averages;
+            var stdDeviations = sampleSet.AnalysisScratchPad.StdDeviations;
+
+            var graphs = new List<PlotModel>();
+            var notes = new StringBuilder();
+
+            foreach (var o in _statsToLineGraph)
+            {
+                var graphSpec = (Dictionary<object, object>) o;
+                List<object> statSeriesObjects;
+
+                if (graphSpec.ContainsKey("Statistics"))
+                {
+                    statSeriesObjects = (List<object>)graphSpec["Statistics"];
+                }
+                else
+                {
+                    statSeriesObjects = new List<object> {graphSpec["Statistic"]};
+                }
+
+                if (0 == statSeriesObjects.Count)
+                {
+                    throw new ArgumentException("No statistic specified for graph!");
+                }
+
+                var statSeries = statSeriesObjects.Select(s => s.ToString()).ToList();
+
+                var includeAverage = (graphSpec["IncludeAverage"].ToString() == "true");
+                var includeStdDev = (graphSpec["IncludeStdDeviation"].ToString() == "true");
+
+                if (includeStdDev && !includeAverage)
+                {
+                    throw new ArgumentException("Can't include add std deviation to graph with out the average.");
+                }
+
+                var graph = new PlotModel {Title = graphSpec["Title"].ToString()};
+                var xAxis = new DateTimeAxis
+                    {
+                        Position = AxisPosition.Bottom,
+                        Minimum = DateTimeAxis.ToDouble(sampleSet.StartTime),
+                        Maximum = DateTimeAxis.ToDouble(sampleSet.EndTime)
+                    };
+                graph.Axes.Add(xAxis);
+
+                var yAxis = new LinearAxis { Position = AxisPosition.Left};
+                graph.Axes.Add(yAxis);
+
+                foreach (var statistic in statSeries)
+                {
+                    var lineSeries = new LineSeries 
+                        {
+                            Title = statistic,
+                            LineLegendPosition = LineLegendPosition.End
+                        };
+
+                    foreach (var sample in sampleSet)
+                    {
+                        var timeStamp = DateTimeAxis.ToDouble(sample.TimeStamp);
+                        double val;
+
+                        if (sample.ContainsKey(statistic))
+                        {
+                            val = sample[statistic];
+                        }
+                        else
+                        {
+                            val = lineSeries.Points.Count > 0 ? lineSeries.Points[lineSeries.Points.Count - 1].Y : 0;
+                            notes.AppendFormat("{0} Missing value for {1}\n", sample.TimeStamp, statistic);
+                        }
+                        lineSeries.Points.Add(new DataPoint(timeStamp, val));                               
+                    }
+                    graph.Series.Add(lineSeries);
+
+                    if (includeAverage)
+                    {
+                        var average = averages[statistic];
+                        var avgSeries = new LineSeries
+                            {
+                                Title = statistic + " average",
+                                LineLegendPosition = LineLegendPosition.End
+                            };
+
+
+                        var stdDev = stdDeviations[statistic];
+                        var stdDevAreaSeries = new AreaSeries
+                            {
+                                Title = statistic + " std dev range",
+                                LineLegendPosition = LineLegendPosition.End
+                            };
+
+                        foreach (var dataPoint in lineSeries.Points)
+                        {
+                            var timeStamp = dataPoint.X;
+                            avgSeries.Points.Add(new DataPoint(timeStamp, average));
+
+                            stdDevAreaSeries.Points.Add( new DataPoint(timeStamp, average + stdDev));
+                            stdDevAreaSeries.Points2.Add( new DataPoint(timeStamp, average - stdDev));
+                        }
+
+                        graph.Series.Add(avgSeries);
+
+                        if (includeStdDev)
+                        {
+                            graph.Series.Add(stdDevAreaSeries);
+                        }
+                    }
+                }
+                graphs.Add(graph);
+            }
+            
+            var analysisSummary = new StringBuilder(
+                @"# Average Request Latency
+
+The following graphs the average client request statistics for each minute of the test duration.
+"
+                );
+
+            if (notes.Length > 0)
+            {
+                analysisSummary.Append(
+                    @"*Notes*:
+Missing data is replaced either with a 0 when there is no preceeding data or the previous value.
+
+*Time stamps with Missing Data*
+"
+                    );
+                analysisSummary.Append(notes);
+
+            }
+
+            var note = new AnalysisNote("Request Latencies", analysisSummary.ToString(), AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, graphs);
+            sampleSet.AddAnalysisNote(note);
         }
     }
 }

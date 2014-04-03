@@ -12,7 +12,7 @@ using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.IagoIntegration.Samples
 {
-    class IagoSample : ISampleAnalysis
+    public class IagoSample : ISampleAnalysis
     {
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}
@@ -53,7 +53,7 @@ namespace NorwegianBlue.IagoIntegration.Samples
                                                     : new List<string>();
         }
 
-        public void Parse(String input)
+        public void Parse(TimeZone timeZone, String input)
         {
             var matches = LineMatcher.Match(input);
 
@@ -111,7 +111,7 @@ namespace NorwegianBlue.IagoIntegration.Samples
             }
         }
 
-        public void Analyze(IEnumerable<StatAnalyzer> analyzers)
+        public void Analyze(IEnumerable<StatAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>> analyzers)
         {
             throw new NotImplementedException("No IagoStatistic analysis defined.");
         }
@@ -188,7 +188,7 @@ namespace NorwegianBlue.IagoIntegration.Samples
             return FilterStats(includeIgnored, extraIgnores).TryGetValue(key, out value);
         }
 
-        double IReadOnlyDictionary<string, double>.this[string key]
+        public double this[string key]
         {
             get { return this[key, false, null]; }
         }
@@ -204,7 +204,6 @@ namespace NorwegianBlue.IagoIntegration.Samples
         {
             return FilterStats(includeIgnored, extraIgnores).Keys;
         }
-
 
         public IEnumerable<double> Values { get { return FilteredValues(false, null); } }
 

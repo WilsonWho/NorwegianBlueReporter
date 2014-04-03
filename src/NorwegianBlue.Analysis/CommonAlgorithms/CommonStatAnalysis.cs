@@ -8,10 +8,7 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
  
     public class CommonStatAnalysis
     {
-        // MigraDoc/PDFSharp don't wrap cell contents... so this needs quite a lot of work to be a reasonable
-        // presentation
-        // TODO: make this usable
-        public void SummaryStatComparisonAsTables(ISampleSetAnalysis statSet, ISampleAnalysis stat)
+        public void SummaryStatComparisonAsTables(ISampleSetAnalysis<ISampleAnalysis> statSet, ISampleAnalysis stat)
         {
             var stdDevs = new StringBuilder();
             var missingFields = new StringBuilder();
@@ -123,7 +120,7 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
 
         }
 
-        public void SummaryStatComparison(ISampleSetAnalysis statSet, ISampleAnalysis stat)
+        public void SummaryStatComparison(ISampleSetAnalysis<ISampleAnalysis> statSet, ISampleAnalysis stat)
         {
             var stdDevs = new StringBuilder();
             var missingFields = new StringBuilder();

@@ -84,7 +84,7 @@ namespace NorwegianBlue.Integration.Azure.Samples
             _analysisNotes.Add(note);
         }
 
-        public void Analyze(IEnumerable<StatAnalyzer> analyzers)
+        public void Analyze(IEnumerable<StatAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>> analyzers)
         {
             throw new NotImplementedException();
         }

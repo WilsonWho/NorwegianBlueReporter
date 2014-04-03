@@ -2,48 +2,88 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Samples;
 using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.IagoIntegration.Samples
 {
-    public class IagoSampleSet : ISampleSet, ISampleSetAnalysis
+    public class IagoSampleSet : ISampleSet<IagoSample>, ISampleSetAnalysis<IagoSample>
     {
-        private readonly dynamic _analysisScratchPad = new ExpandoObject();
         private readonly List<IagoSample> _iagoSamples = new List<IagoSample>();
-        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
-        private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
 
+        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
+        private readonly dynamic _analysisScratchPad = new ExpandoObject();
+        public dynamic AnalysisScratchPad
+        {
+            get { return _analysisScratchPad; }
+        }
+
+        private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
         public ReadOnlyCollection<AnalysisNote> AnalysisNotes
         {
             get { return _roAnalysisNote ?? (_roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
         }
 
-        public DateTime ActualStartTime { get; private set; }
-        public DateTime ActualEndTime { get; private set; }
-        public DateTime DesiredStartTime { get; set; }
-        public DateTime DesiredEndTime { get; set; }
+        public int Count { get { return _iagoSamples.Count; } }
 
-        public dynamic AnalysisScratchPad
+        public DateTime StartTime {
+            get
+            {
+                if (0 == _iagoSamples.Count)
+                {
+                    throw new DataException("No samples in collection");
+                }
+                return _iagoSamples.First().TimeStamp;
+            }
+        }
+
+        public DateTime EndTime
         {
-            get { return _analysisScratchPad; }
+            get
+            {
+                if (0 == _iagoSamples.Count)
+                {
+                    throw new DataException("No samples in collection");
+                }
+                return _iagoSamples.Last().TimeStamp;
+            }
+        }
+
+        IagoSample IReadOnlyList<IagoSample>.this[int index]
+        {
+            get { return _iagoSamples[index]; }
+        }
+
+        IagoSample ISampleSetValues<IagoSample>.this[DateTime time]
+        {
+            get { return SampleSetComparisons<IagoSample>.GetNearestToTime(_iagoSamples, time); }
+        }
+
+        IagoSample ISampleSetValues<IagoSample>.this[DateTime time, TimeSpan tolerance, bool absolute]
+        {
+            get { return SampleSetComparisons<IagoSample>.GetNearestToTime(_iagoSamples, time, tolerance, absolute); }
+        }
+
+        IEnumerator<IagoSample> IEnumerable<IagoSample>.GetEnumerator()
+        {
+            return _iagoSamples.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<IagoSample>)this).GetEnumerator();
         }
 
         public IagoSampleSet()
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();
 
-            if (configuration.ContainsKey("FieldsToIgnore"))
-            {
-                AnalysisScratchPad.ignorableFields = configuration["FieldsToIgnore"];
-            }
-            else
-            {
-                AnalysisScratchPad.ignorableFields = new List<string>();
-            }
+            AnalysisScratchPad.ignorableFields = configuration.ContainsKey("FieldsToIgnore") ? configuration["FieldsToIgnore"] : new List<string>();
         }
 
         public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
@@ -54,26 +94,17 @@ namespace NorwegianBlue.IagoIntegration.Samples
                 while ((line = input.ReadLine()) != null)
                 {
                     var newStat = new IagoSample();
-                    newStat.Parse(line);
+                    newStat.Parse(timeZone, line);
                     _iagoSamples.Add(newStat);
                 }
             }
-
-           // TODO:  _iagoSamples.Sort();
+            _iagoSamples.Sort(new SampleTimeComparer());
         }
 
-        public ISampleValues GetNearest(DateTime time)
-        {
-            throw new NotImplementedException();
-        }
+//        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> setAnalyzers,
+//                            IEnumerable<StatAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> statAnalyzers)
 
-        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true,
-                                                                                       string defValue = "missing")
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Analyze(IEnumerable<SetAnalyzer> setAnalyzers, IEnumerable<StatAnalyzer> statAnalyzers)
+        public void Analyze(dynamic setAnalyzers, dynamic statAnalyzers)
         {
             foreach (var analyzer in setAnalyzers)
             {
@@ -94,24 +125,9 @@ namespace NorwegianBlue.IagoIntegration.Samples
             _analysisNotes.Add(note);
         }
 
-        public IEnumerator<ISampleValues> GetEnumerator()
+        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing")
         {
-            return _iagoSamples.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public int Count
-        {
-            get { return _iagoSamples.Count; }
-        }
-
-        public ISampleValues this[int index]
-        {
-            get { return _iagoSamples[index]; }
+            throw new NotImplementedException();
         }
     }
 }

@@ -27,6 +27,6 @@ namespace NorwegianBlue.Analysis.Samples
     {
         dynamic AnalysisScratchPad { get; }
         void AddAnalysisNote(AnalysisNote note);
-        void Analyze(IEnumerable<StatAnalyzer> analyzers);
+        void Analyze(IEnumerable<StatAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>> analyzers);
     }
 }

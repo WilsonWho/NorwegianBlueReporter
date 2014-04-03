@@ -12,7 +12,7 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
 {
     public class CommonStatSetAnalysis
     {
-        public void FindAllHeaders(ISampleSetAnalysis statSet)
+        public void FindAllHeaders(ISampleSetAnalysis<ISampleAnalysis> statSet)
         {
             var statsHeaders = new HashSet<String>();
             var nonStatsHeaders = new HashSet<String>();
@@ -27,7 +27,7 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
             statSet.AnalysisScratchPad.AllNonStatsHeaders = nonStatsHeaders;
         }
 
-        private static void LoopOverStatsAndHeaders(ISampleSetAnalysis statSet, Dictionary<string, double> values, Func<string, double, double, double> action, Func<string, double> defaultValue)
+        private static void LoopOverStatsAndHeaders(ISampleSetAnalysis<ISampleAnalysis> statSet, Dictionary<string, double> values, Func<string, double, double, double> action, Func<string, double> defaultValue)
         {
             foreach (var stat in statSet)
             {
@@ -54,7 +54,7 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
             }
         }
 
-        public void SummaryStats(ISampleSetAnalysis statSet)
+        public void SummaryStats(ISampleSetAnalysis<ISampleAnalysis> statSet)
         {
             int statCount = statSet.Count;
 
@@ -75,103 +75,135 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
             statSet.AnalysisScratchPad.StdDeviations = stdDeviations;
         }
 
-        public void ClusterAnalysis(ISampleSetAnalysis statSet)
+        public void ClusterAnalysis(ISampleSetAnalysis<ISampleAnalysis> sampleSet)
         {
-            var keys = new List<string>();
 
-            foreach (var val in statSet.AnalysisScratchPad.AllStatsHeaders)
+            // Ensure statistics are associated correctly across all samples by ensuring we use a 
+            // fixed order container of data value keys.
+            // NOTE: tried to call the HashSet<String> asEnumerable, but got runtime binding errors
+            // TODO: investigate runtime binding error for AllStatsHeaders.AsEnumerable().
+            var keys = new List<string>();
+            foreach (var val in sampleSet.AnalysisScratchPad.AllStatsHeaders)
             {
                 keys.Add(val);
             }
-
             keys.Sort();
 
-            int statCount = statSet.Count;
-            var data = new CvMat(statCount, keys.Count, MatrixType.F32C1);
-            var clusters = Cv.CreateMat(statCount, 1, MatrixType.S32C1);
+            var sampleCount = sampleSet.Count;
+            var keysCount = keys.Count;
+            var cvData = new CvMat(sampleCount, keysCount, MatrixType.F32C1);
+            var cvClusters = new CvMat(sampleCount, 1, MatrixType.S32C1);
+
+            // set up dynamic storage to save which cluster each sample belonged to,
+            // for different numbers of cluster groups
+            foreach (var analyzableSample in sampleSet.Select(sample => sample as ISampleAnalysis))
+            {
+                if (null == analyzableSample)
+                {
+                    throw new ApplicationException("sample doesn't implement iSampleSetAnalysis");
+                }
+                analyzableSample.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
+            }
 
             // populate the OpenCV input data from the sample data
-            int rowIdx = 0;
-            foreach (var row in statSet)
+            for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
             {
-                // putting data initialization for next step here to avoid another loop over all the statistics collected
-                var row2 = row as ISampleAnalysis;
-                Debug.Assert(row2 != null, "row2 != null");
-                row2.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
-
-                int colIdx = 0;
-                foreach (var k in keys)
+                for (var keysIndex = 0; keysIndex < keysCount; keysIndex++)
                 {
-                    float temp;
-                    if (row.ContainsKey(k))
+                    float data;
+                    if (sampleSet[sampleIndex].ContainsKey(keys[keysIndex]))
                     {
-                        temp = (float) row[k];
+                        data = (float) sampleSet[sampleIndex][keys[keysIndex]];
                     }
                     else
                     {
-                        temp = 0f;
+                        data = 0f;
                     }
-                    data[rowIdx, colIdx] = temp;
-                    colIdx ++;
+                    cvData[sampleIndex, keysIndex] = data;
                 }
-                rowIdx++;
             }
 
+            // Going to repeatedly calculate clustering, with the number of clusters doubling each time.
+            // But can't have more clusters than samples!
+            var numberOfDoublings = (int) Math.Floor(Math.Log(sampleCount, 2));
+            if (numberOfDoublings < 1)
+            {
+                throw new ArgumentException("Not enough samples to generate a cluster graph");
+            }
+
+            if (numberOfDoublings > 5)
+            {
+                numberOfDoublings = 5;
+            }
+
+            // setup graph variables
             var clusterSizeAxis = new CategoryAxis {Title = "Cluster Size", Position =  AxisPosition.Left};
             var cvCriteria = new CvTermCriteria(10, 1.0);
+            var heatMapData = new HeatMapSeries { Data = new Double[sampleCount, numberOfDoublings - 1] };
 
-            var series = new List<List<double>>();
-            for (int power = 1; power < 5; power++)
+            for (var power = 1; power < numberOfDoublings; power++)
             {
                 var clusterCount = (int) Math.Pow(2d, power);
-                if (clusterCount > statCount)
-                {
-                    break;
-                }
 
-                Cv.KMeans2(data, clusterCount, clusters, cvCriteria);
+                Cv.KMeans2(cvData, clusterCount, cvClusters, cvCriteria);
                 var clusterName = string.Format("k:{0}", clusterCount);
                 clusterSizeAxis.Labels.Add(clusterName);
-                var clusterSeriesData = new List<double>();
-                rowIdx = 0;
-                foreach (ISampleAnalysis stat in statSet)
+
+                for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
                 {
-                    var cluster = clusters[rowIdx];
-                    stat.AnalysisScratchPad.Clusters[clusterCount] = (int)cluster;
-                    // convert from the OpenCV matrix to a regular C# List so we can use
-                    // this with OxyPlot
-                    clusterSeriesData.Add(cluster);
-                    rowIdx++;
+                    var cluster = cvClusters[sampleIndex];
+                    var sample = sampleSet[sampleIndex] as ISampleAnalysis;
+                    sample.AnalysisScratchPad.Clusters[clusterCount] = (int)cluster;
+                    heatMapData.Data[sampleIndex, power - 1] = cluster;
                 }
-                series.Add(clusterSeriesData);
             }
 
-            var plotModel = new PlotModel();
-            plotModel.Title = "Clustering Analysis";
-            var linearColorAxis = new LinearColorAxis
-                {
-                    HighColor = OxyColors.Gray,
-                    LowColor = OxyColors.Black,
-                    Position = AxisPosition.Right
-                };
-            plotModel.Axes.Add(linearColorAxis);
+            var plot = new PlotModel {Title = "Clustering Analysis"};
+            var colorAxis = new LinearColorAxis();
+            colorAxis.HighColor = OxyColors.Gray;
+            colorAxis.LowColor = OxyColors.Black;
+            colorAxis.Position = AxisPosition.Top;
+            plot.Axes.Add(colorAxis);
 
-            var timeAxis = new DateTimeAxis(AxisPosition.Bottom, "Category Analysis", "yy-MM-dd hh:mm:ss");
-            plotModel.Axes.Add(timeAxis);
-            plotModel.Axes.Add(clusterSizeAxis);
+            var startTime = sampleSet.StartTime;
+            var endTime = sampleSet.EndTime;
 
-            var heatMapSeries = new HeatMapSeries {Data = new Double[statSet.Count,series.Count]};
 
-            for (int y = 0; y < series.Count; y++)
-            {
-                for (int x = 0; x < statSet.Count; x++)
-                {
-                    heatMapSeries.Data[x, y] = series[y][x];
-                }
-                
-            }
+            var timeAxis = new DateTimeAxis(AxisPosition.Bottom, startTime, endTime, "Time", "yy-MM-dd hh:mm:ss", DateTimeIntervalType.Minutes);
+            timeAxis.Angle = -30;
 
-            plotModel.Series.Add(heatMapSeries);
+            var interval = sampleSet.EndTime - sampleSet.StartTime;
+
+            timeAxis.Minimum = DateTimeAxis.ToDouble(startTime);
+            timeAxis.Maximum = DateTimeAxis.ToDouble(endTime);
+
+            plot.Axes.Add(timeAxis);
+
+            //var linearAxis1 = new LinearAxis();
+            //linearAxis1.Position = AxisPosition.Bottom;
+            //plot.Axes.Add(linearAxis1);
+
+            clusterSizeAxis.Minimum = -0.5;
+            clusterSizeAxis.Maximum = (float)numberOfDoublings - 1.5;
+            clusterSizeAxis.Angle = -90;
+            clusterSizeAxis.Position = AxisPosition.Left;
+            plot.Axes.Add(clusterSizeAxis);
+
+// Keep this around - useful for debugging the formatting of the above category axis.
+//            var linearAxis2 = new LinearAxis();
+//            linearAxis2.Minimum = -0.5;
+//            linearAxis2.Maximum = (float) numberOfDoublings - 1.5;
+//            linearAxis2.Position = AxisPosition.Left;
+//            plot.Axes.Add(linearAxis2);
+
+
+
+            heatMapData.X0 = timeAxis.Minimum;
+            heatMapData.X1 = timeAxis.Maximum;
+            heatMapData.Y0 = 0;
+            heatMapData.Y1 = numberOfDoublings - 2;
+            heatMapData.Interpolate = false;
+            plot.Series.Add(heatMapData);
 
             var analysisNote = new AnalysisNote("Clustering Analysis",
 @"
@@ -183,8 +215,8 @@ This is done several times to see if there are any 'obvious' groupings to the da
 
 The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as a bar, where colour indicates cluster membership, and distance (left to right) represents time.
 
-", AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel>{plotModel});
-            statSet.AddAnalysisNote(analysisNote);
+", AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel>{plot});
+            sampleSet.AddAnalysisNote(analysisNote);
         }
     }
 }

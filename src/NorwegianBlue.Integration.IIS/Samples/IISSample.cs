@@ -8,13 +8,11 @@ using NorwegianBlue.Analysis.Samples;
 
 namespace NorwegianBlue.Integration.IIS.Samples
 {
-    public class IISSample : ISampleAnalysis
+    public class IisSample : ISampleAnalysis
     {
         private readonly Dictionary<string, string> _stats = new Dictionary<string, string>();
-        private ReadOnlyDictionary<String, double> _roStats;
 
         private readonly Dictionary<String, string> _nonStats = new Dictionary<string, string>();
-        private ReadOnlyDictionary<String, string> _roNonStats;
 
         public IEnumerator<KeyValuePair<string, double>> GetEnumerator()
         {
@@ -118,7 +116,7 @@ namespace NorwegianBlue.Integration.IIS.Samples
             throw new NotImplementedException();
         }
 
-        public void Analyze(IEnumerable<StatAnalyzer> analyzers)
+        public void Analyze(IEnumerable<StatAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>> analyzers)
         {
             throw new NotImplementedException();
         }

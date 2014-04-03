@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using MigraDoc.DocumentObjectModel;
 using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.CommonAlgorithms;
+using NorwegianBlue.Analysis.Samples;
 using NorwegianBlue.IagoIntegration.Analysis;
 using NorwegianBlue.IagoIntegration.Samples;
 using NorwegianBlue.Integration.Azure.Samples;
@@ -25,13 +27,14 @@ namespace NorwegianBlueReporter
             azureStats.Parse(TimeZone.CurrentTimeZone, string.Empty, azureStartTime, azureEndTime);
 
 
-            var iisStats = new IISSampleSet();
+            var iisStats = new IisSampleSet();
             var iisStartTime = new DateTime(2014, 3, 12, 18, 10, 0);
             var iisEndTime = new DateTime(2014, 3, 12, 20, 11, 0);
             iisStats.Parse(TimeZone.CurrentTimeZone, string.Empty, iisStartTime, iisEndTime);
 
             //StreamReader reader = File.OpenText(options.InputFileNames[typeof(IagoStatisticsSet).Name]);
             var stats = new IagoSampleSet();
+            
             stats.Parse(TimeZone.CurrentTimeZone, @"c:\tmp\parrot-server-stats.log", null, null);
             //reader.Close();
 
@@ -52,21 +55,22 @@ namespace NorwegianBlueReporter
             var statAnalyzers = new CommonStatAnalysis();
             var iagoSetAnalyzers = new IagoSampleSetAnalysis();
 
-            var setAnalysisMethods = new List<SetAnalyzer>();
-            var statAnalysisMethods = new List<StatAnalyzer>();
+            var setAnalysisMethods = new List<SetAnalyzer<IagoSampleSet, IagoSample>>();
+            var statAnalysisMethods = new List<StatAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>();
 
             // TODO: Populate these by reflection
             // Set analysis
             setAnalysisMethods.Add(setAnalyzers.FindAllHeaders);
-            setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
             setAnalysisMethods.Add(setAnalyzers.SummaryStats);
-            // TODO: setAnalysisMethods.Add(iagoSetAnalyzers.IagoRequestLatencySummary);
+            setAnalysisMethods.Add(setAnalyzers.ClusterAnalysis);
+            setAnalysisMethods.Add(iagoSetAnalyzers.IagoRequestLatencySummary);
 
             // individual stat analysis
             // statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
             statAnalysisMethods.Add(statAnalyzers.SummaryStatComparisonAsTables);
 
-            stats.Analyze(setAnalysisMethods, statAnalysisMethods);
+            
+            stats.Analyze( setAnalysisMethods, statAnalysisMethods);
 
             //------------------------------------------------------------------
 

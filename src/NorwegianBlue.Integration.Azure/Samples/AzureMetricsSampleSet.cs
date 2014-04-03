@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Dynamic;
+using System.Linq;
 using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Samples;
 using NorwegianBlue.Integration.Azure.AzureAPI;
@@ -11,43 +14,87 @@ using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Integration.Azure.Samples
 {
-    public class AzureMetricsSampleSet : ISampleSet, ISampleSetAnalysis
+    public class AzureMetricsSampleSet : ISampleSet<AzureMetricsSample>, ISampleSetAnalysis<AzureMetricsSample>
     {
         private readonly IDictionary<object, object> _configuration;
 
-        public AzureMetricsSampleSet()
+        private readonly List<AzureMetricsSample> _azureMetricsSamples = new List<AzureMetricsSample>();
+
+        private readonly dynamic _analysisScratchPad = new ExpandoObject();
+        public dynamic AnalysisScratchPad
         {
-            _configuration = YamlParser.GetConfiguration();
+            get { return _analysisScratchPad; }
         }
 
-        private readonly List<AzureMetricsSample> _azureMetricsStatistics = new List<AzureMetricsSample>();
+        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
+        private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
 
-        public ReadOnlyCollection<ISampleValues> Statistics { get; private set; }
-        public ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; private set; }
-        public DateTime ActualStartTime { get; private set; }
-        public DateTime ActualEndTime { get; private set; }
-        public DateTime DesiredStartTime { get; set; }
-        public DateTime DesiredEndTime { get; set; }
+        public ReadOnlyCollection<AnalysisNote> AnalysisNotes
+        {
+            get { return _roAnalysisNote ?? (_roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
+        }
 
-        public ISampleValues GetNearest(DateTime time)
+        public DateTime StartTime
+        {
+            get
+            {
+                if (0 == _azureMetricsSamples.Count)
+                {
+                    throw new DataException("No samples in collection");
+                }
+                return _azureMetricsSamples.First().TimeStamp;
+            }
+        }
+
+        public DateTime EndTime
+        {
+            get
+            {
+                if (0 == _azureMetricsSamples.Count)
+                {
+                    throw new DataException("No samples in collection");
+                }
+                return _azureMetricsSamples.Last().TimeStamp;
+            }
+        }
+
+        public int Count {
+            get { return _azureMetricsSamples.Count; }
+        }
+
+        AzureMetricsSample IReadOnlyList<AzureMetricsSample>.this[int index]
+        {
+            get { return _azureMetricsSamples[index]; }
+        }
+        
+        AzureMetricsSample ISampleSetValues<AzureMetricsSample>.this[DateTime time]
+        {
+            get { return SampleSetComparisons<AzureMetricsSample>.GetNearestToTime(_azureMetricsSamples, time); }
+        }
+
+        AzureMetricsSample ISampleSetValues<AzureMetricsSample>.this[DateTime time, TimeSpan tolerance, bool absolute]
+        {
+            get { return SampleSetComparisons<AzureMetricsSample>.GetNearestToTime(_azureMetricsSamples, time, tolerance, absolute); }
+        }
+
+        IEnumerator<AzureMetricsSample> IEnumerable<AzureMetricsSample>.GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
-        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing")
+        public IEnumerator<ISampleValues> GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            return _azureMetricsSamples.GetEnumerator();
         }
 
-        public dynamic AnalysisScratchPad { get; private set; }
-        public void AddAnalysisNote(AnalysisNote note)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new System.NotImplementedException();
+            return GetEnumerator();
         }
-
-        public void Analyze(IEnumerable<SetAnalyzer> setAnalyzers, IEnumerable<StatAnalyzer> statAnalyzers)
+        
+        public AzureMetricsSampleSet()
         {
-            throw new System.NotImplementedException();
+            _configuration = YamlParser.GetConfiguration();
         }
 
         public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
@@ -76,74 +123,44 @@ namespace NorwegianBlue.Integration.Azure.Samples
 
                 for (int i = 0; i < length; i++)
                 {
-                    var azureMetricsStatistic = new AzureMetricsSample();
+                    var azureMetricsSample = new AzureMetricsSample();
 
                     foreach (var azureHistoricalUsageMetric in azureResponse.UsageMetrics)
                     {
-                        azureMetricsStatistic.Parse(i, azureHistoricalUsageMetric.Data);
+                        azureMetricsSample.Parse(i, azureHistoricalUsageMetric.Data);
                     }
 
-                    _azureMetricsStatistics.Add(azureMetricsStatistic);
+                    _azureMetricsSamples.Add(azureMetricsSample);
                 }
             }
         }
 
-        public IEnumerator<ISampleValues> GetEnumerator()
+        public void AddAnalysisNote(AnalysisNote note)
         {
-            throw new NotImplementedException();
+            _analysisNotes.Add(note);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+//        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> setAnalyzers, IEnumerable<StatAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> statAnalyzers)
+        public void Analyze(dynamic setAnalyzers, dynamic statAnalyzers)
         {
-            return GetEnumerator();
+            foreach (var analyzer in setAnalyzers)
+            {
+                analyzer.Invoke(this);
+            }
+
+            foreach (var stat in _azureMetricsSamples)
+            {
+                foreach (var analyzer in statAnalyzers)
+                {
+                    analyzer.Invoke(this, stat);
+                }
+            }
         }
 
-        public void Add(ISampleValues item)
+        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing")
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(ISampleValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(ISampleValues[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(ISampleValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Count { get; private set; }
-        public bool IsReadOnly { get; private set; }
-        public int IndexOf(ISampleValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, ISampleValues item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ISampleValues this[int index]
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
     }
 }

@@ -8,6 +8,12 @@ namespace NorwegianBlue.Analysis
     // Also: usign an expando object in the stat sets and stats to store analysis results and 
     // temporary values- to allow free form, low-overhead, dependencies between different statistical
     // analysis.  If repeating patterns reveal themselves this might be refactored into "proper" interfaces.
-    public delegate void SetAnalyzer(ISampleSetAnalysis statSet);
-    public delegate void StatAnalyzer(ISampleSetAnalysis statSet, ISampleAnalysis stat);
+    public delegate void SetAnalyzer<in T1, in T2>(T1 sampleSet) 
+                                            where T1 : ISampleSetAnalysis<T2> where T2: ISampleAnalysis;
+   
+    
+    
+    
+    public delegate void StatAnalyzer<in T1, in T2>(T1 sampleSet, T2 stat) 
+                                            where T1 : ISampleSetAnalysis<T2> where T2 : ISampleAnalysis;
 }
