@@ -5,8 +5,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
-using NorwegianBlue.Analysis;
-using NorwegianBlue.Analysis.Samples;
+using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 using NorwegianBlue.Util.Web;
 
@@ -101,13 +100,13 @@ namespace NorwegianBlue.Integration.IIS.Samples
             ftpClient.ChangeWorkingDirectory(_configuration["WorkingDirectory"].ToString());
             var localSaveFiles = ftpClient.PullLogFiles();
 
-            var searchParameters = new IISLogSearchParameters
+            var searchParameters = new IisLogSearchParameters
                 {
                     StartTime = startTime,
                     EndTime = endTime
                 };
 
-            var fileProbe = new IISLogFileProbe(searchParameters);
+            var fileProbe = new IisLogFileProbe(searchParameters);
             var logs = fileProbe.CollectLogsFromTimeInterval(localSaveFiles);
 
             var headers = logs[0].Split(null);
@@ -123,7 +122,7 @@ namespace NorwegianBlue.Integration.IIS.Samples
         }
 
 //        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<IisSample>, IisSample>> setAnalyzers, 
-//                            IEnumerable<StatAnalyzer<ISampleSetAnalysis<IisSample>, IisSample>> statAnalyzers)
+//                            IEnumerable<SampleInSetAnalyzer<ISampleSetAnalysis<IisSample>, IisSample>> statAnalyzers)
         public void Analyze(dynamic setAnalyzers, dynamic statAnalyzers)
         {
             foreach (var analyzer in setAnalyzers)
@@ -140,7 +139,7 @@ namespace NorwegianBlue.Integration.IIS.Samples
             }
         }
 
-        void ISampleSetAnalysis<IisSample>.AddAnalysisNote(AnalysisNote note)
+        public void AddAnalysisNote(AnalysisNote note)
         {
             _analysisNotes.Add(note);
         }

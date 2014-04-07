@@ -6,11 +6,11 @@ AppOptions:
     AttachmentsDirectory: "TBD"
     MarkdownNotesFileName: ""
     InputData:
-        IagoStatSet: 
+        IagoSampleSet: 
             DataLocation: "axdadf"
-        AzurePerfStatSet:
+        AzurePerfSampleSet:
             DataLocation: ""
-        SomeOtherStatSet:
+        SomeOtherSampleSet:
             DataLocation: "something of meaning"
 
 IagoSample:
@@ -32,6 +32,12 @@ IagoSampleSet:
     FieldsToIgnore:
         - "count"
         - "200"
+
+AzureMetricsSampleSetAnalysis:
+    Graphs:
+        
+IisSampleSetAnalysis:
+    Graphs:
 
 IagoSampleSetAnalysis:
     Graphs:

@@ -6,14 +6,14 @@ using NorwegianBlue.Util.Web;
 
 namespace NorwegianBlue.Integration.IIS
 {
-    public class IISLogFileProbe
+    public class IisLogFileProbe
     {
         private const string DateTimeRegex = @"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}";
         private const string IISLogHeaderRegex = @"#Fields: .*";
         private readonly List<string> _validLogs;
-        private readonly IISLogSearchParameters _logSearchParameters;
+        private readonly IisLogSearchParameters _logSearchParameters;
 
-        public IISLogFileProbe(IISLogSearchParameters logSearchParameters)
+        public IisLogFileProbe(IisLogSearchParameters logSearchParameters)
         {
             _validLogs = new List<string>();
             _logSearchParameters = logSearchParameters;

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using OxyPlot;
 
-namespace NorwegianBlue.Analysis
+namespace NorwegianBlue.Samples
 {
     public class AnalysisNote
     {

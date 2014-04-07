@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text;
-using NorwegianBlue.Analysis.Samples;
-using NorwegianBlue.Analysis.Utilities;
+using NorwegianBlue.Samples;
+using NorwegianBlue.Util.Common;
 
-namespace NorwegianBlue.Analysis.CommonAlgorithms
+namespace NorwegianBlue.Analysis.Algorithms
 {
  
     public class CommonStatAnalysis
     {
-        public void SummaryStatComparisonAsTables(ISampleSetAnalysis<ISampleAnalysis> statSet, ISampleAnalysis stat)
+        public void SummaryStatComparisonAsTables(ISampleSetAnalysis<ISampleAnalysis> sampleSet, ISampleAnalysis stat)
         {
             var stdDevs = new StringBuilder();
             var missingFields = new StringBuilder();
@@ -44,13 +44,13 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
 
             int stdDevCol = 0;
             int missingValCol = 0;
-            foreach (string item in statSet.AnalysisScratchPad.AllStatsHeaders)
+            foreach (string item in sampleSet.AnalysisScratchPad.AllStatsHeaders)
             {
                 var hyphenatedItem = item.InsertSoftHyphens();
 
                 if (stat.ContainsKey(item))
                 {
-                    var numberOfSigmaFromMean = Math.Abs(stat[item] - statSet.AnalysisScratchPad.Averages[item]) / statSet.AnalysisScratchPad.StdDeviations[item];
+                    var numberOfSigmaFromMean = Math.Abs(stat[item] - sampleSet.AnalysisScratchPad.Averages[item]) / sampleSet.AnalysisScratchPad.StdDeviations[item];
                     if (numberOfSigmaFromMean > 1)
                     {
                         stdDevCol++;
@@ -120,18 +120,18 @@ namespace NorwegianBlue.Analysis.CommonAlgorithms
 
         }
 
-        public void SummaryStatComparison(ISampleSetAnalysis<ISampleAnalysis> statSet, ISampleAnalysis stat)
+        public void SummaryStatComparison(ISampleSetAnalysis<ISampleAnalysis> sampleSet, ISampleAnalysis stat)
         {
             var stdDevs = new StringBuilder();
             var missingFields = new StringBuilder();
 
-            foreach (string item in statSet.AnalysisScratchPad.AllStatsHeaders)
+            foreach (string item in sampleSet.AnalysisScratchPad.AllStatsHeaders)
             {
                 var hyphenatedItem = item.InsertSoftHyphens();
 
                 if (stat.ContainsKey(item))
                 {
-                    var numberOfSigmaFromMean = Math.Abs(stat[item] - statSet.AnalysisScratchPad.Averages[item]) / statSet.AnalysisScratchPad.StdDeviations[item];
+                    var numberOfSigmaFromMean = Math.Abs(stat[item] - sampleSet.AnalysisScratchPad.Averages[item]) / sampleSet.AnalysisScratchPad.StdDeviations[item];
                     if (numberOfSigmaFromMean > 1)
                     {
                         stdDevs.AppendFormat("``{0}`` \\[{1}\\]\n", hyphenatedItem, Math.Round(numberOfSigmaFromMean, 2));

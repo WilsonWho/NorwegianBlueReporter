@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace NorwegianBlue.Analysis.Samples
+namespace NorwegianBlue.Samples
 {
     public interface ISampleValues:IReadOnlyDictionary<String, double>
     {
         DateTime TimeStamp { get; }
-        ReadOnlyDictionary<string, string> NonStats { get; }
+        ReadOnlyDictionary<string, Tuple<bool,string>> NonStats { get; }
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
 
         // normal dictionary methods will exclude any ignored statistic fields.
@@ -27,6 +27,6 @@ namespace NorwegianBlue.Analysis.Samples
     {
         dynamic AnalysisScratchPad { get; }
         void AddAnalysisNote(AnalysisNote note);
-        void Analyze(IEnumerable<StatAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>> analyzers);
+        void Analyze(IEnumerable<SampleAnalyzer<ISampleAnalysis>> analyzers);
     }
 }

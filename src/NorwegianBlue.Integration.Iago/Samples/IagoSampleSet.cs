@@ -6,8 +6,7 @@ using System.Data;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
-using NorwegianBlue.Analysis;
-using NorwegianBlue.Analysis.Samples;
+using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.IagoIntegration.Samples
@@ -102,8 +101,7 @@ namespace NorwegianBlue.IagoIntegration.Samples
         }
 
 //        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> setAnalyzers,
-//                            IEnumerable<StatAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> statAnalyzers)
-
+//                            IEnumerable<SampleInSetAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> statAnalyzers)
         public void Analyze(dynamic setAnalyzers, dynamic statAnalyzers)
         {
             foreach (var analyzer in setAnalyzers)

@@ -57,12 +57,25 @@
     <Reference Include="CommandLine">
       <HintPath>..\..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="FluentSharp.CoreLib">
+      <HintPath>..\..\packages\FluentSharp.CoreLib.5.3.121\lib\net35\FluentSharp.CoreLib.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.REPL">
+      <HintPath>..\..\packages\FluentSharp.REPL.5.3.121\lib\net35\FluentSharp.REPL.exe</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.SharpDevelopEditor">
+      <HintPath>..\..\packages\FluentSharp.SharpDevelopEditor.5.3.121\lib\net35\FluentSharp.SharpDevelopEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentSharp.WinForms">
+      <HintPath>..\..\packages\FluentSharp.WinForms.5.3.121\lib\net35\FluentSharp.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MigraDoc.DocumentObjectModel">
       <HintPath>..\..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.19\lib\net45\System.Net.Http.Extensions.dll</HintPath>
@@ -71,6 +84,7 @@
       <HintPath>..\..\packages\Microsoft.Net.Http.2.2.19\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppOptions.cs" />
@@ -89,9 +103,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NorwegianBlue.Analysis\NorwegianBlue.Analysis.csproj">
+    <ProjectReference Include="..\NorwegianBlue.Analysis\NorwegianBlue.CommonAnalysis.csproj">
       <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
-      <Name>NorwegianBlue.Analysis</Name>
+      <Name>NorwegianBlue.CommonAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\NorwegianBlue.Integration.Azure\NorwegianBlue.Integration.Azure.csproj">
       <Project>{689E7697-1664-41F1-979D-758624BA511A}</Project>
@@ -113,6 +127,10 @@
       <Project>{1B6EDF1C-1FA0-46AF-BCF8-FC225DA4E4BE}</Project>
       <Name>NorwegianBlue.Util.Pdf</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="O2_Kernel\CodeUtils\O2ConfigLoader.cs.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

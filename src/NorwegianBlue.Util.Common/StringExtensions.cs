@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace NorwegianBlue.Analysis.Utilities
+namespace NorwegianBlue.Util.Common
 {
     public static class StringExtensions
     {

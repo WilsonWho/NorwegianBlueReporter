@@ -9,6 +9,7 @@ using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Samples;
 using NorwegianBlue.Integration.Azure.AzureAPI;
 using NorwegianBlue.Integration.Azure.AzureAPI.DTOs.WebSiteGetHistoricalUsageMetricsResponse;
+using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
 
@@ -140,7 +141,8 @@ namespace NorwegianBlue.Integration.Azure.Samples
             _analysisNotes.Add(note);
         }
 
-//        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> setAnalyzers, IEnumerable<StatAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> statAnalyzers)
+//        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> setAnalyzers,
+//                            IEnumerable<SampleInSetAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> statAnalyzers)
         public void Analyze(dynamic setAnalyzers, dynamic statAnalyzers)
         {
             foreach (var analyzer in setAnalyzers)

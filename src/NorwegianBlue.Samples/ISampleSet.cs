@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace NorwegianBlue.Analysis.Samples
+namespace NorwegianBlue.Samples
 {
     public interface ISampleSet<T> where T: ISampleValues
     {
@@ -31,7 +31,7 @@ namespace NorwegianBlue.Analysis.Samples
 
         // This didn't work- couldn't take delegates taking items with more specific (more derived) interfaces(!)
         //        void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<T>, T>> setAnalyzers, 
-        //                     IEnumerable<StatAnalyzer<ISampleSetAnalysis<T>, T>> statAnalyzers);
+        //                     IEnumerable<SampleInSetAnalyzer<ISampleSetAnalysis<T>, T>> statAnalyzers);
 
         void Analyze(dynamic setAnalyzers, dynamic statAnalyzers);
     }

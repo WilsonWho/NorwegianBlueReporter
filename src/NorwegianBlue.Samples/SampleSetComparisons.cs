@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NorwegianBlue.Analysis.Samples
+namespace NorwegianBlue.Samples
 {
     public class SampleSetComparisons<T> where T: ISampleValues
     {
