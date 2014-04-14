@@ -2,7 +2,7 @@
 using FSharp.Markdown.Pdf;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
-using NorwegianBlue.Analysis;
+using NorwegianBlue.Samples;
 using iTextSharp.text.pdf;
 
 namespace NorwegianBlue.Util.Pdf
@@ -15,7 +15,6 @@ namespace NorwegianBlue.Util.Pdf
             {
                 section = document.LastSection;
             }
-
             MarkdownPdf.AddMarkdown(document, section, markdown);
         }
 

@@ -1,131 +1,87 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Dynamic;
 using System.IO;
-using System.Linq;
+using System.Text.RegularExpressions;
 using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.IagoIntegration.Samples
 {
-    public class IagoSampleSet : ISampleSet<IagoSample>, ISampleSetAnalysis<IagoSample>
+    public class IagoSampleSet : CommonSampleSetBase<IagoSample>
     {
-        private readonly List<IagoSample> _iagoSamples = new List<IagoSample>();
-
-        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
-        private readonly dynamic _analysisScratchPad = new ExpandoObject();
-        public dynamic AnalysisScratchPad
-        {
-            get { return _analysisScratchPad; }
-        }
-
-        private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
-        public ReadOnlyCollection<AnalysisNote> AnalysisNotes
-        {
-            get { return _roAnalysisNote ?? (_roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
-        }
-
-        public int Count { get { return _iagoSamples.Count; } }
-
-        public DateTime StartTime {
-            get
-            {
-                if (0 == _iagoSamples.Count)
-                {
-                    throw new DataException("No samples in collection");
-                }
-                return _iagoSamples.First().TimeStamp;
-            }
-        }
-
-        public DateTime EndTime
-        {
-            get
-            {
-                if (0 == _iagoSamples.Count)
-                {
-                    throw new DataException("No samples in collection");
-                }
-                return _iagoSamples.Last().TimeStamp;
-            }
-        }
-
-        IagoSample IReadOnlyList<IagoSample>.this[int index]
-        {
-            get { return _iagoSamples[index]; }
-        }
-
-        IagoSample ISampleSetValues<IagoSample>.this[DateTime time]
-        {
-            get { return SampleSetComparisons<IagoSample>.GetNearestToTime(_iagoSamples, time); }
-        }
-
-        IagoSample ISampleSetValues<IagoSample>.this[DateTime time, TimeSpan tolerance, bool absolute]
-        {
-            get { return SampleSetComparisons<IagoSample>.GetNearestToTime(_iagoSamples, time, tolerance, absolute); }
-        }
-
-        IEnumerator<IagoSample> IEnumerable<IagoSample>.GetEnumerator()
-        {
-            return _iagoSamples.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable<IagoSample>)this).GetEnumerator();
-        }
+        // Example line:
+        // INF [20140129-16:09:01.218] stats: {...}
+        private static readonly Regex LineMatcher = new Regex(@"^INF \[(?<year>\d{4})(?<month>\d{2})(?<day>\d{2})-(?<hour>\d{2}):(?<minute>\d{2}):(?<second>\d{2})\.(?<millis>\d{3})\] stats: \{(?<stats>.*)\}$", RegexOptions.Compiled);
+        private static readonly Regex DataMatcher = new Regex(@"(?<key>.+?):(?<value>.+?)[,$]", RegexOptions.Compiled);
+        private static readonly Regex QuotteRemover = new Regex("([\"'])(?<key>.+?)\\1", RegexOptions.Compiled);
+        private static readonly Regex VSlashRemover = new Regex("\\\\/", RegexOptions.Compiled);
 
         public IagoSampleSet()
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();
 
-            AnalysisScratchPad.ignorableFields = configuration.ContainsKey("FieldsToIgnore") ? configuration["FieldsToIgnore"] : new List<string>();
+            AnalysisScratchPad.ignorableFields = configuration.ContainsKey("FieldsToIgnore")
+                                                     ? configuration["FieldsToIgnore"]
+                                                     : new List<string>();
         }
 
-        public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
+        public override List<IagoSample> DoParse(TimeZone desiredTimeZone, DateTime? startTime, DateTime? endTime, dynamic dataSourceConfigObject)
         {
-            using (var input = File.OpenText(dataLocation))
+            var iagoSamples = new List<IagoSample>();
+
+            TextReader inputReaderStream;
+            
+            if (
+                ((IDictionary<string, Object>)dataSourceConfigObject).ContainsKey("DataSourceStream"))
             {
-                string line;
-                while ((line = input.ReadLine()) != null)
+                inputReaderStream = dataSourceConfigObject.DataSourceStream;
+            }
+            else
+            {
+                string fileName = dataSourceConfigObject.DataSourceFileName;
+                inputReaderStream = new StreamReader(fileName);
+            }
+
+            using (inputReaderStream)
+            {
+                string input;
+                while ((input = inputReaderStream.ReadLine()) != null)
                 {
-                    var newStat = new IagoSample();
-                    newStat.Parse(timeZone, line);
-                    _iagoSamples.Add(newStat);
+                    var matches = LineMatcher.Match(input);
+
+                    if (!matches.Success)
+                    {
+                        throw new InvalidDataException("input line can't be parsed by Iago parser: " + input);
+                    }
+
+
+                    var timeStamp = new DateTime(Convert.ToInt32(matches.Groups["year"].Value),
+                                                Convert.ToInt32(matches.Groups["month"].Value),
+                                                Convert.ToInt32(matches.Groups["day"].Value),
+                                                Convert.ToInt32(matches.Groups["hour"].Value),
+                                                Convert.ToInt32(matches.Groups["minute"].Value),
+                                                Convert.ToInt32(matches.Groups["second"].Value),
+                                                Convert.ToInt32(matches.Groups["millis"].Value)
+                                            );
+                    var data = matches.Groups["stats"].Value;
+
+                    IList<Tuple<string, string>> sampleData = new List<Tuple<string, string>>();
+
+                    foreach (Match kvpmatch in DataMatcher.Matches(data))
+                    {
+                        var key = kvpmatch.Groups["key"].Value;
+                        var temp = QuotteRemover.Match(key);
+                        key = temp.Groups["key"].Value;
+                        key = VSlashRemover.Replace(key, "/");
+                        var value = kvpmatch.Groups["value"].Value;
+                        sampleData.Add(new Tuple<string, string>(key, value));
+                    }
+                    var iagoSample = new IagoSample(timeStamp, sampleData);
+                    iagoSamples.Add(iagoSample);
                 }
             }
-            _iagoSamples.Sort(new SampleTimeComparer());
-        }
 
-//        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> setAnalyzers,
-//                            IEnumerable<SampleInSetAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> statAnalyzers)
-        public void Analyze(dynamic setAnalyzers, dynamic statAnalyzers)
-        {
-            foreach (var analyzer in setAnalyzers)
-            {
-                analyzer.Invoke(this);
-            }
-
-            foreach (var stat in _iagoSamples)
-            {
-                foreach (var analyzer in statAnalyzers)
-                {
-                    analyzer.Invoke(this, stat);
-                }
-            }
-        }
-
-        public void AddAnalysisNote(AnalysisNote note)
-        {
-            _analysisNotes.Add(note);
-        }
-
-        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing")
-        {
-            throw new NotImplementedException();
+            return iagoSamples;
         }
     }
 }

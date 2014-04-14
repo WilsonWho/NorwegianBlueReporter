@@ -48,31 +48,31 @@ IagoSampleSetAnalysis:
             IncludeStdDeviation: "true"
           }
         - { Title: "Average Request Lantency (ms)",
-            Statistic: "client/request_latency_ms_average",
+            Statistics: "client/request_latency_ms_average",
             Description: "",
             IncludeAverage: "true",
             IncludeStdDeviation: "true"
           }
         - { Title: "Maximum Request Latency (ms)",
-            Statistic: "client/request_latency_ms_maximum",
+            Statistics: "client/request_latency_ms_maximum",
             Description: "",
             IncludeAverage: "true",
             IncludeStdDeviation: "true"
           }
         - { Title: "Minimum Request Latency",
-            Statistic: "client/request_latency_ms_minimum",
+            Statistics: "client/request_latency_ms_minimum",
             Description: "",
             IncludeAverage: "true",
             IncludeStdDeviation: "true"
           }
         - { Title: "Minimum Request Latency - no std dev",
-            Statistic: "client/request_latency_ms_minimum",
+            Statistics: "client/request_latency_ms_minimum",
             Description: "",
             IncludeAverage: "true",
             IncludeStdDeviation: "false"
           }
         - { Title: "Minimum Request Latency - no average",
-            Statistic: "client/request_latency_ms_minimum",
+            Statistics: "client/request_latency_ms_minimum",
             Description: "",
             IncludeAverage: "false",
             IncludeStdDeviation: "false "

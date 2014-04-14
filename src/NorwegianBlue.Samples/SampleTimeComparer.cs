@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace NorwegianBlue.Samples
 {
-    public class SampleTimeComparer: IComparer<ISampleValues>
+    public class SampleTimeComparer<T> : IComparer<T> where T : ISampleValues
     {
-        public int Compare(ISampleValues x, ISampleValues y)
+        public int Compare(T x, T y)
         {
             return DateTime.Compare(x.TimeStamp, y.TimeStamp);
         }

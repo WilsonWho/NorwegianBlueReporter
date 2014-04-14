@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Dynamic;
 using System.Linq;
-using NorwegianBlue.Analysis;
-using NorwegianBlue.Analysis.Samples;
 using NorwegianBlue.Integration.Azure.AzureAPI;
 using NorwegianBlue.Integration.Azure.AzureAPI.DTOs.WebSiteGetHistoricalUsageMetricsResponse;
 using NorwegianBlue.Samples;
@@ -15,154 +9,72 @@ using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Integration.Azure.Samples
 {
-    public class AzureMetricsSampleSet : ISampleSet<AzureMetricsSample>, ISampleSetAnalysis<AzureMetricsSample>
+    public class AzureMetricsSampleSet : CommonSampleSetBase<AzureMetricsSample>
     {
-        private readonly IDictionary<object, object> _configuration;
 
-        private readonly List<AzureMetricsSample> _azureMetricsSamples = new List<AzureMetricsSample>();
-
-        private readonly dynamic _analysisScratchPad = new ExpandoObject();
-        public dynamic AnalysisScratchPad
-        {
-            get { return _analysisScratchPad; }
-        }
-
-        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
-        private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
-
-        public ReadOnlyCollection<AnalysisNote> AnalysisNotes
-        {
-            get { return _roAnalysisNote ?? (_roAnalysisNote = new ReadOnlyCollection<AnalysisNote>(_analysisNotes)); }
-        }
-
-        public DateTime StartTime
-        {
-            get
-            {
-                if (0 == _azureMetricsSamples.Count)
-                {
-                    throw new DataException("No samples in collection");
-                }
-                return _azureMetricsSamples.First().TimeStamp;
-            }
-        }
-
-        public DateTime EndTime
-        {
-            get
-            {
-                if (0 == _azureMetricsSamples.Count)
-                {
-                    throw new DataException("No samples in collection");
-                }
-                return _azureMetricsSamples.Last().TimeStamp;
-            }
-        }
-
-        public int Count {
-            get { return _azureMetricsSamples.Count; }
-        }
-
-        AzureMetricsSample IReadOnlyList<AzureMetricsSample>.this[int index]
-        {
-            get { return _azureMetricsSamples[index]; }
-        }
-        
-        AzureMetricsSample ISampleSetValues<AzureMetricsSample>.this[DateTime time]
-        {
-            get { return SampleSetComparisons<AzureMetricsSample>.GetNearestToTime(_azureMetricsSamples, time); }
-        }
-
-        AzureMetricsSample ISampleSetValues<AzureMetricsSample>.this[DateTime time, TimeSpan tolerance, bool absolute]
-        {
-            get { return SampleSetComparisons<AzureMetricsSample>.GetNearestToTime(_azureMetricsSamples, time, tolerance, absolute); }
-        }
-
-        IEnumerator<AzureMetricsSample> IEnumerable<AzureMetricsSample>.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<ISampleValues> GetEnumerator()
-        {
-            return _azureMetricsSamples.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-        
         public AzureMetricsSampleSet()
         {
-            _configuration = YamlParser.GetConfiguration();
+            Dictionary<object, object> configuration = YamlParser.GetConfiguration();
+
+            AnalysisScratchPad.ignorableFields = configuration.ContainsKey("FieldsToIgnore")
+                                                     ? configuration["FieldsToIgnore"]
+                                                     : new List<string>();
         }
 
-        public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
+        public override List<AzureMetricsSample> DoParse(TimeZone desiredTimeZone, DateTime? startTime, DateTime? endTime, dynamic dataSourceConfigObject)
         {
-            var publishSettings = (IDictionary<object, object>)_configuration["PublishSettings"];
+            IDictionary<object, object> configuration = YamlParser.GetConfiguration();
+            var fieldNames = ((List<object>)configuration["Fields"]).Select( s => s.ToString()).ToList();
+            var publishSettingsConfig = (IDictionary<object, object>)configuration["PublishSettings"];
             var azureWebSiteManager = new AzureWebSiteManager(new PublishSettings
             {
-                ManagementCertificate = publishSettings["ManagementCert"].ToString(),
-                SubscriptionId = publishSettings["SubId"].ToString(),
-                WebSpace = publishSettings["WebSpace"].ToString(),
-                WebSite = publishSettings["WebSite"].ToString()
+                ManagementCertificate = publishSettingsConfig["ManagementCert"].ToString(),
+                SubscriptionId = publishSettingsConfig["SubId"].ToString(),
+                WebSpace = publishSettingsConfig["WebSpace"].ToString(),
+                WebSite = publishSettingsConfig["WebSite"].ToString()
             });
 
-            var azureGetHistoricalUsageMetricsDto = new AzureGetHistoricalUsageMetricsRequest
+            var azureGetHistoricalUsageMetricsRequestDto = new AzureGetHistoricalUsageMetricsRequest
             {
-                MetricNames = new List<string> { "CpuTime", "AverageMemoryWorkingSet", "MemoryWorkingSet" },
+                MetricNames = fieldNames,
                 StartTime = TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(startTime)),
                 EndTime = TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(endTime)),
             };
 
-            var azureResponse = azureWebSiteManager.GetHistoricalUsageMetrics(azureGetHistoricalUsageMetricsDto);
+            var azureResponse = azureWebSiteManager.GetHistoricalUsageMetrics(azureGetHistoricalUsageMetricsRequestDto);
 
-            if (azureResponse.UsageMetrics.Count > 0)
+            // the returned data structure is convoluted: collection of metrics (eg "CPUTime")
+            // each containing an data object with a display name, and under that, a collection of values for each timestamp.
+            // Have to transform this to a collection of timestamps, each containing a collection of values.
+
+            if (0 == azureResponse.UsageMetrics.Count)
             {
-                var length = azureResponse.UsageMetrics[0].Data.Values.Count;
+                throw new ApplicationException("No Azure metrics returned.");
+            }
 
-                for (int i = 0; i < length; i++)
+            var data = new Dictionary<DateTime, List<Tuple<string, string>>>();
+
+            foreach (var azureHistoricalUsageMetric in azureResponse.UsageMetrics)
+            {
+                var metricDisplayName = azureHistoricalUsageMetric.Data.DisplayName;
+                foreach (var timeValue in azureHistoricalUsageMetric.Data.Values)
                 {
-                    var azureMetricsSample = new AzureMetricsSample();
+                    var timeStamp = timeValue.TimeCreated;
+                    var value = timeValue.Total;
 
-                    foreach (var azureHistoricalUsageMetric in azureResponse.UsageMetrics)
+                    if (!data.ContainsKey(timeStamp))
                     {
-                        azureMetricsSample.Parse(i, azureHistoricalUsageMetric.Data);
+                        data[timeStamp] = new List<Tuple<string, string>>();
                     }
 
-                    _azureMetricsSamples.Add(azureMetricsSample);
+                    var dataTuple = new Tuple<string, string>(metricDisplayName, value);
+                    data[timeStamp].Add(dataTuple);
                 }
             }
+
+            var azureMetricsSamples = data.Select(kvp => new AzureMetricsSample(kvp.Key, kvp.Value)).ToList();
+
+            return azureMetricsSamples;
         }
-
-        public void AddAnalysisNote(AnalysisNote note)
-        {
-            _analysisNotes.Add(note);
-        }
-
-//        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> setAnalyzers,
-//                            IEnumerable<SampleInSetAnalyzer<ISampleSetAnalysis<AzureMetricsSample>, AzureMetricsSample>> statAnalyzers)
-        public void Analyze(dynamic setAnalyzers, dynamic statAnalyzers)
-        {
-            foreach (var analyzer in setAnalyzers)
-            {
-                analyzer.Invoke(this);
-            }
-
-            foreach (var stat in _azureMetricsSamples)
-            {
-                foreach (var analyzer in statAnalyzers)
-                {
-                    analyzer.Invoke(this, stat);
-                }
-            }
-        }
-
-        public ReadOnlyCollection<ReadOnlyDictionary<string, double>> ExportStatistics(bool firstRowHeaders = true, string defValue = "missing")
-        {
-            throw new System.NotImplementedException();
-        }
-
     }
 }

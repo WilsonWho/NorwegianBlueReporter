@@ -149,6 +149,10 @@
       <Project>{6b0bb122-19c3-47a2-90f7-fb5d1299e82e}</Project>
       <Name>NorwegianBlue.CommonAnalysis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.Samples\NorwegianBlue.Samples.csproj">
+      <Project>{364A2C2A-B6BF-466B-A78B-CA7D2677156B}</Project>
+      <Name>NorwegianBlue.Samples</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="FSharp.Markdown.Pdf.XML" />

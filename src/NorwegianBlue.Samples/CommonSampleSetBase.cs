@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Dynamic;
-using System.IO;
 using System.Linq;
 using NorwegianBlue.Util.Configuration;
 
@@ -79,27 +78,15 @@ namespace NorwegianBlue.Samples
             return ((IEnumerable<T>)this).GetEnumerator();
         }
 
-        protected CommonSampleSetBase() 
+        // Split into Parse() and DoParse() to enforce sorting of the dataset after additions 
+        public void Parse(TimeZone desiredTimeZone, DateTime? startTime, DateTime? endTime, dynamic dataSourceConfigObject)
         {
-            Dictionary<object, object> configuration = YamlParser.GetConfiguration();
-
-            AnalysisScratchPad.ignorableFields = configuration.ContainsKey("FieldsToIgnore") ? configuration["FieldsToIgnore"] : new List<string>();
+            var newSamples = DoParse(desiredTimeZone, startTime, endTime, dataSourceConfigObject);
+            _samples.AddRange(newSamples);
+            _samples.Sort(new SampleTimeComparer<T>());
         }
 
-        public void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime)
-        {
-            using (var input = File.OpenText(dataLocation))
-            {
-                string line;
-                while ((line = input.ReadLine()) != null)
-                {
-                    var newStat = new T();
-                    newStat.Parse(timeZone, line);
-                    _samples.Add(newStat);
-                }
-            }
-            _samples.Sort(new SampleTimeComparer());
-        }
+        public abstract List<T> DoParse(TimeZone desiredTimeZone, DateTime? startTime, DateTime? endTime, dynamic dataSourceConfigObject);
 
         //        public void Analyze(IEnumerable<SetAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> setAnalyzers,
         //                            IEnumerable<SampleInSetAnalyzer<ISampleSetAnalysis<IagoSample>, IagoSample>> statAnalyzers)
@@ -129,7 +116,4 @@ namespace NorwegianBlue.Samples
             throw new NotImplementedException();
         }
     }
-
-
 }
-

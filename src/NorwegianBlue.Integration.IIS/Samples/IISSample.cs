@@ -1,38 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using NorwegianBlue.Samples;
+using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Integration.IIS.Samples
 {
     public class IisSample : CommonSampleBase
     {
-
-        public void Parse(string log, string[] headers)
+        public IisSample(DateTime timeStamp, IEnumerable<Tuple<string, string>> data):base(timeStamp, data)
         {
-            var logData = log.Split(null);
+            Dictionary<object, object> configuration = YamlParser.GetConfiguration();
+            AnalysisScratchPad.FieldsToIgnore = configuration.ContainsKey("FieldsToIgnore")
+                                                    ? configuration["FieldsToIgnore"]
+                                                    : new List<string>();
 
-            var date = string.Empty;
-            var time = string.Empty;
-            for (var index = 0; index < logData.Length; index++)
+            TimeStamp = timeStamp;
+            foreach (var tuple in data)
             {
-                var header = headers[index + 1];
-                var logContent = logData[index];
-
-                if (string.Equals(header, "date"))
-                {
-                    date = logContent;
-                }
-                else if (string.Equals(header, "time"))
-                {
-                    time = logContent;
-                }
-                else
-                {
-                    AddParsedData(header, logContent);
-                }
+                AddParsedData(tuple.Item1, tuple.Item2);
             }
-
-            string dateTimeString = string.Format("{0} {1}", date, time);
-            TimeStamp = Convert.ToDateTime(dateTimeString);
         }
     }
 }

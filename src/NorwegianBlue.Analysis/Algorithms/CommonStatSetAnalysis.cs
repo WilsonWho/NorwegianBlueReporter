@@ -44,7 +44,6 @@ namespace NorwegianBlue.Analysis.Algorithms
                     }
                 }
             }
-            
         }
 
         private static void Apply(Dictionary<string, double> values, Func<double, double> applicant )
@@ -57,7 +56,7 @@ namespace NorwegianBlue.Analysis.Algorithms
 
         public void SummaryStats(ISampleSetAnalysis<ISampleAnalysis> sampleSet)
         {
-            int statCount = sampleSet.Count;
+            var statCount = sampleSet.Count;
 
             var averages = new Dictionary<string, double>();
             LoopOverStatsAndHeaders(sampleSet, averages,
@@ -97,13 +96,13 @@ namespace NorwegianBlue.Analysis.Algorithms
 
             // set up dynamic storage to save which cluster each sample belonged to,
             // for different numbers of cluster groups
-            foreach (var analyzableSample in sampleSet.Select(sample => sample as ISampleAnalysis))
+            foreach (var sample in sampleSet)
             {
-                if (null == analyzableSample)
+                if (null == sample)
                 {
                     throw new ApplicationException("sample doesn't implement iSampleSetAnalysis");
                 }
-                analyzableSample.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
+                sample.AnalysisScratchPad.Clusters = new Dictionary<int, int>();
             }
 
             // populate the OpenCV input data from the sample data
@@ -243,7 +242,7 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
                 var regexStatSeries = statSeriesObjects.Select(s => s.ToString()).ToList();
                 
                 var statSeries = new List<string>();
-                foreach (string statHeader in sampleSet.AnalysisScratchPad.statsHeaders)
+                foreach (string statHeader in sampleSet.AnalysisScratchPad.AllStatsHeaders)
                 {
                     statSeries.AddRange(from statRegex in regexStatSeries where Regex.IsMatch(statHeader, statRegex) select statHeader);
                 }

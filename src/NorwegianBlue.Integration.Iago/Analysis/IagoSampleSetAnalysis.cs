@@ -2,6 +2,7 @@
 using System.Linq;
 using NorwegianBlue.Analysis.Algorithms;
 using NorwegianBlue.IagoIntegration.Samples;
+using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.IagoIntegration.Analysis

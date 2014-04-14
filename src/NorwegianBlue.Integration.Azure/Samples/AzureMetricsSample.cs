@@ -1,20 +1,24 @@
-﻿using NorwegianBlue.Integration.Azure.AzureAPI.DTOs.WebSiteGetHistoricalUsageMetricsResponse;
+﻿using System;
+using System.Collections.Generic;
 using NorwegianBlue.Samples;
+using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Integration.Azure.Samples
 {
     public class AzureMetricsSample : CommonSampleBase
     {
-
-        public void Parse(int index, AzureHistoricalUsageMetricData azureHistoricalUsageMetricData)
+        public AzureMetricsSample(DateTime timeStamp, IEnumerable<Tuple<string, string>> data) : base(timeStamp, data)
         {
-            // Rip out the time stamp and add to the dictionary the CPUTime and memory metrics
-            TimeStamp = azureHistoricalUsageMetricData.Values[index].TimeCreated;
-            var key = azureHistoricalUsageMetricData.DisplayName;
-            var value = azureHistoricalUsageMetricData.Values[index].Total;
+            Dictionary<object, object> configuration = YamlParser.GetConfiguration();
+            AnalysisScratchPad.FieldsToIgnore = configuration.ContainsKey("FieldsToIgnore")
+                                                    ? configuration["FieldsToIgnore"]
+                                                    : new List<string>();
 
-            AddParsedData(key, value);
-                
+            TimeStamp = timeStamp;
+            foreach (var tuple in data)
+            {
+                AddParsedData(tuple.Item1, tuple.Item2);
+            }
         }
     }
 }

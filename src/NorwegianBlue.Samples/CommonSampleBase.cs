@@ -6,7 +6,6 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Samples
 {
@@ -35,19 +34,9 @@ namespace NorwegianBlue.Samples
 
         protected CommonSampleBase(DateTime timeStamp, IEnumerable<Tuple<string, string>> data)
         {
-            Dictionary<object, object> configuration = YamlParser.GetConfiguration();
-            AnalysisScratchPad.FieldsToIgnore = configuration.ContainsKey("FieldsToIgnore")
-                                                    ? configuration["FieldsToIgnore"]
-                                                    : new List<string>();
-            TimeStamp = timeStamp;
-            foreach (var tuple in data)
-            {
-               AddParsedData(tuple.Item1, tuple.Item2); 
-            }
-
         }
 
-        private void AddParsedData(string key, string value) {
+        protected void AddParsedData(string key, string value) {
                 if (Stats.ContainsKey(key) || UpdateableNonStats.ContainsKey(key))
                 {
                     throw new InvalidDataException(

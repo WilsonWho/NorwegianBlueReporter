@@ -7,7 +7,7 @@ namespace NorwegianBlue.Samples
     public interface ISampleSet<T> where T: ISampleValues
     {
         // Parse must ensure that samples are saved in time-stamp sorted order.
-        void Parse(TimeZone timeZone, string dataLocation, DateTime? startTime, DateTime? endTime);
+        void Parse(TimeZone desiredTimeZone, DateTime? startTime, DateTime? endTime, dynamic configObject);
     }
 
     public interface ISampleSetValues<out T> : IReadOnlyList<T> where T: ISampleValues

@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.IO;
-using System.Linq;
 using MigraDoc.DocumentObjectModel;
-using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Algorithms;
-using NorwegianBlue.Analysis.Samples;
 using NorwegianBlue.IagoIntegration.Analysis;
 using NorwegianBlue.IagoIntegration.Samples;
 using NorwegianBlue.Integration.Azure.Analysis;
 using NorwegianBlue.Integration.Azure.Samples;
 using NorwegianBlue.Integration.IIS.Analysis;
 using NorwegianBlue.Integration.IIS.Samples;
+using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Pdf;
 
 namespace NorwegianBlueReporter
@@ -28,19 +26,22 @@ namespace NorwegianBlueReporter
             var azureSamples = new AzureMetricsSampleSet();
             var azureStartTime = new DateTime(2014, 3, 8, 16, 0, 0, DateTimeKind.Local);
             var azureEndTime = new DateTime(2014, 3, 8, 18, 0, 0, DateTimeKind.Local);
-            azureSamples.Parse(TimeZone.CurrentTimeZone, string.Empty, azureStartTime, azureEndTime);
-
+            dynamic azureDataSourceSetup = new ExpandoObject();
+            azureSamples.Parse(TimeZone.CurrentTimeZone, azureStartTime, azureEndTime, azureDataSourceSetup);
 
             var iisSamples = new IisSampleSet();
             var iisStartTime = new DateTime(2014, 3, 12, 18, 10, 0);
             var iisEndTime = new DateTime(2014, 3, 12, 20, 11, 0);
-            iisSamples.Parse(TimeZone.CurrentTimeZone, string.Empty, iisStartTime, iisEndTime);
-
+            dynamic iisDataSourceSetup = new ExpandoObject();
+            iisSamples.Parse(TimeZone.CurrentTimeZone, iisStartTime, iisEndTime, iisDataSourceSetup);
+                 
             var iagoSamples = new IagoSampleSet();
-            iagoSamples.Parse(TimeZone.CurrentTimeZone, @"c:\tmp\parrot-server-stats.log", null, null);
+            dynamic iagoDataSourceSetup = new ExpandoObject();
+            iagoDataSourceSetup.DataSourceFileName = @"c:\tmp\parrot-server-stats.log";
+            iagoSamples.Parse(TimeZone.CurrentTimeZone, null, null, iagoDataSourceSetup);
 
             // TODO: Populate these by reflection
-            // set up common analysis algorithms
+            // set up analysis algorithms
             var commonSetAnalyzers = new CommonSampleSetAnalysis();
             var commonStatAnalyzers = new CommonStatAnalysis();
             var iagoSetAnalyzers = new IagoSampleSetAnalysis();
@@ -55,18 +56,21 @@ namespace NorwegianBlueReporter
                     commonSetAnalyzers.ClusterAnalysis
                 };
 
-            var statAnalysisMethods = new List<StatAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>();
+            var statAnalysisMethods = new List<SampleInSetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>();
 
             // set up type specific analysis
             var iagoSetAnalysisMethods = new List<SetAnalyzer<IagoSampleSet, IagoSample>>();
             iagoSetAnalysisMethods.AddRange(commonSetAnalysisMethods);
-            iagoSetAnalysisMethods.Add(iagoSetAnalyzers.IagoSummaryGraphs);
+//            iagoSetAnalysisMethods.Add(
+//                    iagoSetAnalyzers.IagoSummaryGraphs
+//                );
 
             // individual stat analysis
             // statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
             statAnalysisMethods.Add(commonStatAnalyzers.SummaryStatComparisonAsTables);
-            
-            iagoSamples.Analyze( iagoSetAnalysisMethods, statAnalysisMethods);
+
+            iagoSamples.Analyze(iagoSetAnalysisMethods, statAnalysisMethods);
+            iagoSetAnalyzers.IagoSummaryGraphs(iagoSamples);
 
             var iisSetAnalysisMethods = new List<SetAnalyzer<IisSampleSet, IisSample>>();
             iisSetAnalysisMethods.AddRange(commonSetAnalysisMethods);
@@ -104,10 +108,11 @@ namespace NorwegianBlueReporter
             {
                 var mdHeaderName = string.Format("MdHeading{0}", i);
                 var mdHeaderBaseName = string.Format("Heading{0}", i);
-                var mdHeaderStyle = new Style(mdHeaderName, mdHeaderBaseName);
-                mdHeaderStyle.Font.Bold = true;
-                mdHeaderStyle.Font.Size = 8 + (numHeaderLevels - i)*2;
-                mdHeaderStyle.ParagraphFormat.SpaceBefore = Unit.FromPoint(numHeaderLevels - i);
+                var mdHeaderStyle = new Style(mdHeaderName, mdHeaderBaseName)
+                    {
+                        Font = {Bold = true, Size = 8 + (numHeaderLevels - i)*2},
+                        ParagraphFormat = {SpaceBefore = Unit.FromPoint(numHeaderLevels - i)}
+                    };
                 document.Add(mdHeaderStyle);
             }
 

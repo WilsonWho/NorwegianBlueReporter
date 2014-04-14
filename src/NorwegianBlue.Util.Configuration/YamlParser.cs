@@ -56,9 +56,13 @@ namespace NorwegianBlue.Util.Configuration
 
         public static dynamic GetConfiguration()
         {
-            var declaringType = new StackTrace().GetFrame(1).GetMethod().DeclaringType.Name;
+            var stackTrace = new StackTrace();
+            var frame = stackTrace.GetFrame(1);
+            var method = frame.GetMethod();
+            var declaringType = method.DeclaringType;
+            var declaringTypeName = declaringType.Name;
 
-            return Configuration[declaringType];
+            return Configuration[declaringTypeName];
         }
 
         private static object Merge(IDictionary<string, object> obj1, IDictionary<string, object> obj2)
