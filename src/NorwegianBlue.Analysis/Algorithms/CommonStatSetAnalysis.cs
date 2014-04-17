@@ -77,6 +77,18 @@ namespace NorwegianBlue.Analysis.Algorithms
 
         public void ClusterAnalysis(ISampleSetAnalysis<ISampleAnalysis> sampleSet)
         {
+            const int binMax = 5;
+            AnalysisNote analysisNote;
+            var sampleSetShortTypeName = sampleSet.GetType().ToString().Split('.').Last();
+            string analysisNoteText = string.Format(@"
+#Clustering Analysis ({0})
+
+All the data is passed through the [openCV](http://opencv.org/) implementation of the [k-Means](http://en.wikipedia.org/wiki/K-means_clustering) clustering algorithm.
+
+This is done several times to see if there are any 'obvious' groupings to the data.
+
+The number of clusters is varied from 2, in powers of 2, up to {1} and plotted as a bar, where colour indicates cluster membership, and distance (left to right) represents time.",
+            sampleSetShortTypeName, Math.Pow(2d, binMax));
 
             // Ensure statistics are associated correctly across all samples by ensuring we use a 
             // fixed order container of data value keys.
@@ -96,7 +108,7 @@ namespace NorwegianBlue.Analysis.Algorithms
 
             // set up dynamic storage to save which cluster each sample belonged to,
             // for different numbers of cluster groups
-            foreach (var sample in sampleSet)
+            foreach (ISampleAnalysis sample in sampleSet)
             {
                 if (null == sample)
                 {
@@ -126,22 +138,27 @@ namespace NorwegianBlue.Analysis.Algorithms
             // Going to repeatedly calculate clustering, with the number of clusters doubling each time.
             // But can't have more clusters than samples!
             var numberOfDoublings = (int) Math.Floor(Math.Log(sampleCount, 2));
-            if (numberOfDoublings < 1)
+            // must have at least one row; but on top of that there is a bug in oxyplot that causes
+            // single row/column heatmaps to raise an overflow exception.
+            if (numberOfDoublings < 2)
             {
-                throw new ArgumentException("Not enough samples to generate a cluster graph");
+                analysisNoteText = analysisNoteText + "\n\n*Not enough data to create chart*.\n\n";
+                analysisNote = new AnalysisNote("Clustering Analysis", analysisNoteText, AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel>());
+                sampleSet.AddAnalysisNote(analysisNote);
+                return;
             }
 
-            if (numberOfDoublings > 5)
+            if (numberOfDoublings > binMax)
             {
-                numberOfDoublings = 5;
+                numberOfDoublings = binMax;
             }
 
             // setup graph variables
             var clusterSizeAxis = new CategoryAxis {Title = "Cluster Size", Position =  AxisPosition.Left};
             var cvCriteria = new CvTermCriteria(10, 1.0);
-            var heatMapData = new HeatMapSeries { Data = new Double[sampleCount, numberOfDoublings - 1] };
+            var heatMapData = new HeatMapSeries { Data = new Double[sampleCount, numberOfDoublings] };
 
-            for (var power = 1; power < numberOfDoublings; power++)
+            for (var power = 1; power <= numberOfDoublings; power++)
             {
                 var clusterCount = (int) Math.Pow(2d, power);
 
@@ -152,70 +169,48 @@ namespace NorwegianBlue.Analysis.Algorithms
                 for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
                 {
                     var cluster = cvClusters[sampleIndex];
-                    var sample = sampleSet[sampleIndex] as ISampleAnalysis;
+                    var sample = sampleSet[sampleIndex];
                     sample.AnalysisScratchPad.Clusters[clusterCount] = (int)cluster;
                     heatMapData.Data[sampleIndex, power - 1] = cluster;
                 }
             }
 
             var plot = new PlotModel {Title = "Clustering Analysis"};
-            var colorAxis = new LinearColorAxis();
-            colorAxis.HighColor = OxyColors.Gray;
-            colorAxis.LowColor = OxyColors.Black;
-            colorAxis.Position = AxisPosition.Top;
+            var colorAxis = new LinearColorAxis
+                {
+                    HighColor = OxyColors.Gray,
+                    LowColor = OxyColors.Black,
+                    Position = AxisPosition.Top
+                };
             plot.Axes.Add(colorAxis);
 
             var startTime = sampleSet.StartTime;
             var endTime = sampleSet.EndTime;
 
 
-            var timeAxis = new DateTimeAxis(AxisPosition.Bottom, startTime, endTime, "Time", "yy-MM-dd hh:mm:ss", DateTimeIntervalType.Minutes);
-            timeAxis.Angle = -30;
-
-            var interval = sampleSet.EndTime - sampleSet.StartTime;
-
-            timeAxis.Minimum = DateTimeAxis.ToDouble(startTime);
-            timeAxis.Maximum = DateTimeAxis.ToDouble(endTime);
+            var timeAxis = new DateTimeAxis(AxisPosition.Bottom, startTime, endTime, "Time", "yy-MM-dd hh:mm:ss", DateTimeIntervalType.Minutes)
+                {
+                    Angle = -30,
+                    Minimum = DateTimeAxis.ToDouble(startTime),
+                    Maximum = DateTimeAxis.ToDouble(endTime)
+                };
 
             plot.Axes.Add(timeAxis);
 
-            //var linearAxis1 = new LinearAxis();
-            //linearAxis1.Position = AxisPosition.Bottom;
-            //plot.Axes.Add(linearAxis1);
-
             clusterSizeAxis.Minimum = -0.5;
-            clusterSizeAxis.Maximum = (float)numberOfDoublings - 1.5;
+            clusterSizeAxis.Maximum = numberOfDoublings - 0.5;
             clusterSizeAxis.Angle = -90;
             clusterSizeAxis.Position = AxisPosition.Left;
             plot.Axes.Add(clusterSizeAxis);
 
-// Keep this around - useful for debugging the formatting of the above category axis.
-//            var linearAxis2 = new LinearAxis();
-//            linearAxis2.Minimum = -0.5;
-//            linearAxis2.Maximum = (float) numberOfDoublings - 1.5;
-//            linearAxis2.Position = AxisPosition.Left;
-//            plot.Axes.Add(linearAxis2);
-
-
-
             heatMapData.X0 = timeAxis.Minimum;
             heatMapData.X1 = timeAxis.Maximum;
             heatMapData.Y0 = 0;
-            heatMapData.Y1 = numberOfDoublings - 2;
+            heatMapData.Y1 = numberOfDoublings - 1;
             heatMapData.Interpolate = false;
             plot.Series.Add(heatMapData);
 
-            var analysisNote = new AnalysisNote("Clustering Analysis",
-@"
-#Clustering Analysis
-
-All the data is passed through the [openCV](http://opencv.org/) implementation of the [k-Means](http://en.wikipedia.org/wiki/K-means_clustering) clustering algorithm.
-
-This is done several times to see if there are any 'obvious' groupings to the data.
-
-The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as a bar, where colour indicates cluster membership, and distance (left to right) represents time.
-
-", AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel>{plot});
+            analysisNote = new AnalysisNote("Clustering Analysis", analysisNoteText, AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel> { plot });
             sampleSet.AddAnalysisNote(analysisNote);
         }
 
@@ -232,7 +227,7 @@ The number of clusters is varied from 2, in powers of 2, up to 16 and plotted as
             foreach (var graphSpec in statsToGraph)
             {
                 var graphStats = graphSpec["Statistics"];
-                var statSeriesObjects = graphStats as List<object> ?? new List<object>() {graphStats};
+                var statSeriesObjects = graphStats as List<object> ?? new List<object> {graphStats};
 
                 if (0 == statSeriesObjects.Count)
                 {

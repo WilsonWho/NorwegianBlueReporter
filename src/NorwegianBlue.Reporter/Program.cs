@@ -24,14 +24,14 @@ namespace NorwegianBlueReporter
 
             // set up sample sets
             var azureSamples = new AzureMetricsSampleSet();
-            var azureStartTime = new DateTime(2014, 3, 8, 16, 0, 0, DateTimeKind.Local);
-            var azureEndTime = new DateTime(2014, 3, 8, 18, 0, 0, DateTimeKind.Local);
+            var azureStartTime = new DateTime(2014, 4, 8, 16, 0, 0, DateTimeKind.Local);
+            var azureEndTime = new DateTime(2014, 4, 8, 18, 0, 0, DateTimeKind.Local);
             dynamic azureDataSourceSetup = new ExpandoObject();
             azureSamples.Parse(TimeZone.CurrentTimeZone, azureStartTime, azureEndTime, azureDataSourceSetup);
 
             var iisSamples = new IisSampleSet();
-            var iisStartTime = new DateTime(2014, 3, 12, 18, 10, 0);
-            var iisEndTime = new DateTime(2014, 3, 12, 20, 11, 0);
+            var iisStartTime = new DateTime(2014, 4, 12, 18, 10, 0);
+            var iisEndTime = new DateTime(2014, 4, 12, 20, 11, 0);
             dynamic iisDataSourceSetup = new ExpandoObject();
             iisSamples.Parse(TimeZone.CurrentTimeZone, iisStartTime, iisEndTime, iisDataSourceSetup);
                  
@@ -74,23 +74,24 @@ namespace NorwegianBlueReporter
 
             var iisSetAnalysisMethods = new List<SetAnalyzer<IisSampleSet, IisSample>>();
             iisSetAnalysisMethods.AddRange(commonSetAnalysisMethods);
-            iisSetAnalysisMethods.Add(iisSetAnalyzers.IisSummaryGraphs);
+            //iisSetAnalysisMethods.Add(iisSetAnalyzers.IisSummaryGraphs);
 
             // individual stat analysis
             // statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
             // statAnalysisMethods.Add(commonStatAnalyzers.SummaryStatComparisonAsTables);
 
-            iisSamples.Analyze(iisSetAnalysisMethods, statAnalysisMethods);
+            //iisSamples.Analyze(iisSetAnalysisMethods, statAnalysisMethods);
 
             var azureMetricsSetAnalysisMethods = new List<SetAnalyzer<AzureMetricsSampleSet, AzureMetricsSample>>();
             azureMetricsSetAnalysisMethods.AddRange(commonSetAnalysisMethods);
-            azureMetricsSetAnalysisMethods.Add(azureMetricsSetAnalyzers.AzureMetricsSummaryGraphs);
+            //azureMetricsSetAnalysisMethods.Add(azureMetricsSetAnalyzers.AzureMetricsSummaryGraphs);
 
             // individual stat analysis
             // statAnalysisMethods.Add(statAnalyzers.SummaryStatComparison);
             // statAnalysisMethods.Add(commonStatAnalyzers.SummaryStatComparisonAsTables);
 
             azureSamples.Analyze(azureMetricsSetAnalysisMethods, statAnalysisMethods);
+            azureMetricsSetAnalyzers.AzureMetricsSummaryGraphs(azureSamples);
 
             //------------------------------------------------------------------
 
@@ -127,6 +128,16 @@ The following sections are various analysis over the entire set of data collecte
 
             // Add the Analysis Notes for the set
             foreach (var analysisNote in iagoSamples.AnalysisNotes)
+            {
+                document.AppendAnalysisNote(analysisNote);
+            }
+
+            foreach (var analysisNote in azureSamples.AnalysisNotes)
+            {
+                document.AppendAnalysisNote(analysisNote);
+            }
+
+            foreach (var analysisNote in iisSamples.AnalysisNotes)
             {
                 document.AppendAnalysisNote(analysisNote);
             }

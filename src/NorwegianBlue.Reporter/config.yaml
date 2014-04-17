@@ -19,6 +19,10 @@ IagoSample:
         - "count"
         - "200"
 
+AzureMetricsSample:
+    FieldsToIgnore:
+        - "zzzz"
+
 AzureMetricsSampleSet:
     Fields:
         - "CpuTime"
@@ -35,6 +39,24 @@ IagoSampleSet:
 
 AzureMetricsSampleSetAnalysis:
     Graphs:
+        - { Title: "CPU Time",
+            Statistics: "CPU",
+            Description: "",
+            IncludeAverage: "true",
+            IncludeStdDeviation: "true"
+          }
+        - { Title: "Average Memory Working Set",
+            Statistics: "AverageMemoryWorkingSet",
+            Description: "",
+            IncludeAverage: "true",
+            IncludeStdDeviation: "true"
+          }
+        - { Title: "Memory Working Set",
+            Statistics: "MemoryWorkingSet",
+            Description: "",
+            IncludeAverage: "true",
+            IncludeStdDeviation: "true"
+          }
         
 IisSampleSetAnalysis:
     Graphs:
