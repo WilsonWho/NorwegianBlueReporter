@@ -12,7 +12,13 @@ namespace NorwegianBlue.Integration.IIS.Samples
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();
             AnalysisScratchPad.FieldsToIgnore = configuration.ContainsKey("FieldsToIgnore")
                                                     ? configuration["FieldsToIgnore"]
-                                                    : new List<string>();
+                                                    : new List<string>(); // "FieldsToIgnore" might be missing
+
+            // FieldsToIgnore might be defined but empty in the config...
+            if (null == AnalysisScratchPad.FieldsToIgnore)
+            {
+                AnalysisScratchPad.FieldsToIgnore = new List<string>();
+            }
 
             TimeStamp = timeStamp;
             foreach (var tuple in data)

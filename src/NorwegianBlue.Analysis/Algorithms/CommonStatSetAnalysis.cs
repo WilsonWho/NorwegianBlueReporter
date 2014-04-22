@@ -188,12 +188,14 @@ The number of clusters is varied from 2, in powers of 2, up to {1} and plotted a
             var endTime = sampleSet.EndTime;
 
 
-            var timeAxis = new DateTimeAxis(AxisPosition.Bottom, startTime, endTime, "Time", "yy-MM-dd hh:mm:ss", DateTimeIntervalType.Minutes)
-                {
-                    Angle = -30,
-                    Minimum = DateTimeAxis.ToDouble(startTime),
-                    Maximum = DateTimeAxis.ToDouble(endTime)
-                };
+            var timeAxis = new DateTimeAxis();
+            timeAxis.Position = AxisPosition.Bottom;
+            timeAxis.Minimum = DateTimeAxis.ToDouble(startTime);
+            timeAxis.Maximum = DateTimeAxis.ToDouble(endTime);
+            timeAxis.IntervalType = DateTimeIntervalType.Minutes;
+            timeAxis.Title = "Time";
+            timeAxis.StringFormat = "yy-MM-dd hh:mm:ss";
+            timeAxis.Angle = -30;
 
             plot.Axes.Add(timeAxis);
 
