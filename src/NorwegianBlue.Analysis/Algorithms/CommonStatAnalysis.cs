@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Text;
 using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Common;
@@ -94,9 +95,15 @@ namespace NorwegianBlue.Analysis.Algorithms
                 }
                 stdDevs.Insert(0, stdDevHeader);
                 stdDevs.Append("\n\n");
-                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString(),
-                                                    AnalysisNote.AnalysisNoteType.Summary,
-                                                    AnalysisNote.AnalysisNotePriorities.Important, null);
+
+                var analysisNote = (AnalysisNote) Activator.CreateInstance(stat.AnalysisNoteType,
+                                                                           new object[]
+                                                                               {
+                                                                                   @"Stat Summary", stdDevs.ToString(),
+                                                                                   AnalysisNoteDetailLevel.Summary,
+                                                                                   AnalysisNotePriorities.Important,
+                                                                                   null
+                                                                               });
                 stat.AddAnalysisNote(analysisNote);
             }
 
@@ -112,9 +119,14 @@ namespace NorwegianBlue.Analysis.Algorithms
                 }
                 missingFields.Insert(0, missingValHeader);
                 missingFields.Append("\n\n");
-                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString(),
-                                                    AnalysisNote.AnalysisNoteType.Summary,
-                                                    AnalysisNote.AnalysisNotePriorities.Informational, null);
+                var analysisNote = (AnalysisNote) Activator.CreateInstance(stat.AnalysisNoteType,
+                                                                           new object[]
+                                                                               {
+                                                                                   @"Missing Fields", stdDevs.ToString(),
+                                                                                   AnalysisNoteDetailLevel.Summary,
+                                                                                   AnalysisNotePriorities.Informational,
+                                                                                   null
+                                                                               });
                 stat.AddAnalysisNote(analysisNote);
             }
 
@@ -147,9 +159,16 @@ namespace NorwegianBlue.Analysis.Algorithms
             {
                 stdDevs.Insert(0, "####Fields more than 1 std dev from mean:\n");
                 stdDevs.Append("\n\n");
-                var analysisNote = new AnalysisNote("Stat Summary", stdDevs.ToString(),
-                                                    AnalysisNote.AnalysisNoteType.Details,
-                                                    AnalysisNote.AnalysisNotePriorities.Important, null);
+
+
+                var analysisNote = (AnalysisNote) Activator.CreateInstance(stat.AnalysisNoteType,
+                                                                           new object[]
+                                                                               {
+                                                                                   @"Stat Summary", stdDevs.ToString(),
+                                                                                   AnalysisNoteDetailLevel.Details,
+                                                                                   AnalysisNotePriorities.Important,
+                                                                                   null
+                                                                               });
                 stat.AddAnalysisNote(analysisNote);
             }
 
@@ -157,12 +176,16 @@ namespace NorwegianBlue.Analysis.Algorithms
             {
                 missingFields.Insert(0, "####Missing fields:\n");
                 missingFields.Append("\n\n");
-                var analysisNote = new AnalysisNote("Missing Fields", missingFields.ToString(),
-                                                    AnalysisNote.AnalysisNoteType.Details,
-                                                    AnalysisNote.AnalysisNotePriorities.Informational, null);
+                var analysisNote = (AnalysisNote)Activator.CreateInstance(stat.AnalysisNoteType,
+                                                           new object[]
+                                                                               {
+                                                                                   @"Missing Fields", stdDevs.ToString(),
+                                                                                   AnalysisNoteDetailLevel.Details,
+                                                                                   AnalysisNotePriorities.Informational,
+                                                                                   null
+                                                                               });
                 stat.AddAnalysisNote(analysisNote);
             }
-
         }
     }
 }

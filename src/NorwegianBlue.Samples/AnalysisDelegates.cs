@@ -1,4 +1,6 @@
-﻿namespace NorwegianBlue.Samples
+﻿using System;
+
+namespace NorwegianBlue.Samples
 {
     // thought: SampleSets have access to the individual samples, but samples only have access to themselves.
     // Thus analyzing individual samples happens AFTER analyzing the set, and may require information from

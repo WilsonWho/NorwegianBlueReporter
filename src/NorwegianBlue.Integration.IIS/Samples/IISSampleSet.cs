@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NorwegianBlue.Integration.IIS.Analysis;
 using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 using NorwegianBlue.Util.Web;
@@ -8,6 +9,10 @@ namespace NorwegianBlue.Integration.IIS.Samples
 {
     public class IisSampleSet : CommonSampleSetBase<IisSample>
     {
+        public override Type AnalysisNoteType
+        {
+            get { return typeof(IisSampleSetAnalysisNote); }
+        }
 
         public IisSampleSet()
         {
@@ -74,7 +79,6 @@ namespace NorwegianBlue.Integration.IIS.Samples
                         fields.Add(new Tuple<string, string>(header, field));
                     }
                 }
-
                 var dateTimeString = string.Format("{0} {1}", date, time);
                 var timeStamp = Convert.ToDateTime(dateTimeString);
 
@@ -82,10 +86,7 @@ namespace NorwegianBlue.Integration.IIS.Samples
 
                 iisSamples.Add(iisSample); 
             }
-
             return iisSamples;
-
         }
-
     }
 }

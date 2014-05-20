@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using NorwegianBlue.IagoIntegration.Analysis;
 using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
@@ -15,6 +16,11 @@ namespace NorwegianBlue.IagoIntegration.Samples
         private static readonly Regex DataMatcher = new Regex(@"(?<key>.+?):(?<value>.+?)[,$]", RegexOptions.Compiled);
         private static readonly Regex QuotteRemover = new Regex("([\"'])(?<key>.+?)\\1", RegexOptions.Compiled);
         private static readonly Regex VSlashRemover = new Regex("\\\\/", RegexOptions.Compiled);
+
+        public override Type AnalysisNoteType
+        {
+            get { return typeof(IagoSampleAnalysisNote); }
+        }
 
         public IagoSampleSet()
         {

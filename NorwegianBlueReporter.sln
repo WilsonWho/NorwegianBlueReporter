@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CED169D0-3979-4E89-9D85-11246F9AA68C}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.CommonAnalysis", "src\NorwegianBlue.Analysis\NorwegianBlue.CommonAnalysis.csproj", "{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}"
 EndProject
@@ -24,6 +29,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Samples", "src\NorwegianBlue.Samples\NorwegianBlue.Samples.csproj", "{364A2C2A-B6BF-466B-A78B-CA7D2677156B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Experiment", "src\NorwegianBlue.Experiment\NorwegianBlue.Experiment.csproj", "{57250B32-833E-455F-B560-3A44509FF575}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D08775B-03B2-4A6F-9BD7-7AEB2729257C}"
+	ProjectSection(SolutionItems) = preProject
+		ToDo.md = ToDo.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

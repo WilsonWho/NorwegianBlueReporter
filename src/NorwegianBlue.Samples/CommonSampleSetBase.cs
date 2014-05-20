@@ -13,13 +13,14 @@ namespace NorwegianBlue.Samples
     {
         private readonly List<T> _samples = new List<T>();
 
-        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         public dynamic AnalysisScratchPad
         {
             get { return _analysisScratchPad; }
         }
 
+        public abstract Type AnalysisNoteType { get; }
+        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
         private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
         public ReadOnlyCollection<AnalysisNote> AnalysisNotes
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NorwegianBlue.IagoIntegration.Analysis;
 using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
@@ -7,6 +8,11 @@ namespace NorwegianBlue.IagoIntegration.Samples
 {
     public class IagoSample : CommonSampleBase 
     {
+        public override Type AnalysisNoteType
+        {
+            get { return typeof(IagoSampleAnalysisNote); }
+        }
+
         public IagoSample(DateTime timeStamp, IEnumerable<Tuple<string, string>> data):base(timeStamp, data)
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();

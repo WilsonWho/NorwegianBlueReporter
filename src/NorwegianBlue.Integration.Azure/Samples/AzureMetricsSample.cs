@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NorwegianBlue.Integration.Azure.Analysis;
 using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
@@ -7,6 +8,11 @@ namespace NorwegianBlue.Integration.Azure.Samples
 {
     public class AzureMetricsSample : CommonSampleBase
     {
+        public override Type AnalysisNoteType
+        {
+            get { return typeof(AzureMetricsSampleAnalysisNote); }
+        }
+
         public AzureMetricsSample(DateTime timeStamp, IEnumerable<Tuple<string, string>> data) : base(timeStamp, data)
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();

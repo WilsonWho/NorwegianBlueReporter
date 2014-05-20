@@ -15,6 +15,7 @@ namespace NorwegianBlue.Samples
         T this[DateTime time] { get; }
         T this[DateTime time, TimeSpan tolerance, bool absolute] { get; }
 
+        Type AnalysisNoteType { get; }
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
         DateTime StartTime { get; }
         DateTime EndTime { get; }

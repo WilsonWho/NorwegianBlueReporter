@@ -30,8 +30,6 @@ AzureMetricsSampleSet:
         - "MemoryWorkingSet"
         
 IagoSampleSet:
-# should fields ignored for individual statistics also be ignored when analyzed as a set?
-    IncludeStasticsIgnoredFields: "false" 
 # fields to be ignored when analysing the complete stat set
     FieldsToIgnore:
         - "count"

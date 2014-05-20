@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NorwegianBlue.Integration.IIS.Analysis;
 using NorwegianBlue.Samples;
 using NorwegianBlue.Util.Configuration;
 
@@ -7,6 +8,11 @@ namespace NorwegianBlue.Integration.IIS.Samples
 {
     public class IisSample : CommonSampleBase
     {
+        public override Type AnalysisNoteType
+        {
+            get { return typeof(IisSampleAnalysisNote); }
+        }
+
         public IisSample(DateTime timeStamp, IEnumerable<Tuple<string, string>> data):base(timeStamp, data)
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();

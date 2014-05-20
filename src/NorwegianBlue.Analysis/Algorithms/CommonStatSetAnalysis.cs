@@ -143,7 +143,16 @@ The number of clusters is varied from 2, in powers of 2, up to {1} and plotted a
             if (numberOfDoublings < 2)
             {
                 analysisNoteText = analysisNoteText + "\n\n*Not enough data to create chart*.\n\n";
-                analysisNote = new AnalysisNote("Clustering Analysis", analysisNoteText, AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel>());
+
+                analysisNote = (AnalysisNote) Activator.CreateInstance(sampleSet.AnalysisNoteType,
+                                                                           new object[]
+                                                                               {
+                                                                                   @"Clustering Analysis",
+                                                                                   analysisNoteText,
+                                                                                   AnalysisNoteDetailLevel.Summary,
+                                                                                   AnalysisNotePriorities.Important,
+                                                                                   new List<PlotModel>()
+                                                                               });
                 sampleSet.AddAnalysisNote(analysisNote);
                 return;
             }
@@ -212,7 +221,16 @@ The number of clusters is varied from 2, in powers of 2, up to {1} and plotted a
             heatMapData.Interpolate = false;
             plot.Series.Add(heatMapData);
 
-            analysisNote = new AnalysisNote("Clustering Analysis", analysisNoteText, AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, new List<PlotModel> { plot });
+
+            analysisNote = (AnalysisNote) Activator.CreateInstance(sampleSet.AnalysisNoteType,
+                                                                   new object[]
+                                                                       {
+                                                                           @"Clustering Analysis",
+                                                                           analysisNoteText,
+                                                                           AnalysisNoteDetailLevel.Summary,
+                                                                           AnalysisNotePriorities.Important,
+                                                                           new List<PlotModel> {plot}
+                                                                       });
             sampleSet.AddAnalysisNote(analysisNote);
         }
 
@@ -340,9 +358,16 @@ Missing data is replaced either with a 0 when there is no preceeding data or the
                     );
                 analysisSummary.Append(notes);
             }
-
-            var note = new AnalysisNote(title, analysisSummary.ToString(), AnalysisNote.AnalysisNoteType.Summary, AnalysisNote.AnalysisNotePriorities.Important, graphs);
-            return note;
+            var analysisNote = (AnalysisNote) Activator.CreateInstance(sampleSet.AnalysisNoteType,
+                                                                       new object[]
+                                                                           {
+                                                                               title,
+                                                                               analysisSummary.ToString(),
+                                                                               AnalysisNoteDetailLevel.Summary,
+                                                                               AnalysisNotePriorities.Important,
+                                                                               graphs
+                                                                           });
+            return analysisNote;
         }
     }
 }

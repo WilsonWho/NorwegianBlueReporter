@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NorwegianBlue.Integration.Azure.Analysis;
 using NorwegianBlue.Integration.Azure.AzureAPI;
 using NorwegianBlue.Integration.Azure.AzureAPI.DTOs.WebSiteGetHistoricalUsageMetricsResponse;
 using NorwegianBlue.Samples;
@@ -11,6 +12,10 @@ namespace NorwegianBlue.Integration.Azure.Samples
 {
     public class AzureMetricsSampleSet : CommonSampleSetBase<AzureMetricsSample>
     {
+        public override Type AnalysisNoteType
+        {
+            get { return typeof(AzureMetricsSampleSetAnalysisNote); }
+        }
 
         public AzureMetricsSampleSet()
         {

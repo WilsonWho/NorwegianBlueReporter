@@ -7,10 +7,9 @@ namespace NorwegianBlue.Experiment
 {
     // An Experiment is intended to be a summary collection of various types of analysis.
     // 
-    public interface IExperiment<T> where T : ISampleSet<ISampleValues>
+    public interface IExperiment<in T> where T : ISampleSetValues<ISampleValues>
     {
-        // Parse must ensure that samples are saved in time-stamp sorted order.
-        void Parse(TimeZone desiredTimeZone, DateTime? startTime, DateTime? endTime, dynamic configObject);
+        void AddSampleSet(T sampleSet);
     }
 
     public interface IExperimentValues<out T> : IReadOnlyList<T> where T : ISampleValues
@@ -27,7 +26,7 @@ namespace NorwegianBlue.Experiment
                                                                                 string defValue = "missing");
     }
 
-    public interface IExperimentAnalysis<out T> : IExperimentValues<T> where T : ISampleAnalysis
+    public interface IExperimentAnalysis<out T> : IExperimentValues<T> where T : ISampleValues
     {
         dynamic AnalysisScratchPad { get; }
         void AddAnalysisNote(AnalysisNote note);

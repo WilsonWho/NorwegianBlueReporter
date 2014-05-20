@@ -8,6 +8,7 @@ namespace NorwegianBlue.Samples
     {
         DateTime TimeStamp { get; }
         ReadOnlyDictionary<string, Tuple<bool,string>> NonStats { get; }
+        Type AnalysisNoteType { get; }
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
 
         // normal dictionary methods will exclude any ignored statistic fields.

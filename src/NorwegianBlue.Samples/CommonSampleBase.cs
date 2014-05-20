@@ -13,6 +13,8 @@ namespace NorwegianBlue.Samples
     {
         public DateTime TimeStamp { get; protected set; }
 
+        public abstract Type AnalysisNoteType { get; }
+
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         public dynamic AnalysisScratchPad { get { return _analysisScratchPad; } }
 
