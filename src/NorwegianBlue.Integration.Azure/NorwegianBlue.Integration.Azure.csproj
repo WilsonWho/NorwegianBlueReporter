@@ -169,6 +169,10 @@
       <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
       <Name>NorwegianBlue.CommonAnalysis</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.Reporting\NorwegianBlue.Reporting.csproj">
+      <Project>{A230FA8B-AB15-4151-A037-BD5D396B7DE9}</Project>
+      <Name>NorwegianBlue.Reporting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NorwegianBlue.Samples\NorwegianBlue.Samples.csproj">
       <Project>{364a2c2a-b6bf-466b-a78b-ca7d2677156b}</Project>
       <Name>NorwegianBlue.Samples</Name>

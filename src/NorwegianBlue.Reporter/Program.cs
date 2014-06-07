@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using MigraDoc.DocumentObjectModel;
+using NorwegianBlue.Analysis;
 using NorwegianBlue.Analysis.Algorithms;
 using NorwegianBlue.IagoIntegration.Analysis;
 using NorwegianBlue.IagoIntegration.Samples;

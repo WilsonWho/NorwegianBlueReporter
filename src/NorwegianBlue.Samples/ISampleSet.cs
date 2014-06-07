@@ -4,7 +4,11 @@ using System.Collections.ObjectModel;
 
 namespace NorwegianBlue.Samples
 {
+// ReSharper disable UnusedTypeParameter
+// Although the type is not used directly, it's assumed at some point ISampleSetValues will be implemented, which both derives
+// from this interface and has this requirement.
     public interface ISampleSet<T> where T: ISampleValues
+// ReSharper restore UnusedTypeParameter
     {
         // Parse must ensure that samples are saved in time-stamp sorted order.
         void Parse(TimeZone desiredTimeZone, DateTime? startTime, DateTime? endTime, dynamic configObject);
@@ -15,6 +19,7 @@ namespace NorwegianBlue.Samples
         T this[DateTime time] { get; }
         T this[DateTime time, TimeSpan tolerance, bool absolute] { get; }
 
+        // needed so reporting can figure out what generated a note, to be able to do grouping, sorting, etc
         Type AnalysisNoteType { get; }
         ReadOnlyCollection<AnalysisNote> AnalysisNotes { get; }
         DateTime StartTime { get; }

@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
-using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Samples
 {

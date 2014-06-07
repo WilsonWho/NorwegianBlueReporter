@@ -97,6 +97,8 @@
   <ItemGroup>
     <Compile Include="Algorithms\CommonStatAnalysis.cs" />
     <Compile Include="Algorithms\CommonStatSetAnalysis.cs" />
+    <Compile Include="AnalysisDelegates.cs" />
+    <Compile Include="AnalysisNote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

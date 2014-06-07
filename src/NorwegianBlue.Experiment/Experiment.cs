@@ -10,10 +10,19 @@ using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Experiment
 {
-    public class Experiment : IExperiment<ISampleSetValues<ISampleValues>>, IExperimentAnalysis<ISampleValues>
+    /// <summary>
+    /// Composes several data sets together
+    /// </summary>
+    /// <remarks>
+    /// Many fields are aggregates of the contained datasets.
+    /// Care needs to be taken to ensure consistent and up-to-date data is provided.
+    /// For example, don't re-create Lists, clear and re-add content.
+    /// </remarks>
+    public class Experiment : IExperiment<ISampleSetValues<ISampleValues>>, IExperimentAnalysis<ISampleAnalysis>
     {
+        private readonly List<ISampleSetAnalysis<ISampleAnalysis>> _sampleSets = new List<ISampleSetAnalysis<ISampleAnalysis>>();
 
-        private readonly List<ISampleValues> _samples = new List<ISampleValues>() ;
+        private List<ISampleAnalysis> _samples = new List<ISampleAnalysis>();
 
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         public virtual dynamic AnalysisScratchPad
@@ -21,13 +30,21 @@ namespace NorwegianBlue.Experiment
             get { return _analysisScratchPad; }
         }
 
-        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>();
-        private ReadOnlyCollection<AnalysisNote> _roAnalysisNote;
+        private readonly List<AnalysisNote> _experimentAnalysisNotes = new List<AnalysisNote>();
+        private readonly List<AnalysisNote> _analysisNotes = new List<AnalysisNote>(); 
+        private ReadOnlyCollection<AnalysisNote> _roAnalysisNotes;
+        
+        /// <summary>
+        /// Aggregation of all the Analysis notes
+        /// </summary>
+        /// <remarks>
+        /// Content has to be updated when any of the aggregate data changes.
+        /// </remarks>
         public ReadOnlyCollection<AnalysisNote> AnalysisNotes
         {
             get
             {
-                return _roAnalysisNote ?? (_roAnalysisNote =
+                return _roAnalysisNotes ?? (_roAnalysisNotes =
                                             new ReadOnlyCollection<AnalysisNote>(_analysisNotes));
             }
         }
@@ -61,7 +78,7 @@ namespace NorwegianBlue.Experiment
             }
         }
 
-        public virtual IEnumerator<ISampleValues> GetEnumerator()
+        public virtual IEnumerator<ISampleAnalysis> GetEnumerator()
         {
             return _samples.GetEnumerator();
         }
@@ -71,32 +88,93 @@ namespace NorwegianBlue.Experiment
             return GetEnumerator();
         }
 
-        ISampleValues IReadOnlyList<ISampleValues>.this[int index]
+        ISampleAnalysis IReadOnlyList<ISampleAnalysis>.this[int index]
         {
             get { return _samples[index]; }
         }
 
-        ISampleValues IExperimentValues<ISampleValues>.this[DateTime time]
+        ISampleAnalysis IExperimentValues<ISampleAnalysis>.this[DateTime time]
         {
-            get { return SampleSetComparisons<ISampleValues>.GetNearestToTime(_samples, time); }
+            get { return SampleSetComparisons<ISampleAnalysis>.GetNearestToTime(_samples, time); }
         }
 
-        ISampleValues IExperimentValues<ISampleValues>.this[DateTime time, TimeSpan tolerance, bool absolute]
+        ISampleAnalysis IExperimentValues<ISampleAnalysis>.this[DateTime time, TimeSpan tolerance, bool absolute]
         {
-            get { return SampleSetComparisons<ISampleValues>.GetNearestToTime(_samples, time, tolerance, absolute); }
+            get { return SampleSetComparisons<ISampleAnalysis>.GetNearestToTime(_samples, time, tolerance, absolute); }
         }
 
         public Experiment()
         {
             Dictionary<object, object> configuration = YamlParser.GetConfiguration();
+
         }
 
+        /// <summary>
+        /// Ensure the samples list contains all samples
+        /// </summary>
+        /// <remarks>
+        /// Should morph into an event handler- and all other calls should be removed
+        /// </remarks>
+        private void UpDateSamples()
+        {
+            _samples.Clear();
+
+            foreach (var sampleSet in _sampleSets)
+            {
+                foreach (var sample in sampleSet)
+                {
+                    _samples.Add(sample);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Ensure the samples list contains all analysis notes
+        /// </summary>
+        /// <remarks>
+        /// Should morph into an event handler- and all other calls should be removed
+        /// </remarks>
+        private void UpdateAnalysisNotes()
+        {
+            _analysisNotes.Clear();
+            _analysisNotes.AddRange(_experimentAnalysisNotes);
+
+            foreach (var sampleSet in _sampleSets)
+            {
+
+                foreach (var sample in sampleSet)
+                {
+                    _samples.Add(sample);
+                }
+            }
+
+
+        }
+
+        public virtual void AddAnalysisNote(AnalysisNote note)
+        {
+            _experimentAnalysisNotes.Add(note);
+        }
+
+
+        /// <summary>
+        /// Add the sample set and contained samples. Samples will be sorted by time stamp.
+        /// </summary>
+        /// <remarks>
+        /// The sampleSets 
+        /// </remarks>
+        /// <param name="sampleSet">sample set to add</param>
         public virtual void AddSampleSet(ISampleSetValues<ISampleValues> sampleSet)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void AddAnalysisNote(AnalysisNote note)
+        public void Analyze(List<Tuple<List<SetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>, List<SampleInSetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>>> commonDataSetsAnalysis, List<Tuple<Type, List<SetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>, List<SampleInSetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>>> dataSetsAnalysis, List<ExperimentAnalyzer<IExperimentAnalysis<ISampleAnalysis>, ISampleAnalysis>> experimentAnalysis)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Analyze(List<Tuple<List<SetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>, List<SampleInSetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>>> commonDataSetsAnalysis, List<Tuple<Type, List<SetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>, List<SampleInSetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>>> dataSetsAnalysis)
         {
             throw new NotImplementedException();
         }

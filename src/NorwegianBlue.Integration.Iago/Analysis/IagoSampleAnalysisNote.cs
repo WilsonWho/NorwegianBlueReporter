@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NorwegianBlue.Samples;
+using NorwegianBlue.Analysis;
 using OxyPlot;
 
 namespace NorwegianBlue.IagoIntegration.Analysis

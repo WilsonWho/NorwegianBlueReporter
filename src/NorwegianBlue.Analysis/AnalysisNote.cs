@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using OxyPlot;
 
-namespace NorwegianBlue.Samples
+namespace NorwegianBlue.Analysis
 {
     public enum AnalysisNoteDetailLevel
     {

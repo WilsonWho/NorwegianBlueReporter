@@ -13,6 +13,30 @@ AppOptions:
         SomeOtherSampleSet:
             DataLocation: "something of meaning"
 
+Experiment:
+    DataSets:
+        - { 
+            Type: "IagoSampleSet",
+            SetAnalyzers: ,
+            StatAnalyzers:
+          }
+        - { 
+            Type: "AzureMetricsSampleSet",
+            SetAnalyzers: ,
+            StatAnalyzers:
+          }
+        - { 
+            Type: "IisSampleSet",
+            SetAnalyzers: ,
+            StatAnalyzers:
+          }
+    # will be run on all data sets, before their specific analyzers
+    CommonDataSetAnalysis:
+        SetAnalyzers:
+        StatAnalyzers:
+    ExperimentAnalyzers:
+    
+
 IagoSample:
 # fields to be ignored when analysing individual stats
     FieldsToIgnore:

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NorwegianBlue.Analysis;
 using NorwegianBlue.Samples;
 using OxyPlot;
 

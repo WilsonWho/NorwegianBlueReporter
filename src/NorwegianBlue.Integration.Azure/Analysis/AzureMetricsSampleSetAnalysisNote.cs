@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using NorwegianBlue.Samples;
+using NorwegianBlue.Analysis;
+using NorwegianBlue.Reporting;
 using OxyPlot;
 
 namespace NorwegianBlue.Integration.Azure.Analysis
 {
+    [ReportingMetaData(ReportingTypes.SampleSet)]
     class AzureMetricsSampleSetAnalysisNote : AnalysisNote
     {
         public override string FriendlyTypeName

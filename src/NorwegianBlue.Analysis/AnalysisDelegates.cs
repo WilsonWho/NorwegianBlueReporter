@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NorwegianBlue.Samples;
 
-namespace NorwegianBlue.Samples
+namespace NorwegianBlue.Analysis
 {
     // thought: SampleSets have access to the individual samples, but samples only have access to themselves.
     // Thus analyzing individual samples happens AFTER analyzing the set, and may require information from
@@ -19,5 +19,4 @@ namespace NorwegianBlue.Samples
 
     // should only add notes to samples, only uses values from the sample; applied from a sample
     public delegate void SampleAnalyzer<in T>(T sample) where T : ISampleAnalysis;
-
 }

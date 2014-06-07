@@ -2,7 +2,7 @@
 using FSharp.Markdown.Pdf;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
-using NorwegianBlue.Samples;
+using NorwegianBlue.Analysis;
 using iTextSharp.text.pdf;
 
 namespace NorwegianBlue.Util.Pdf

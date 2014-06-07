@@ -1,5 +1,8 @@
 # To Do #
 
+## Provide a `GetAllAnalysisNotes`
+- all contained notes (experiment, (sample set, sample))
+- make sure notes derive from an appropriate baseclass, or interface so the report can figure out how to group them.
 
 ## Configuration ##
 
@@ -9,15 +12,7 @@ Should split this out so that configuration is a parameter passed into the const
 
 Ie keep the current use case simple, but make it possible to have (useful) multiple instances of these classes.
 
-## `Experiment` to Be More Like a `SampleSet` ##
+## Possibly Use Events to propogate analysis note and related changes 
 
-`SampleSet` can perform it's own analysis of the `samples` it contains.
-
-They can be aggregated together (eg in an `experiment`).
-
-Right now an `Experiment` simply passes on requests to the `samplesets` it contains to do analysis; there isn't any cross-sample set analysis. 
-
-It might be useful if an `Experiment` was more like a `SampleSet`.
-
-
-
+Right now, have several properties in the experimnet class have to be rebuilt on access, in case any of the aggregated sample sets data changes.
+Could be a lot more efficient, especially as they're add-only APIs, to just add new items. Events, with the new item as a paramater, would allow this.
