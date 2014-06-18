@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using CommandLine.Text;
 
-namespace NorwegianBlueReporter
+namespace NorwegianBlue.Reporter
 {
     public class CommandLineOptions
     {

@@ -4,7 +4,7 @@ using System.Dynamic;
 using System.IO;
 using NorwegianBlue.Util.Configuration;
 
-namespace NorwegianBlueReporter
+namespace NorwegianBlue.Reporter
 {
     public class AppOptions : DynamicObject
     {

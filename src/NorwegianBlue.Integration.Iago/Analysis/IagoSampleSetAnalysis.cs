@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NorwegianBlue.Analysis.Algorithms;
-using NorwegianBlue.IagoIntegration.Samples;
-using NorwegianBlue.Samples;
+using NorwegianBlue.CommonAnalysis.Algorithms;
+using NorwegianBlue.Integration.Iago.Data.SampleSet;
 using NorwegianBlue.Util.Configuration;
 
-namespace NorwegianBlue.IagoIntegration.Analysis
+namespace NorwegianBlue.Integration.Iago.Analysis
 {
     public class IagoSampleSetAnalysis
     {

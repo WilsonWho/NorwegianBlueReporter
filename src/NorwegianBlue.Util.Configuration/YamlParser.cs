@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
@@ -54,16 +55,34 @@ namespace NorwegianBlue.Util.Configuration
             _privateFileName = path;
         }
 
+        /// <summary>
+        /// Return the configuration for the class that contains a call to GetConfiguration().
+        /// </summary>
+        /// <returns></returns>
         public static dynamic GetConfiguration()
         {
             var stackTrace = new StackTrace();
             var frame = stackTrace.GetFrame(1);
             var method = frame.GetMethod();
             var declaringType = method.DeclaringType;
+            if (declaringType == null)
+            {
+                throw new NullReferenceException("Couldn't determine declaringType!");
+            }
             var declaringTypeName = declaringType.Name;
-
             return Configuration[declaringTypeName];
         }
+
+        /// <summary>
+        /// Return the configuration for the named class
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        public static dynamic GetConfiguration(string className)
+        {
+            return Configuration[className];
+        }
+
 
         private static object Merge(IDictionary<string, object> obj1, IDictionary<string, object> obj2)
         {

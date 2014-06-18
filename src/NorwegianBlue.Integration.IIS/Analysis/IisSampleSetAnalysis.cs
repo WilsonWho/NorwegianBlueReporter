@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NorwegianBlue.Analysis.Algorithms;
-using NorwegianBlue.Integration.IIS.Samples;
+using NorwegianBlue.CommonAnalysis.Algorithms;
+using NorwegianBlue.Integration.IIS.Data;
+using NorwegianBlue.Integration.IIS.Data.SampleSet;
 using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Integration.IIS.Analysis

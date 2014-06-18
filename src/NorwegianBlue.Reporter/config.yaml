@@ -16,17 +16,20 @@ AppOptions:
 Experiment:
     DataSets:
         - { 
-            Type: "IagoSampleSet",
+            Factory: "IagoSampleSet",
+            CustomConfig: ,
+            SetAnalyzers: ["asdf", "asdfadf"],
+            StatAnalyzers:
+          }
+        - { 
+            Factory: "AzureMetricsSampleSet",
+            CustomConfig: ,
             SetAnalyzers: ,
             StatAnalyzers:
           }
         - { 
-            Type: "AzureMetricsSampleSet",
-            SetAnalyzers: ,
-            StatAnalyzers:
-          }
-        - { 
-            Type: "IisSampleSet",
+            Factory: "IisSampleSet",
+            CustomConfig: ,
             SetAnalyzers: ,
             StatAnalyzers:
           }

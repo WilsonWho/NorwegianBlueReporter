@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NorwegianBlue.Analysis;
+using NorwegianBlue.Notes.AnalysisNotes;
 using NorwegianBlue.Reporting;
 using OxyPlot;
 

@@ -4,18 +4,21 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using MigraDoc.DocumentObjectModel;
-using NorwegianBlue.Analysis;
-using NorwegianBlue.Analysis.Algorithms;
-using NorwegianBlue.IagoIntegration.Analysis;
-using NorwegianBlue.IagoIntegration.Samples;
+using NorwegianBlue.CommonAnalysis.Algorithms;
+using NorwegianBlue.Data.Sample;
+using NorwegianBlue.Data.SampleSet;
 using NorwegianBlue.Integration.Azure.Analysis;
-using NorwegianBlue.Integration.Azure.Samples;
+using NorwegianBlue.Integration.Azure.Data.Sample;
+using NorwegianBlue.Integration.Azure.Data.SampleSet;
 using NorwegianBlue.Integration.IIS.Analysis;
-using NorwegianBlue.Integration.IIS.Samples;
-using NorwegianBlue.Samples;
+using NorwegianBlue.Integration.IIS.Data.Sample;
+using NorwegianBlue.Integration.IIS.Data.SampleSet;
+using NorwegianBlue.Integration.Iago.Analysis;
+using NorwegianBlue.Integration.Iago.Data.Sample;
+using NorwegianBlue.Integration.Iago.Data.SampleSet;
 using NorwegianBlue.Util.Pdf;
 
-namespace NorwegianBlueReporter
+namespace NorwegianBlue.Reporter
 {
     class Program
     {
@@ -24,19 +27,22 @@ namespace NorwegianBlueReporter
             dynamic options = new AppOptions(args);
 
             // set up sample sets
-            var azureSamples = new AzureMetricsSampleSet();
+            var azureSampleSetFactory = new AzureMetricsSampleSetFactory();
+            var azureSamples = azureSampleSetFactory.Create();
             var azureStartTime = new DateTime(2014, 4, 8, 16, 0, 0, DateTimeKind.Local);
             var azureEndTime = new DateTime(2014, 4, 8, 18, 0, 0, DateTimeKind.Local);
             dynamic azureDataSourceSetup = new ExpandoObject();
             azureSamples.Parse(TimeZone.CurrentTimeZone, azureStartTime, azureEndTime, azureDataSourceSetup);
 
-            var iisSamples = new IisSampleSet();
+            var iisSampleSetFactory = new IisSampleSetFactory();
+            var iisSamples = iisSampleSetFactory.Create();
             var iisStartTime = new DateTime(2014, 4, 12, 18, 10, 0);
             var iisEndTime = new DateTime(2014, 4, 12, 20, 11, 0);
             dynamic iisDataSourceSetup = new ExpandoObject();
             iisSamples.Parse(TimeZone.CurrentTimeZone, iisStartTime, iisEndTime, iisDataSourceSetup);
-                 
-            var iagoSamples = new IagoSampleSet();
+
+            var iagoSampleSetFactory = new IagoSampleSetFactory();
+            var iagoSamples = iagoSampleSetFactory.Create();
             dynamic iagoDataSourceSetup = new ExpandoObject();
             iagoDataSourceSetup.DataSourceFileName = @"c:\tmp\parrot-server-stats.log";
             iagoSamples.Parse(TimeZone.CurrentTimeZone, null, null, iagoDataSourceSetup);

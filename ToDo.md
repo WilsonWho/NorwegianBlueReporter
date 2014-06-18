@@ -1,5 +1,12 @@
 # To Do #
 
+## Abstract Factory for Experiment
+
+## Base class/factory & refactor for analysis classes
+
+## figure out how to find all classes that derive from an abstract class.
+
+
 ## Provide a `GetAllAnalysisNotes`
 - all contained notes (experiment, (sample set, sample))
 - make sure notes derive from an appropriate baseclass, or interface so the report can figure out how to group them.

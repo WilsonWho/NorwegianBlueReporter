@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using NorwegianBlue.Analysis;
+using NorwegianBlue.Notes.AnalysisNotes;
+using NorwegianBlue.Reporting;
 using OxyPlot;
 
-namespace NorwegianBlue.IagoIntegration.Analysis
+namespace NorwegianBlue.Integration.Iago.Analysis
 {
+    [ReportingMetaData(ReportingTypes.Sample)]
     class IagoSampleAnalysisNote : AnalysisNote
     {
         public override string FriendlyTypeName
