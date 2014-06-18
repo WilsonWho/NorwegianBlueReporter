@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using MigraDoc.DocumentObjectModel;
-using NorwegianBlue.CommonAnalysis.Algorithms;
+using NorwegianBlue.CommonAnalyzers.Algorithms;
 using NorwegianBlue.Data.Sample;
 using NorwegianBlue.Data.SampleSet;
 using NorwegianBlue.Integration.Azure.Analysis;

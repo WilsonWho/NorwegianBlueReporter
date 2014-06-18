@@ -1,7 +1,7 @@
 ﻿using NorwegianBlue.Data.Sample;
 using NorwegianBlue.Data.SampleSet;
 
-namespace NorwegianBlue.Data.BaseExperimentWIthAnalysis
+namespace NorwegianBlue.Data.Experiment
 {
     // An BaseExperimentWithAnalysis is intended to be a summary collection of various types of analysis.
     // 

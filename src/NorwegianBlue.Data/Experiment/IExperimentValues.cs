@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using NorwegianBlue.Data.Sample;
 using NorwegianBlue.Notes.AnalysisNotes;
 
-namespace NorwegianBlue.Data.BaseExperimentWIthAnalysis
+namespace NorwegianBlue.Data.Experiment
 {
     public interface IExperimentValues<out T> : IReadOnlyList<T> where T : ISampleValues
     {

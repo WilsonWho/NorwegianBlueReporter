@@ -1,6 +1,6 @@
 ﻿using NorwegianBlue.Data.Sample;
 
-namespace NorwegianBlue.Data.BaseExperimentWIthAnalysis
+namespace NorwegianBlue.Data.Experiment
 {
 
     public delegate void ExperimentAnalyzer<in T1, in T2>(T1 experiment)

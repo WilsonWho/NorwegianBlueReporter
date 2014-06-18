@@ -11,7 +11,7 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
-namespace NorwegianBlue.CommonAnalysis.Algorithms
+namespace NorwegianBlue.CommonAnalyzers.Algorithms
 {
     public class CommonSampleSetAnalysis
     {

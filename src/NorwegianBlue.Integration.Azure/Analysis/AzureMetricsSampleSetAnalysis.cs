@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NorwegianBlue.CommonAnalysis.Algorithms;
+using NorwegianBlue.CommonAnalyzers.Algorithms;
 using NorwegianBlue.Integration.Azure.Data.SampleSet;
 using NorwegianBlue.Util.Configuration;
 

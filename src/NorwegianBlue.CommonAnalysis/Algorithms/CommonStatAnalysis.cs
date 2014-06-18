@@ -5,7 +5,7 @@ using NorwegianBlue.Data.SampleSet;
 using NorwegianBlue.Notes.AnalysisNotes;
 using NorwegianBlue.Util.Common;
 
-namespace NorwegianBlue.CommonAnalysis.Algorithms
+namespace NorwegianBlue.CommonAnalyzers.Algorithms
 {
  
     public class CommonStatAnalysis

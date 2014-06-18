@@ -5,11 +5,10 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
-using NorwegianBlue.Data.BaseExperimentWIthAnalysis;
+using NorwegianBlue.Data.Experiment;
 using NorwegianBlue.Data.Sample;
 using NorwegianBlue.Data.SampleSet;
 using NorwegianBlue.Notes.AnalysisNotes;
-using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.Data.Experiment
 {
@@ -25,7 +24,7 @@ namespace NorwegianBlue.Data.Experiment
     {
         private readonly List<ISampleSetAnalysis<ISampleAnalysis>> _sampleSets = new List<ISampleSetAnalysis<ISampleAnalysis>>();
 
-        private List<ISampleAnalysis> _samples = new List<ISampleAnalysis>();
+        private readonly List<ISampleAnalysis> _samples = new List<ISampleAnalysis>();
 
         private readonly dynamic _analysisScratchPad = new ExpandoObject();
         public dynamic AnalysisScratchPad

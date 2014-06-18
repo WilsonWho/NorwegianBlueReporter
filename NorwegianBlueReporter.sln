@@ -31,11 +31,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Reporting", "src\NorwegianBlue.Reporting\NorwegianBlue.Reporting.csproj", "{A230FA8B-AB15-4151-A037-BD5D396B7DE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.CommonAnalysis", "src\NorwegianBlue.CommonAnalysis\NorwegianBlue.CommonAnalysis.csproj", "{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.CommonAnalyzers", "src\NorwegianBlue.CommonAnalysis\NorwegianBlue.CommonAnalyzers.csproj", "{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Data", "src\NorwegianBlue.Data\NorwegianBlue.Data.csproj", "{364A2C2A-B6BF-466B-A78B-CA7D2677156B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.Notes", "src\NorwegianBlue.Notes\NorwegianBlue.Notes.csproj", "{A967D190-9978-4126-849E-185A03ED8C9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NorwegianBlue.AnalyzableExperiment", "NorwegianBlue.AnalyzableExperiment\NorwegianBlue.AnalyzableExperiment.csproj", "{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -227,6 +229,19 @@ Global
 		{A967D190-9978-4126-849E-185A03ED8C9A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A967D190-9978-4126-849E-185A03ED8C9A}.Release|x64.ActiveCfg = Release|Any CPU
 		{A967D190-9978-4126-849E-185A03ED8C9A}.Release|x86.ActiveCfg = Release|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Debug|x64.ActiveCfg = Debug|x64
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Debug|x64.Build.0 = Debug|x64
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Release|x64.ActiveCfg = Release|Any CPU
+		{03E7CFA3-8BA3-490C-9DFF-526E53846EC3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
