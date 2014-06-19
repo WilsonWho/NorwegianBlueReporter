@@ -49,18 +49,25 @@ namespace NorwegianBlue.Reporter
 
             // TODO: Populate these by reflection
             // set up analysis algorithms
-            var commonSetAnalyzers = new CommonSampleSetAnalysis();
-            var commonStatAnalyzers = new CommonStatAnalysis();
-            var iagoSetAnalyzers = new IagoSampleSetAnalysis();
-            var iisSetAnalyzers = new IisSampleSetAnalysis();
-            var azureMetricsSetAnalyzers = new AzureMetricsSampleSetAnalysis();
+            var commonSetAnalyzersFactory = new CommonSampleSetAnalyzersFactory();
+            var commonSampleSetAnalyzers = commonSetAnalyzersFactory.Create();
+            var commonStatAnalyzersFactory = new CommonStatAnalyzersFactory();
+            var commonStatAnalyzers = commonStatAnalyzersFactory.Create();
+
+            var iagoSetAnalyzersFactory = new IagoSampleSetAnalyzersFactory();
+            var iagoSetAnalyzers = iagoSetAnalyzersFactory.Create();
+            var iisSampleSetAnalyzersFactory = new IisSampleSetAnalyzersFactory();
+            var iisSetAnalyzers = iisSampleSetAnalyzersFactory.Create();
+
+            var azureSampleSetAnalyzersFactory = new AzureMetricsSampleSetAnalyzersFactory();
+            var azureMetricsSetAnalyzers = azureSampleSetAnalyzersFactory.Create();
 
 
             var commonSetAnalysisMethods = new List<SetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>
                 {
-                    commonSetAnalyzers.FindAllHeaders,
-                    commonSetAnalyzers.SummaryStats,
-                    commonSetAnalyzers.ClusterAnalysis
+                    commonSampleSetAnalyzers.FindAllHeaders,
+                    commonSampleSetAnalyzers.SummaryStats,
+                    commonSampleSetAnalyzers.ClusterAnalysis
                 };
 
             var statAnalysisMethods = new List<SampleInSetAnalyzer<ISampleSetAnalysis<ISampleAnalysis>, ISampleAnalysis>>();
@@ -77,7 +84,7 @@ namespace NorwegianBlue.Reporter
             statAnalysisMethods.Add(commonStatAnalyzers.SummaryStatComparisonAsTables);
 
             iagoSamples.Analyze(iagoSetAnalysisMethods, statAnalysisMethods);
-            iagoSetAnalyzers.IagoSummaryGraphs(iagoSamples);
+            iagoSetAnalyzers.SummaryGraphs(iagoSamples);
 
             var iisSetAnalysisMethods = new List<SetAnalyzer<IisSampleSet, IisSample>>();
             iisSetAnalysisMethods.AddRange(commonSetAnalysisMethods);
@@ -98,8 +105,8 @@ namespace NorwegianBlue.Reporter
             // statAnalysisMethods.Add(commonStatAnalyzers.SummaryStatComparisonAsTables);
 
             azureSamples.Analyze(azureMetricsSetAnalysisMethods, statAnalysisMethods);
-            azureMetricsSetAnalyzers.AzureMetricsSummaryGraphs(azureSamples);
-
+            azureMetricsSetAnalyzers.SummaryGraphs(azureSamples);
+                
             //------------------------------------------------------------------
 
             var document = new Document();

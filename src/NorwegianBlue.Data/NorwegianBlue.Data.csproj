@@ -88,9 +88,9 @@
     <Compile Include="SampleSet\ISampleSetValues.cs" />
     <Compile Include="SampleSet\SampleSetAnalysisDelegates.cs" />
     <Compile Include="Sample\AbstractSampleWithAnalysisFactory.cs" />
-    <Compile Include="Sample\BaseSampleWithAnalysis.cs" />
-    <Compile Include="SampleSet\BaseSampleSetWithAnalysis.cs" />
-    <Compile Include="Experiment\BaseExperimentWithAnalysis.cs" />
+    <Compile Include="Sample\AbstractBaseSampleWithAnalysis.cs" />
+    <Compile Include="SampleSet\AbstractBaseSampleSetWithAnalysis.cs" />
+    <Compile Include="Experiment\AbstractBaseExperimentWithAnalysis.cs" />
     <Compile Include="Experiment\IExperiment.cs" />
     <Compile Include="Sample\ISampleAnalysis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

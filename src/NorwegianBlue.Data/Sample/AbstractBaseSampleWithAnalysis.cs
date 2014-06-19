@@ -10,7 +10,7 @@ using NorwegianBlue.Notes.AnalysisNotes;
 
 namespace NorwegianBlue.Data.Sample
 {
-    public abstract class BaseSampleWithAnalysis : ISampleAnalysis
+    public abstract class AbstractBaseSampleWithAnalysis : ISampleAnalysis
     {
         protected readonly Dictionary<string, Tuple<bool, double>> Stats = new Dictionary<string, Tuple<bool, double>>();
         protected readonly List<AnalysisNote> UpdateableAnalysisNotes = new List<AnalysisNote>();
@@ -50,7 +50,7 @@ namespace NorwegianBlue.Data.Sample
             }
         }
 
-        protected BaseSampleWithAnalysis(DateTime timeStamp, IEnumerable<Tuple<string, string>> data, IReadOnlyDictionary<object, object> configuration)
+        protected AbstractBaseSampleWithAnalysis(DateTime timeStamp, IEnumerable<Tuple<string, string>> data, IReadOnlyDictionary<object, object> configuration)
         {
             TimeStamp = timeStamp;
 

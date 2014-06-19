@@ -3,7 +3,7 @@ using NorwegianBlue.Data.SampleSet;
 
 namespace NorwegianBlue.Data.Experiment
 {
-    // An BaseExperimentWithAnalysis is intended to be a summary collection of various types of analysis.
+    // An AbstractBaseExperimentWithAnalysis is intended to be a summary collection of various types of analysis.
     // 
     public interface IExperiment<in T> where T : ISampleSetValues<ISampleValues>
     {

@@ -85,6 +85,9 @@
     <Reference Include="Microsoft.WindowsAzure.Common.NetFramework">
       <HintPath>..\..\packages\Microsoft.WindowsAzure.Common.1.1.1\lib\net45\Microsoft.WindowsAzure.Common.NetFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Management.Scheduler">
+      <HintPath>..\..\packages\Microsoft.WindowsAzure.Management.Scheduler.2.0.3\lib\net40\Microsoft.WindowsAzure.Management.Scheduler.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Management.WebSites">
       <HintPath>..\..\packages\Microsoft.WindowsAzure.Management.WebSites.2.0.1\lib\net40\Microsoft.WindowsAzure.Management.WebSites.dll</HintPath>
     </Reference>
@@ -106,7 +109,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\AzureMetricsSampleAnalysisNote.cs" />
-    <Compile Include="Analysis\AzureMetricsSampleSetAnalysis.cs" />
+    <Compile Include="Analysis\AzureMetricsSampleSetAnalyzers.cs" />
+    <Compile Include="Analysis\AzureMetricsSampleSetAnalyzersFactory.cs" />
     <Compile Include="Analysis\AzureMetricsSampleSetAnalysisNote.cs" />
     <Compile Include="AzureAPI\AuthenticatedClient.cs" />
     <Compile Include="AzureAPI\DTOs\WebSiteGetHistoricalUsageMetricsResponse\AzureGetHistoricalUsageMetricsRequest.cs" />
@@ -129,8 +133,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NorwegianBlue.CommonAnalysis\NorwegianBlue.CommonAnalyzers.csproj">
-      <Project>{6b0bb122-19c3-47a2-90f7-fb5d1299e82e}</Project>
+    <ProjectReference Include="..\NorwegianBlue.Analyzer\NorwegianBlue.Analyzer.csproj">
+      <Project>{4a07b488-1d68-487a-86ad-f53986ee987e}</Project>
+      <Name>NorwegianBlue.Analyzer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.CommonAnalyzers\NorwegianBlue.CommonAnalyzers.csproj">
+      <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
       <Name>NorwegianBlue.CommonAnalyzers</Name>
     </ProjectReference>
     <ProjectReference Include="..\NorwegianBlue.Data\NorwegianBlue.Data.csproj">

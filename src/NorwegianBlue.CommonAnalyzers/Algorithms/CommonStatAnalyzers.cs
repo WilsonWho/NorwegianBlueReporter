@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using NorwegianBlue.Analyzer;
 using NorwegianBlue.Data.Sample;
 using NorwegianBlue.Data.SampleSet;
 using NorwegianBlue.Notes.AnalysisNotes;
@@ -7,9 +9,12 @@ using NorwegianBlue.Util.Common;
 
 namespace NorwegianBlue.CommonAnalyzers.Algorithms
 {
- 
-    public class CommonStatAnalysis
+    public class CommonStatAnalyzers : AbstractStatAnalyzers
     {
+        internal CommonStatAnalyzers(Dictionary<object, object> configuration) : base(configuration)
+        {
+        }
+
         public void SummaryStatComparisonAsTables(ISampleSetAnalysis<ISampleAnalysis> sampleSet, ISampleAnalysis stat)
         {
             var stdDevs = new StringBuilder();
@@ -100,7 +105,7 @@ namespace NorwegianBlue.CommonAnalyzers.Algorithms
                 var analysisNote = (AnalysisNote) Activator.CreateInstance(stat.AnalysisNoteType,
                                                                            new object[]
                                                                                {
-                                                                                   @"Stat Summary", stdDevs.ToString(),
+                                                                                   @"Stat SummaryGraphsDescription", stdDevs.ToString(),
                                                                                    AnalysisNoteDetailLevel.Summary,
                                                                                    AnalysisNotePriorities.Important,
                                                                                    null
@@ -165,7 +170,7 @@ namespace NorwegianBlue.CommonAnalyzers.Algorithms
                 var analysisNote = (AnalysisNote) Activator.CreateInstance(stat.AnalysisNoteType,
                                                                            new object[]
                                                                                {
-                                                                                   @"Stat Summary", stdDevs.ToString(),
+                                                                                   @"Stat SummaryGraphsDescription", stdDevs.ToString(),
                                                                                    AnalysisNoteDetailLevel.Details,
                                                                                    AnalysisNotePriorities.Important,
                                                                                    null

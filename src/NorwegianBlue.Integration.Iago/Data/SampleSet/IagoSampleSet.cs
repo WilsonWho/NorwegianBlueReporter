@@ -8,7 +8,7 @@ using NorwegianBlue.Integration.Iago.Data.Sample;
 
 namespace NorwegianBlue.Integration.Iago.Data.SampleSet
 {
-    public class IagoSampleSet : BaseSampleSetWithAnalysis<IagoSample>
+    public class IagoSampleSet : AbstractBaseSampleSetWithAnalysis<IagoSample>
     {
         // Example line:
         // INF [20140129-16:09:01.218] stats: {...}

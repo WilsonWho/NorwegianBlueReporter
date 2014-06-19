@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
-using NorwegianBlue.Data.Experiment;
 using NorwegianBlue.Data.Sample;
 using NorwegianBlue.Data.SampleSet;
 using NorwegianBlue.Notes.AnalysisNotes;
@@ -20,7 +19,7 @@ namespace NorwegianBlue.Data.Experiment
     /// Care needs to be taken to ensure consistent and up-to-date data is provided.
     /// For example, don't re-create Lists, clear and re-add content.
     /// </remarks>
-    abstract public class BaseExperimentWithAnalysis : IExperiment<ISampleSetValues<ISampleValues>>, IExperimentAnalysis<ISampleAnalysis>
+    abstract public class AbstractBaseExperimentWithAnalysis : IExperiment<ISampleSetValues<ISampleValues>>, IExperimentAnalysis<ISampleAnalysis>
     {
         private readonly List<ISampleSetAnalysis<ISampleAnalysis>> _sampleSets = new List<ISampleSetAnalysis<ISampleAnalysis>>();
 
@@ -105,7 +104,7 @@ namespace NorwegianBlue.Data.Experiment
             get { return SampleSetComparisons<ISampleAnalysis>.GetNearestToTime(_samples, time, tolerance, absolute); }
         }
 
-        protected BaseExperimentWithAnalysis(IReadOnlyDictionary<object, object> configuration)
+        protected AbstractBaseExperimentWithAnalysis(IReadOnlyDictionary<object, object> configuration)
         {
             AnalysisScratchPad.ignorableFields = (configuration.ContainsKey("FieldsToIgnore")
                                                      ? configuration["FieldsToIgnore"]

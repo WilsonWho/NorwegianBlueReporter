@@ -7,7 +7,7 @@ using NorwegianBlue.Data.Experiment;
 
 namespace NorwegianBlue.AnalyzableExperiment
 {
-    public class AnalyzableExperiment : BaseExperimentWithAnalysis
+    public class AnalyzableExperiment : AbstractBaseExperimentWithAnalysis
     {
         internal AnalyzableExperiment(Dictionary<object, object> configuration) : base(configuration)
         {

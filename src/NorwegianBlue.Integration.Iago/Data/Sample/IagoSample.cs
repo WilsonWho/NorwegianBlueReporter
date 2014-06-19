@@ -5,7 +5,7 @@ using NorwegianBlue.Integration.Iago.Analysis;
 
 namespace NorwegianBlue.Integration.Iago.Data.Sample
 {
-    public class IagoSample : BaseSampleWithAnalysis 
+    public class IagoSample : AbstractBaseSampleWithAnalysis 
     {
         public override Type AnalysisNoteType
         {

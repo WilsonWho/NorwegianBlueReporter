@@ -10,7 +10,7 @@ using NorwegianBlue.Notes.AnalysisNotes;
 
 namespace NorwegianBlue.Data.SampleSet
 {
-    public abstract class BaseSampleSetWithAnalysis<T> : ISampleSetAnalysis<T> where T: ISampleAnalysis
+    public abstract class AbstractBaseSampleSetWithAnalysis<T> : ISampleSetAnalysis<T> where T: ISampleAnalysis
     {
         private readonly List<T> _samples = new List<T>();
 
@@ -80,7 +80,7 @@ namespace NorwegianBlue.Data.SampleSet
             return ((IEnumerable<T>)this).GetEnumerator();
         }
 
-        protected BaseSampleSetWithAnalysis(IReadOnlyDictionary<object, object> configuration)
+        protected AbstractBaseSampleSetWithAnalysis(IReadOnlyDictionary<object, object> configuration)
         {
             AnalysisScratchPad.ignorableFields = (configuration.ContainsKey("FieldsToIgnore")
                                                      ? configuration["FieldsToIgnore"]

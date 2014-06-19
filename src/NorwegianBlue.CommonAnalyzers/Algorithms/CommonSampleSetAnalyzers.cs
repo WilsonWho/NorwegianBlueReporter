@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using NorwegianBlue.Analyzer;
 using NorwegianBlue.Data.Sample;
 using NorwegianBlue.Data.SampleSet;
 using NorwegianBlue.Notes.AnalysisNotes;
@@ -13,8 +14,12 @@ using OxyPlot.Series;
 
 namespace NorwegianBlue.CommonAnalyzers.Algorithms
 {
-    public class CommonSampleSetAnalysis
+    public class CommonSampleSetAnalyzers : AbstractSampleSetAnalyzers
     {
+        internal CommonSampleSetAnalyzers(Dictionary<object, object> configuration) : base(configuration)
+        {
+        }
+
         public void FindAllHeaders(ISampleSetAnalysis<ISampleAnalysis> sampleSet)
         {
             var statsHeaders = new HashSet<String>();
@@ -272,7 +277,7 @@ The number of clusters is varied from 2, in powers of 2, up to {1} and plotted a
                     throw new ArgumentException("Can't include add std deviation to graph with out the average.");
                 }
 
-                var graph = new PlotModel { Title = graphSpec["Title"].ToString() };
+                var graph = new PlotModel { Title = graphSpec["SummmaryGraphsTitle"].ToString() };
                 var xAxis = new DateTimeAxis
                 {
                     Position = AxisPosition.Bottom,

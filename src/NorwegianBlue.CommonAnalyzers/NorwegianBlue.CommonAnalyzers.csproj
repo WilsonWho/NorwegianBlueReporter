@@ -97,8 +97,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\CommonStatAnalysis.cs" />
-    <Compile Include="Algorithms\CommonStatSetAnalysis.cs" />
+    <Compile Include="Algorithms\AbstractStandardSampleSetAnalyzers.cs" />
+    <Compile Include="Algorithms\CommonStatAnalyzers.cs" />
+    <Compile Include="Algorithms\CommonStatAnalyzersFactory.cs" />
+    <Compile Include="Algorithms\CommonSampleSetAnalyzers.cs" />
+    <Compile Include="Algorithms\CommonSampleSetAnalyzersFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +178,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\NorwegianBlue.Analyzer\NorwegianBlue.Analyzer.csproj">
+      <Project>{4A07B488-1D68-487A-86AD-F53986EE987E}</Project>
+      <Name>NorwegianBlue.Analyzer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NorwegianBlue.Data\NorwegianBlue.Data.csproj">
       <Project>{364a2c2a-b6bf-466b-a78b-ca7d2677156b}</Project>
       <Name>NorwegianBlue.Data</Name>

@@ -85,16 +85,21 @@
   <ItemGroup>
     <Compile Include="Analysis\IagoSampleSetAnalysisNote.cs" />
     <Compile Include="Analysis\IagoSampleAnalysisNote.cs" />
+    <Compile Include="Analysis\IagoSampleSetAnalyzersFactory.cs" />
     <Compile Include="Data\SampleSet\IagoSampleSetFactory.cs" />
     <Compile Include="Data\Sample\IagoSample.cs" />
     <Compile Include="Data\Sample\IagoSampleFactory.cs" />
     <Compile Include="Data\SampleSet\IagoSampleSet.cs" />
-    <Compile Include="Analysis\IagoSampleSetAnalysis.cs" />
+    <Compile Include="Analysis\IagoSampleSetAnalyzers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NorwegianBlue.CommonAnalysis\NorwegianBlue.CommonAnalyzers.csproj">
-      <Project>{6b0bb122-19c3-47a2-90f7-fb5d1299e82e}</Project>
+    <ProjectReference Include="..\NorwegianBlue.Analyzer\NorwegianBlue.Analyzer.csproj">
+      <Project>{4A07B488-1D68-487A-86AD-F53986EE987E}</Project>
+      <Name>NorwegianBlue.Analyzer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NorwegianBlue.CommonAnalyzers\NorwegianBlue.CommonAnalyzers.csproj">
+      <Project>{6B0BB122-19C3-47A2-90F7-FB5D1299E82E}</Project>
       <Name>NorwegianBlue.CommonAnalyzers</Name>
     </ProjectReference>
     <ProjectReference Include="..\NorwegianBlue.Data\NorwegianBlue.Data.csproj">

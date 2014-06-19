@@ -5,7 +5,7 @@ using NorwegianBlue.Integration.Azure.Analysis;
 
 namespace NorwegianBlue.Integration.Azure.Data.Sample
 {
-    public class AzureMetricsSample : BaseSampleWithAnalysis
+    public class AzureMetricsSample : AbstractBaseSampleWithAnalysis
     {
         public override Type AnalysisNoteType
         {

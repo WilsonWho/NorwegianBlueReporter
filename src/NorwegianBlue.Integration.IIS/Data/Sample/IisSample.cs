@@ -5,7 +5,7 @@ using NorwegianBlue.Integration.IIS.Analysis;
 
 namespace NorwegianBlue.Integration.IIS.Data.Sample
 {
-    public class IisSample : BaseSampleWithAnalysis
+    public class IisSample : AbstractBaseSampleWithAnalysis
     {
         public override Type AnalysisNoteType
         {

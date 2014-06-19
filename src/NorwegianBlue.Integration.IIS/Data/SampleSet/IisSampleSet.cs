@@ -8,7 +8,7 @@ using NorwegianBlue.Util.Web;
 
 namespace NorwegianBlue.Integration.IIS.Data.SampleSet
 {
-    public class IisSampleSet : BaseSampleSetWithAnalysis<IisSample>
+    public class IisSampleSet : AbstractBaseSampleSetWithAnalysis<IisSample>
     {
         public override Type AnalysisNoteType
         {
