@@ -3,7 +3,7 @@ using NorwegianBlue.Analyzer;
 
 namespace NorwegianBlue.CommonAnalyzers.Algorithms
 {
-    public class CommonStatAnalyzersFactory : AbstractStatAnalyzerFactory<CommonStatAnalyzers>
+    public class CommonStatAnalyzersFactory : AbstractStatAnalyzersFactory<CommonStatAnalyzers>
     {
         public override CommonStatAnalyzers Create()
         {

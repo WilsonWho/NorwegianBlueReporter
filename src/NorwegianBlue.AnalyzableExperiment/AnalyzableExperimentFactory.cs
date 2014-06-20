@@ -4,7 +4,7 @@ using NorwegianBlue.Util.Configuration;
 
 namespace NorwegianBlue.AnalyzableExperiment
 {
-    class AnalyableExperimentFactory : AbstractExperimentWithAnalysisFactory<AnalyzableExperiment>
+    public class AnalyzableExperimentFactory : AbstractExperimentWithAnalysisFactory<AnalyzableExperiment>
     {
         public override AnalyzableExperiment Create()
         {

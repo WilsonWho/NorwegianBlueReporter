@@ -81,7 +81,7 @@
     <Compile Include="AbstractSampleSetAnalyzersFactory.cs" />
     <Compile Include="AbstractSampleSetAnalyzers.cs" />
     <Compile Include="AbstractStatAnalyzers.cs" />
-    <Compile Include="AbstractStatAnalyzerFactory.cs" />
+    <Compile Include="AbstractStatAnalyzersFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

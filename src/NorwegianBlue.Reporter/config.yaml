@@ -1,7 +1,13 @@
 ﻿# Global application options.
 # Attachment directory, markdown notes file, output file name values here can be
 # overridden on the command line.
-AppOptions:
+AppConfiguration:
+    DataProcessingAssemblies:
+        - "NorwegianBlue.Integration.Azure"
+        - "NorwegianBlue.Integration.IIS"
+        - "NorwegianBlue.Integration.Iago"
+        - "NorwegianBlue.AnalyzableExperiment"
+        - "NorwegianBlue.CommonAnalyzers"
     OutputFileName: "Bleh.pdf"
     AttachmentsDirectory: "TBD"
     MarkdownNotesFileName: ""
